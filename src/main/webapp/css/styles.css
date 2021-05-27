@@ -1,0 +1,45 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+header, footer {
+    background-color: #0f5132;
+    height: 58px;
+}
+header .row , footer .row{
+    padding: 10px;
+}
+header .row .Name a, footer .row .Name a{
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    color: #f0f0f0;
+}
+header .row .Icon div{
+    width: 35px;
+    margin: 0 auto;
+}
+section .container {
+    height: calc(100vh - 116px);
+}
+footer .row .Text{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+.Login form .loginForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type=text], input[type=password] {
+    width: 150%;
+}
+
+input[type=submit] {
+    width: 200%;
+}
