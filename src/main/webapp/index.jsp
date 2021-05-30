@@ -12,7 +12,7 @@
 <section>
     <div class="container">
         <h1>
-            <%= "Some start page or whatever" %>
+            <%= "Hello World!!!!!!!!!!!!!!!" %>
         </h1>
         <br/>
         <a href="${pageContext.request.contextPath}/app/products">Kinda products</a>

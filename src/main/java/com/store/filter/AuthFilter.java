@@ -27,7 +27,7 @@ public class AuthFilter implements Filter {
         if (session.getAttribute("userRole") == null) {
             session.setAttribute("userRole",Role.GUEST);
         }
-
+        
         Role userRole = (Role) session.getAttribute("userRole");
         if (accessAllowed(request, userRole)) {
             filterChain.doFilter(request, response);
@@ -35,7 +35,7 @@ public class AuthFilter implements Filter {
             String errorMessage = "You do not have permission to access the requested resource";
             request.setAttribute("errorMessage", errorMessage);
             //log.trace("Set the request attribute: errorMessage --> " + errorMessage);
-            request.getRequestDispatcher("WEB-INF/error.jsp")
+            request.getRequestDispatcher("/WEB-INF/error.jsp")
                     .forward(request, response);
         }
     }
