@@ -1,10 +1,6 @@
 package com.store.controller.commands;
 
-
-import com.store.model.entity.Category;
-import com.store.model.entity.Color;
 import com.store.model.entity.Product;
-import com.store.model.entity.Size;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 

@@ -21,6 +21,7 @@ public class Controller extends HttpServlet {
     Map<String, Command> commands = new HashMap<>();
     public void init(){
         commands.put("products", new ProductListCommand(new ProductService()));
+        commands.put("cart", new CartCommand(new ProductService()));
         commands.put("category", new ProductsByCategoryCommand(new ProductService()));
         commands.put("color", new ProductsByColorCommand(new ProductService()));
         commands.put("size", new ProductsBySizeCommand(new ProductService()));

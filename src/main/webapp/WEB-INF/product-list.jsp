@@ -82,7 +82,9 @@
                                     <h4 class="name">${p.name }</h4>
                                     <div class="line">
                                         <div class="code">Code: ${p.id }</div>
-                                        <a class="btn btn-primary pull-right buy-btn" onclick="addProductToCart(${p.id })" data-id-product="${p.id }">Buy
+                                        <a class="btn btn-primary pull-right buy-btn"
+                                           href="${pageContext.request.contextPath }/app/cart?&action=buy&id=${p.id }"
+                                           data-id-product="${p.id }">Buy
                                         </a>
                                     </div>
 

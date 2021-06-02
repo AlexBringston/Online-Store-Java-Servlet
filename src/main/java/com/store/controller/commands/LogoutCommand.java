@@ -8,7 +8,7 @@ public class LogoutCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-
+        System.out.println(session.getAttribute("shoppingCart"));
         if (session != null) {
             session.invalidate();
         }

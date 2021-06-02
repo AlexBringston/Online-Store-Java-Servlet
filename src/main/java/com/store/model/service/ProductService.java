@@ -118,4 +118,10 @@ public class ProductService {
             return "DESC";
         }
     }
+
+    public Product getProductById(int id) {
+        try (ProductDao dao = daoFactory.createProductDao()) {
+            return dao.findById(id);
+        }
+    }
 }

@@ -35,7 +35,39 @@ public class JDBCProductDao implements ProductDao {
 
     @Override
     public Product findById(int id) {
-        return null;
+        Product product = new Product();
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            ProductMapper mapper = new ProductMapper();
+            statement = connection.createStatement();
+            String SQL = "SELECT p.*, c.name as category, co.name as color, s" +
+                    ".name as size from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p" +
+                    ".category_id and " +
+                    "co.id = p.color_id and s.id = p.size_id";
+           // String SQL = "SELECT * FROM products WHERE id = %d";
+            rs = statement.executeQuery(String.format(SQL,id));
+            if (rs.next()) {
+                product = mapper.extractFromResultSet(rs);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return product;
     }
 
     @Override

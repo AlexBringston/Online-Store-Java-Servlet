@@ -9,6 +9,7 @@
         </div>
         <div class="col-md-7 mx-auto">
             <c:out value="${sessionScope.userRole}"/>
+            ${requestScope['javax.servlet.forward.request_uri']}?${pageContext.request.queryString}
         </div>
         <div class="col-md-2 mx-auto Icon">
             <div>
