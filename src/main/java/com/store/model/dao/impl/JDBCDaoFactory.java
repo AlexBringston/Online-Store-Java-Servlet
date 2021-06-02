@@ -20,6 +20,16 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCProductDao(getConnection());
     }
 
+    @Override
+    public JDBCOrderDao createOrderDao() {
+        return new JDBCOrderDao(getConnection());
+    }
+
+    @Override
+    public JDBCOrderItemDao createOrderItemDao() {
+        return new JDBCOrderItemDao(getConnection());
+    }
+
     private Connection getConnection(){
         try {
             return dataSource.getConnection();

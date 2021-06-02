@@ -73,7 +73,7 @@
             <a href="${pageContext.request.contextPath }/app/products">Continue Shopping</a>
             <span>Total ${total}</span>
             <c:if test="${sessionScope.userRole == 'CLIENT'}">
-                <a href="${pageContext.request.contextPath }/app/makeOrder">Make order</a>
+                <a href="${pageContext.request.contextPath }/app/order">Make order</a>
             </c:if>
         </div>
 

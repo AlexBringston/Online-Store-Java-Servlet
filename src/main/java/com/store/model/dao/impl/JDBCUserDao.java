@@ -18,26 +18,26 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void create(User entity) {
-
-    }
-
-    @Override
-    public User findById(int id) {
-        return null;
-    }
-
-    public User findUserByLogin(String login) {
-        User user = null;
+        ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
-        ResultSet rs = null;
         try {
-            UserMapper mapper = new UserMapper();
-            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE login=?");
-            preparedStatement.setString(1, login);
-            rs = preparedStatement.executeQuery();
-            if (rs.next())
-                user = mapper.extractFromResultSet(rs);
-
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, first_name, " +
+                            "last_name) VALUES (?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, entity.getLogin());
+            preparedStatement.setString(1, entity.getPassword());
+            preparedStatement.setString(1, entity.getFirstName());
+            preparedStatement.setString(1, entity.getLastName());
+            preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                entity.setId(resultSet.getLong("id"));
+                entity.setCreatedAt(resultSet.getTimestamp("created_at"));
+            }
+            connection.commit();
+            preparedStatement.close();
+            resultSet.close();
         } catch (SQLException ex) {
             try {
                 connection.rollback();
@@ -46,20 +46,61 @@ public class JDBCUserDao implements UserDao {
             }
             ex.printStackTrace();
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            close();
+        }
+    }
+
+    @Override
+    public User findById(int id) {
+        User user = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            UserMapper mapper = new UserMapper();
+            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id=?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = mapper.extractFromResultSet(resultSet);
             }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return user;
+    }
+
+    public User findUserByLogin(String login) {
+        User user = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            UserMapper mapper = new UserMapper();
+            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE login=?");
+            preparedStatement.setString(1, login);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = mapper.extractFromResultSet(resultSet);
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
 
         }
         return user;
@@ -69,13 +110,16 @@ public class JDBCUserDao implements UserDao {
     public List<User> findAll() {
         List<User> userList = new ArrayList<>();
         Statement statement = null;
-        ResultSet rs = null;
+        ResultSet resultSet = null;
         try {
             UserMapper mapper = new UserMapper();
             statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT * FROM users");
-            while (rs.next())
-                userList.add(mapper.extractFromResultSet(rs));
+            resultSet = statement.executeQuery("SELECT * FROM users");
+            while (resultSet.next()) {
+                userList.add(mapper.extractFromResultSet(resultSet));
+            }
+            resultSet.close();
+            statement.close();
         } catch (SQLException ex) {
             try {
                 connection.rollback();
@@ -84,20 +128,7 @@ public class JDBCUserDao implements UserDao {
             }
             ex.printStackTrace();
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            close();
 
         }
         return userList;
@@ -105,16 +136,59 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void update(User entity) {
-
+        PreparedStatement preparedStatement = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("UPDATE users SET login = ?, password = ?," +
+                    "first_name = ?, last_name = ?");
+            preparedStatement.setString(1, entity.getLogin());
+            preparedStatement.setString(2, entity.getPassword());
+            preparedStatement.setString(3, entity.getFirstName());
+            preparedStatement.setString(4, entity.getLastName());
+            preparedStatement.executeUpdate();
+            connection.commit();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
     }
 
     @Override
     public void delete(int id) {
+        PreparedStatement preparedStatement = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id = ?");
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
 
+            connection.commit();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
     }
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.store.model.entity;
 
+import java.sql.Timestamp;
+
 public class Product extends Entity{
     private static final long serialVersionUID = 1035127111646328882L;
 
@@ -11,14 +13,13 @@ public class Product extends Entity{
 
     private Integer price;
 
-    private Long categoryId;
     private String category;
 
-    private Long colorId;
     private String color;
 
-    private Long sizeId;
     private String size;
+
+    private Timestamp createdAt;
 
     public String getName() {
         return name;
@@ -52,30 +53,6 @@ public class Product extends Entity{
         this.price = price;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Long getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Long colorId) {
-        this.colorId = colorId;
-    }
-
-    public Long getSizeId() {
-        return sizeId;
-    }
-
-    public void setSizeId(Long sizeId) {
-        this.sizeId = sizeId;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -98,5 +75,13 @@ public class Product extends Entity{
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

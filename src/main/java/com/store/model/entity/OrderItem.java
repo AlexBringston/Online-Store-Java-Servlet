@@ -6,7 +6,7 @@ public class OrderItem extends Entity{
 
     private int quantity;
 
-    private int orderId;
+    private long orderId;
 
     public OrderItem() {
         super();
@@ -33,11 +33,11 @@ public class OrderItem extends Entity{
         this.quantity = quantity;
     }
 
-    public int getOrderId() {
+    public long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         this.orderId = orderId;
     }
 }

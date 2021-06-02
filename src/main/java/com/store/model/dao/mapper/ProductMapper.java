@@ -17,6 +17,7 @@ public class ProductMapper implements ObjectMapper<Product>{
         product.setCategory(resultSet.getString("category"));
         product.setColor(resultSet.getString("color"));
         product.setSize(resultSet.getString("size"));
+        product.setCreatedAt(resultSet.getTimestamp("created_at"));
         return product;
     }
 }

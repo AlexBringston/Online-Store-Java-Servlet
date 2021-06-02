@@ -1,4 +1,6 @@
 package com.store.model.dao;
 
-public interface OrderDao extends GenericDao {
+import com.store.model.entity.Order;
+
+public interface OrderDao extends GenericDao<Order> {
 }

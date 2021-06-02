@@ -1,6 +1,7 @@
 package com.store.controller;
 
 import com.store.controller.commands.*;
+import com.store.model.service.OrderService;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -30,6 +31,7 @@ public class Controller extends HttpServlet {
         commands.put("authorization", new AuthorizationCommand());
         commands.put("admin", new AdminCommand());
         commands.put("user", new UserCommand());
+        commands.put("order", new OrderCommand(new OrderService()));
     }
 
     public void doGet(HttpServletRequest request,

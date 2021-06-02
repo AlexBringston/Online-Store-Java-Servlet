@@ -30,7 +30,41 @@ public class JDBCProductDao implements ProductDao {
 
     @Override
     public void create(Product entity) {
-
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("INSERT INTO products (name, description, image_link, " +
+                            "price, category_id, size_id, color_id) VALUES (?,?,?,?," +
+                            "(SELECT id FROM categories WHERE name = ?)," +
+                            "(SELECT id FROM size WHERE name = ?)," +
+                            "(SELECT id FROM colors WHERE name = ?) )",
+                    Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(1, entity.getDescription());
+            preparedStatement.setString(1, entity.getImageLink());
+            preparedStatement.setInt(1, entity.getPrice());
+            preparedStatement.setString(1, entity.getCategory());
+            preparedStatement.setString(1, entity.getSize());
+            preparedStatement.setString(1, entity.getColor());
+            preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                entity.setId(resultSet.getLong("id"));
+                entity.setCreatedAt(resultSet.getTimestamp("created_at"));
+            }
+            connection.commit();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
     }
 
     @Override
@@ -46,7 +80,6 @@ public class JDBCProductDao implements ProductDao {
                     ".name as size from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p" +
                     ".category_id and " +
                     "co.id = p.color_id and s.id = p.size_id";
-           // String SQL = "SELECT * FROM products WHERE id = %d";
             rs = statement.executeQuery(String.format(SQL,id));
             if (rs.next()) {
                 product = mapper.extractFromResultSet(rs);
@@ -61,11 +94,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return product;
     }
@@ -93,28 +122,71 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return productList;
     }
 
     @Override
     public void update(Product entity) {
-
+        PreparedStatement preparedStatement = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("UPDATE products SET name = ?, description = ?," +
+                    "image_link = ?, price = ?, category_id = (SELECT id FROM categories WHERE name = ?)," +
+                    " size_id = (SELECT id FROM size WHERE name = ?), color_id = (SELECT id FROM colors WHERE name = ?)");
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(2, entity.getDescription());
+            preparedStatement.setString(3, entity.getImageLink());
+            preparedStatement.setInt(4, entity.getPrice());
+            preparedStatement.setString(5, entity.getCategory());
+            preparedStatement.setString(6, entity.getSize());
+            preparedStatement.setString(7, entity.getColor());
+            preparedStatement.executeUpdate();
+            connection.commit();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
     }
 
     @Override
     public void delete(int id) {
+        PreparedStatement preparedStatement = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("DELETE FROM products WHERE id = ?");
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
 
+            connection.commit();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
     }
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
@@ -140,11 +212,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
 
         return count;
@@ -175,11 +243,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
 
         return count;
@@ -208,11 +272,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
 
         return count;
@@ -241,11 +301,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
 
         return count;
@@ -278,11 +334,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return productList;
     }
@@ -322,11 +374,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return productList;
     }
@@ -367,11 +415,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return productList;
     }
@@ -411,11 +455,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return productList;
     }
@@ -443,11 +483,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return categoryList;
     }
@@ -475,11 +511,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return colorList;
     }
@@ -507,11 +539,7 @@ public class JDBCProductDao implements ProductDao {
             }
             ex.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            close();
         }
         return sizeList;
     }
