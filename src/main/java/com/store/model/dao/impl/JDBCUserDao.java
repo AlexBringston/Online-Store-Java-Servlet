@@ -74,7 +74,7 @@ public class JDBCUserDao implements UserDao {
             UserMapper mapper = new UserMapper();
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT * FROM users");
-            if (rs.next())
+            while (rs.next())
                 userList.add(mapper.extractFromResultSet(rs));
         } catch (SQLException ex) {
             try {

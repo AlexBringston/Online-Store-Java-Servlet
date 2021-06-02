@@ -1,6 +1,8 @@
 package com.store.filter;
 
+import com.store.controller.commands.LoginCommand;
 import com.store.model.entity.Role;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthFilter implements Filter {
+    private static final Logger log = Logger.getLogger(LoginCommand.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -34,7 +38,7 @@ public class AuthFilter implements Filter {
         } else {
             String errorMessage = "You do not have permission to access the requested resource";
             request.setAttribute("errorMessage", errorMessage);
-            //log.trace("Set the request attribute: errorMessage --> " + errorMessage);
+            log.trace("Set the request attribute: errorMessage --> " + errorMessage);
             request.getRequestDispatcher("/WEB-INF/error.jsp")
                     .forward(request, response);
         }

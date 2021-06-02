@@ -1,27 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-    <title>JSP - Hello World трататам</title>
+    <title>Site</title>
 </head>
 <body>
-<header>
-    <jsp:include page="WEB-INF/header.jsp"/>
-</header>
-<section>
-    <div class="container">
-        <h1>
-            <%= "Hello World!!!!!!!!!!!!!!!" %>
-        </h1>
-        <br/>
-        <a href="${pageContext.request.contextPath}/app/products">Kinda products</a>
-    </div>
-</section>
-
-<footer class="footer">
-    <jsp:include page="WEB-INF/footer.jsp"/>
-</footer>
-
+<c:redirect url="${pageContext.request.contextPath}/app/products"/>
 </body>
 </html>

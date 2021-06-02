@@ -6,7 +6,7 @@ header, footer {
     height: 58px;
 }
 header .row , footer .row{
-    padding: 10px;
+    padding: 8px;
 }
 header .row .Name a, footer .row .Name a{
     text-decoration: none;
@@ -42,4 +42,67 @@ input[type=text], input[type=password] {
 
 input[type=submit] {
     width: 200%;
+}
+
+.products .container {
+    padding: 30px 0;
+}
+
+.products {
+    min-height: calc(100vh - 116px);
+}
+
+.products .thumbnail img {
+    width: 100%;
+}
+.products .product {
+    padding: 15px;
+}
+
+.products .product .line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.products .product .code {
+    display: flex;
+    align-items: center;
+}
+
+.products .container .links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.products .container .links a{
+    display: inline-block;
+    width: 20%;
+    padding: 10px;
+    text-align: center;
+    margin: 10px;
+    color: #000000;
+    text-decoration: none;
+    border: solid 2px #000000;
+    font-size: 16px;
+}
+.products .menu-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.products .menu-bar select {
+    display: inline-block;
+}
+.products .menu-bar .form-select {
+    width: 100%;
+}
+.products .menu-bar button{
+    display: inline-block;
+    align-self: flex-end;
+    height: 48px;
+}
+
+aside {
+    margin-top: 30px !important;
 }
