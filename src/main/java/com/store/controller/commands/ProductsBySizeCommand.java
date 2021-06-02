@@ -5,6 +5,7 @@ import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ProductsBySizeCommand implements Command{
@@ -20,7 +21,7 @@ public class ProductsBySizeCommand implements Command{
     private static final int SUBSTRING_INDEX = "/app/products/size/".length();
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String sizeUrl = request.getRequestURI().substring(SUBSTRING_INDEX);
         log.debug("Size command starts");
         int page = 1;

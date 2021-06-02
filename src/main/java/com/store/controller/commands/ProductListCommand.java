@@ -5,6 +5,7 @@ import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ProductListCommand implements Command{
@@ -18,7 +19,7 @@ public class ProductListCommand implements Command{
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         log.debug("Commands starts");
         int page = 1;
         if(request.getParameter("page") != null) {

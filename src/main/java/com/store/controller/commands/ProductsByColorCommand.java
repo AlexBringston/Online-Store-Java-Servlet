@@ -8,6 +8,7 @@ import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +25,7 @@ public class ProductsByColorCommand implements Command{
     private static final int SUBSTRING_INDEX = "/app/products/color/".length();
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String colorUrl = request.getRequestURI().substring(SUBSTRING_INDEX);
         log.debug("Color command starts");
         int page = 1;

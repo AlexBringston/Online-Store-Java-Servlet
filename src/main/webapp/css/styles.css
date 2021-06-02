@@ -18,7 +18,7 @@ header .row .Icon div{
     width: 35px;
     margin: 0 auto;
 }
-section .container {
+.Admin .container , .User .container{
     height: calc(100vh - 116px);
 }
 footer .row .Text{
@@ -105,4 +105,39 @@ input[type=submit] {
 
 aside {
     margin-top: 30px !important;
+}
+
+.cart {
+    height: calc(100vh - 116px);
+}
+
+.items {
+    overflow-y: auto;
+    height: calc(100vh - 300px);
+    overflow-x: hidden;
+}
+.names {
+    font-size: 24px;
+    border: 3px solid #000000;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.item {
+    padding: 10px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.Total {
+    font-size: 24px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.Total span {
+    font-size: 32px;
+}
+.Total a {
+    align-self: flex-end;
 }

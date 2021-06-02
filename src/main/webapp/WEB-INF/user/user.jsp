@@ -9,7 +9,7 @@
 <header>
     <jsp:include page="../header.jsp"/>
 </header>
-<section>
+<section class="User">
     <div class="container">
         <h1>
             <%= "Hello COMMON USEEEEEEEEEEEEEEEEEER" %>

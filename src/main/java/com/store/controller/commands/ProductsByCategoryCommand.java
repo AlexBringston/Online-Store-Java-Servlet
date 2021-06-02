@@ -5,6 +5,7 @@ import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ProductsByCategoryCommand implements Command{
@@ -20,7 +21,7 @@ public class ProductsByCategoryCommand implements Command{
     private static final int SUBSTRING_INDEX = "/app/products/category/".length();
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         log.trace("request.getRequestURI() --> " + request.getRequestURI());
         String categoryUrl = request.getRequestURI().substring(SUBSTRING_INDEX);
         log.debug("Category command starts");
