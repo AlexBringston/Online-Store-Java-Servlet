@@ -6,6 +6,6 @@ public class UserCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest request) {
-        return "/WEB-INF/admin/user.jsp";
+        return "/WEB-INF/user/user.jsp";
     }
 }

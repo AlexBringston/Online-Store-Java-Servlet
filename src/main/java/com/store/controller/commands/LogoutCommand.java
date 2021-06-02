@@ -12,6 +12,6 @@ public class LogoutCommand implements Command{
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/index.jsp";
+        return "redirect:/products";
     }
 }

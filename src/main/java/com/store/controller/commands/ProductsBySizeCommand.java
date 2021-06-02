@@ -40,10 +40,10 @@ public class ProductsBySizeCommand implements Command{
             sort = sort.toLowerCase();
             direction = productService.getSortDirection(orderDirection);
         }
-        if (sort == null) {
+        if (sort == null || sort.equals("")) {
             sort = "id";
         }
-        if (direction == null) {
+        if (direction == null || direction.equals("")) {
             direction = "ASC";
         }
 

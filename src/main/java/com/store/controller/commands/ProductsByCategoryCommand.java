@@ -41,10 +41,10 @@ public class ProductsByCategoryCommand implements Command{
             sort = sort.toLowerCase();
             direction = productService.getSortDirection(orderDirection);
         }
-        if (sort == null) {
+        if (sort == null || sort.equals("")) {
             sort = "id";
         }
-        if (direction == null) {
+        if (direction == null || direction.equals("")) {
             direction = "ASC";
         }
         List<Product> products = productService.listProductsPerPageByCategory(page, categoryUrl, sort, direction);

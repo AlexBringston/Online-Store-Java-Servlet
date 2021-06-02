@@ -18,7 +18,7 @@
     <div class="list-group">
         <c:forEach var="color" items="${colors}">
             <a
-                    href="${pageContext.request.contextPath}/app/products/color/${color.name }" class="list-group-item">
+                    href="${pageContext.request.contextPath}/app/products/color/${color.name}" class="list-group-item">
                 <span>${color.name}</span>
             </a>
         </c:forEach>

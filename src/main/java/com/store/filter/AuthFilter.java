@@ -33,7 +33,11 @@ public class AuthFilter implements Filter {
         }
         
         Role userRole = (Role) session.getAttribute("userRole");
-        if (accessAllowed(request, userRole)) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        if (userRole.equals(Role.CLIENT) && httpServletRequest.getRequestURI().contains("authorization")) {
+            ((HttpServletResponse) response).sendRedirect("/app/user");
+        }
+        else if (accessAllowed(request, userRole)) {
             filterChain.doFilter(request, response);
         } else {
             String errorMessage = "You do not have permission to access the requested resource";
@@ -56,7 +60,7 @@ public class AuthFilter implements Filter {
             return false;
         return (userRole.equals(Role.ADMIN) && path.contains("admin"))
                 || (userRole.equals(Role.CLIENT) && !path.contains("admin"))
-                || (userRole.equals(Role.GUEST) && !path.contains("admin"));
+                || (userRole.equals(Role.GUEST) && !(path.contains("admin") || path.contains("user")));
     }
 
     @Override

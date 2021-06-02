@@ -7,7 +7,7 @@
 </head>
 <body>
 <header>
-    <jsp:include page="WEB-INF/header.jsp"/>
+    <jsp:include page="../header.jsp"/>
 </header>
 <section>
     <div class="container">
@@ -20,7 +20,7 @@
 </section>
 
 <footer class="footer">
-    <jsp:include page="WEB-INF/footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 </footer>
 
 </body>
