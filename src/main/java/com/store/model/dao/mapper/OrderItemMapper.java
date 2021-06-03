@@ -11,7 +11,7 @@ public class OrderItemMapper implements ObjectMapper<OrderItem> {
     public OrderItem extractFromResultSet(ResultSet resultSet) throws SQLException {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(resultSet.getInt("id"));
-        orderItem.setOrderId(resultSet.getInt("user_id"));
+        orderItem.setOrderId(resultSet.getInt("order_id"));
         orderItem.setProduct(new ProductService().getProductById(resultSet.getInt("product_id")));
         orderItem.setQuantity(resultSet.getInt("quantity"));
         return orderItem;

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthFilter implements Filter {
-    private static final Logger log = Logger.getLogger(LoginCommand.class);
+    private static final Logger log = Logger.getLogger(AuthFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -22,46 +22,18 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
-
+        log.trace("AuthFilter started");
         final HttpServletRequest req = (HttpServletRequest) request;
-        final HttpServletResponse res = (HttpServletResponse) response;
 
         HttpSession session = req.getSession();
 
         if (session.getAttribute("userRole") == null) {
-            session.setAttribute("userRole",Role.GUEST);
+            session.setAttribute("userRole", Role.GUEST);
         }
-        
-        Role userRole = (Role) session.getAttribute("userRole");
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        if (userRole.equals(Role.CLIENT) && httpServletRequest.getRequestURI().contains("authorization")) {
-            ((HttpServletResponse) response).sendRedirect("/app/user");
-        }
-        else if (accessAllowed(request, userRole)) {
-            filterChain.doFilter(request, response);
-        } else {
-            String errorMessage = "You do not have permission to access the requested resource";
-            request.setAttribute("errorMessage", errorMessage);
-            log.trace("Set the request attribute: errorMessage --> " + errorMessage);
-            request.getRequestDispatcher("/WEB-INF/error.jsp")
-                    .forward(request, response);
-        }
+        log.trace("AuthFilter finished");
+        filterChain.doFilter(request, response);
     }
 
-    private boolean accessAllowed(ServletRequest request, Role userRole) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String path = httpServletRequest.getRequestURI();
-        path = path.replaceAll(".*/app/", "");
-        HttpSession session = httpServletRequest.getSession(false);
-        if (session == null)
-            return false;
-
-        if (userRole == null)
-            return false;
-        return (userRole.equals(Role.ADMIN) && path.contains("admin"))
-                || (userRole.equals(Role.CLIENT) && !path.contains("admin"))
-                || (userRole.equals(Role.GUEST) && !(path.contains("admin") || path.contains("user")));
-    }
 
     @Override
     public void destroy() {

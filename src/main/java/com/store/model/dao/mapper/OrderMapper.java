@@ -12,6 +12,7 @@ public class OrderMapper implements ObjectMapper<Order>{
         order.setId(resultSet.getInt("id"));
         order.setUserId(resultSet.getInt("user_id"));
         order.setCreatedAt(resultSet.getTimestamp("created_at"));
+        order.setStatus(resultSet.getString("status"));
         return order;
     }
 }

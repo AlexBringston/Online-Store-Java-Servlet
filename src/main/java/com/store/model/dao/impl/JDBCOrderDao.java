@@ -35,6 +35,7 @@ public class JDBCOrderDao implements OrderDao {
             if (resultSet.next()) {
                 entity.setId(resultSet.getInt("id"));
                 entity.setCreatedAt(resultSet.getTimestamp("created_at"));
+                entity.setStatus(resultSet.getString("status"));
             }
             connection.commit();
             preparedStatement.close();
@@ -113,8 +114,9 @@ public class JDBCOrderDao implements OrderDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement("UPDATE orders SET user_id = ?");
+            preparedStatement = connection.prepareStatement("UPDATE orders SET user_id = ?, status = ?");
             preparedStatement.setLong(1, entity.getUserId());
+            preparedStatement.setString(2, entity.getStatus());
             preparedStatement.executeUpdate();
 
             connection.commit();

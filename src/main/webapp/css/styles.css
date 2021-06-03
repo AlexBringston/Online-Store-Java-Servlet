@@ -18,8 +18,11 @@ header .row .Icon div{
     width: 35px;
     margin: 0 auto;
 }
-.Admin .container , .User .container, .Login{
+.Admin .container , .User .container, .Login .container {
     height: calc(100vh - 116px);
+}
+.orderItems .container {
+    height: calc(100vh - 166px);
 }
 footer .row .Text{
     font-family: 'Montserrat', sans-serif;
@@ -70,14 +73,14 @@ input[type=submit] {
     align-items: center;
 }
 
-.products .container .links, .User .container .links{
+.products .container .links, .User .container .links, .orderItems .links{
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
 
-.products .container .links a, .User .container .links a{
+.products .container .links a, .User .container .links a, .orderItems .container .links a{
     display: inline-block;
     width: 20%;
     padding: 10px;
@@ -130,7 +133,9 @@ aside {
     font-size: 24px;
     text-align: center;
 }
-
+.User .Total {
+    margin-top: 100px;
+}
 .Total {
     font-size: 24px;
     display: flex;
@@ -142,4 +147,13 @@ aside {
 }
 .Total a {
     align-self: flex-end;
+}
+
+.totalAmount {
+    font-size: 32px;
+    float: right;
+}
+
+.orderItems .items {
+    height: 580px;
 }

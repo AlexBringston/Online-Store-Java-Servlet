@@ -8,6 +8,8 @@ public class Order extends Entity{
 
     private Timestamp createdAt;
 
+    private String status;
+
     public Order() {
     }
 
@@ -31,12 +33,20 @@ public class Order extends Entity{
         this.createdAt = createdAt;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
-                "id=" + getId() +
-                ", userId=" + userId +
+                "userId=" + userId +
                 ", createdAt=" + createdAt +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

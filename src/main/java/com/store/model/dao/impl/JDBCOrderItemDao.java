@@ -1,6 +1,7 @@
 package com.store.model.dao.impl;
 
 import com.store.model.dao.OrderItemDao;
+import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.OrderItemMapper;
 import com.store.model.entity.OrderItem;
 import com.store.model.service.ProductService;
@@ -165,5 +166,99 @@ public class JDBCOrderItemDao implements OrderItemDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @Override
+    public List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber) {
+        List<OrderItem> orderItemList = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            OrderItemMapper mapper = new OrderItemMapper();
+            int offset = (pageNumber - 1) * Utils.ORDER_ITEMS_PER_PAGE;
+            preparedStatement = connection.prepareStatement("SELECT * FROM order_items WHERE order_id = ? LIMIT ? " +
+                    "OFFSET ?");
+            preparedStatement.setInt(1, orderId);
+            preparedStatement.setInt(2, Utils.ORDER_ITEMS_PER_PAGE);
+            preparedStatement.setInt(3, offset);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                orderItemList.add(mapper.extractFromResultSet(rs));
+            }
+            connection.commit();
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return orderItemList;
+    }
+
+    @Override
+    public int countAllItemsInOrder(int orderId) {
+        int count = 0;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM order_items WHERE order_id = ?");
+            preparedStatement.setInt(1, orderId);
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            connection.commit();
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return count;
+    }
+
+    @Override
+    public int countTotalCost(int orderId) {
+        int count = 0;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            OrderItemMapper mapper = new OrderItemMapper();
+            preparedStatement = connection.prepareStatement("SELECT * FROM order_items WHERE order_id = ? ");
+            preparedStatement.setInt(1, orderId);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                OrderItem orderItem = mapper.extractFromResultSet(rs);
+                count += orderItem.getQuantity() * orderItem.getProduct().getPrice();
+            }
+            connection.commit();
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return count;
     }
 }

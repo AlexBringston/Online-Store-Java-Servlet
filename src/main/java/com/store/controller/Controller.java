@@ -32,6 +32,7 @@ public class Controller extends HttpServlet {
         commands.put("admin", new AdminCommand());
         commands.put("user", new UserCommand(new OrderService()));
         commands.put("order", new OrderCommand(new OrderService()));
+        commands.put("showOrder", new ShowOrderCommand(new OrderService()));
     }
 
     public void doGet(HttpServletRequest request,

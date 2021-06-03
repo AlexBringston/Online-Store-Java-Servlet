@@ -34,6 +34,32 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>com.store.filter.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/app/admin</url-pattern>
+        <url-pattern>/app/manageProducts</url-pattern>
+        <url-pattern>/app/manageUsers</url-pattern>
+        <url-pattern>/app/manageOrders</url-pattern>
+        <url-pattern>/app/logout</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>com.store.filter.UserFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/app/user</url-pattern>
+        <url-pattern>/app/showOrder</url-pattern>
+        <url-pattern>/app/order</url-pattern>
+        <url-pattern>/app/authorization</url-pattern>
+        <url-pattern>/app/logout</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

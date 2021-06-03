@@ -28,6 +28,9 @@
                 When order was made
             </div>
             <div class="col">
+                Status
+            </div>
+            <div class="col">
                 Action
             </div>
         </div>
@@ -43,7 +46,10 @@
                         <fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy hh:mm a"/>
                     </div>
                     <div class="col">
-                        <a href="${pageContext.request.contextPath }/app/showOrder?user=${order.userId}&id=${order.id}">
+                            ${order.status}
+                    </div>
+                    <div class="col">
+                        <a href="${pageContext.request.contextPath }/app/showOrder?id=${order.id}">
                             Show order details
                         </a>
                     </div>

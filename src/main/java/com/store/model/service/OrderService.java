@@ -34,7 +34,28 @@ public class OrderService {
         }
     }
 
+    public List<OrderItem> findItemsOfOrder(int orderId, int pageNumber) {
+        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
+            return dao.findAllItemsOfOrder(orderId, pageNumber);
+        }
+    }
+    public int countTotalCost(int orderId) {
+        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
+            return dao.countTotalCost(orderId);
+        }
+    }
 
+    public int countAllItemsOfOrder(int orderId) {
+        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
+            return dao.countAllItemsInOrder(orderId);
+        }
+    }
+
+    public Order findOrderById(int orderId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            return dao.findById(orderId);
+        }
+    }
     public void createOrder(Order order) {
         try (OrderDao dao = daoFactory.createOrderDao()) {
             dao.create(order);
