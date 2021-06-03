@@ -9,6 +9,8 @@ public abstract class DaoFactory {
 
     public abstract JDBCProductDao createProductDao();
 
+    public abstract JDBCDeletedProductDao createDeletedProductDao();
+
     public abstract JDBCOrderDao createOrderDao();
 
     public abstract JDBCOrderItemDao createOrderItemDao();

@@ -1,8 +1,14 @@
 package com.store.controller;
 
 import com.store.controller.commands.*;
+import com.store.controller.commands.admin.*;
+import com.store.controller.commands.products.ProductListCommand;
+import com.store.controller.commands.products.ProductsByCategoryCommand;
+import com.store.controller.commands.products.ProductsByColorCommand;
+import com.store.controller.commands.products.ProductsBySizeCommand;
 import com.store.model.service.OrderService;
 import com.store.model.service.ProductService;
+import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -26,13 +32,19 @@ public class Controller extends HttpServlet {
         commands.put("category", new ProductsByCategoryCommand(new ProductService()));
         commands.put("color", new ProductsByColorCommand(new ProductService()));
         commands.put("size", new ProductsBySizeCommand(new ProductService()));
-        commands.put("login", new LoginCommand());
+        commands.put("login", new LoginCommand(new UserService()));
         commands.put("logout", new LogoutCommand());
         commands.put("authorization", new AuthorizationCommand());
         commands.put("admin", new AdminCommand());
         commands.put("user", new UserCommand(new OrderService()));
         commands.put("order", new OrderCommand(new OrderService()));
         commands.put("showOrder", new ShowOrderCommand(new OrderService()));
+        commands.put("manageProducts", new ManageProductsCommand(new ProductService()));
+        commands.put("addProduct", new AddProductCommand(new ProductService()));
+        commands.put("deleteProduct", new DeleteProductCommand(new ProductService()));
+        commands.put("changeProduct", new ChangeProductCommand(new ProductService()));
+        commands.put("manageUsers", new ManageUsersCommand(new UserService()));
+        commands.put("manageOrders", new ManageOrdersCommand(new OrderService()));
     }
 
     public void doGet(HttpServletRequest request,

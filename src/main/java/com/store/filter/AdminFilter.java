@@ -27,7 +27,7 @@ public class AdminFilter implements Filter {
         HttpSession session = req.getSession();
 
         Role userRole = (Role) session.getAttribute("userRole");
-
+        log.trace("User role --> " + userRole);
         if (userRole.equals(Role.ADMIN)) {
             log.trace("AdminFilter finished");
             chain.doFilter(request, response);

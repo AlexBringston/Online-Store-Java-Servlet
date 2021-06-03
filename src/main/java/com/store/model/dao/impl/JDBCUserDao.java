@@ -79,6 +79,7 @@ public class JDBCUserDao implements UserDao {
         return user;
     }
 
+    @Override
     public User findUserByLogin(String login) {
         User user = null;
         PreparedStatement preparedStatement = null;

@@ -18,7 +18,7 @@ header .row .Icon div{
     width: 35px;
     margin: 0 auto;
 }
-.Admin .container , .User .container, .Login .container {
+.Admin .container , .User .container, .Login .container, .changeProduct .container{
     height: calc(100vh - 116px);
 }
 .orderItems .container {
@@ -156,4 +156,33 @@ aside {
 
 .orderItems .items {
     height: 580px;
+}
+
+.changeProduct .form-group {
+    padding-top: 30px;
+}
+
+.changeProduct .form-group .row{
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.changeProduct .form-group .col-sm-5 input{
+    width: 100%;
+}
+
+.changeProduct .form-group .col-sm-5 button{
+    display: inline-block;
+}
+
+.addProductButton {
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.addProductButton a{
+    width: 100%;
 }

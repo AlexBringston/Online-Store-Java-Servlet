@@ -26,11 +26,9 @@ public class UserFilter implements Filter {
 
 
         Role userRole = (Role) session.getAttribute("userRole");
-        if (userRole.equals(Role.CLIENT) && req.getRequestURI().contains("authorization")) {
-            res.sendRedirect("/app/user");
-        }
-        else if (userRole.equals(Role.GUEST) && req.getRequestURI().contains("authorization")) {
-            chain.doFilter(request,response);
+        log.trace("User role --> " + userRole);
+        if ((userRole.equals(Role.ADMIN) || userRole.equals(Role.CLIENT)) && req.getRequestURI().contains("logout")) {
+            chain.doFilter(request, response);
         }
         else if (userRole.equals(Role.CLIENT)) {
             chain.doFilter(request, response);

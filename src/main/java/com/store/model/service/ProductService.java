@@ -2,6 +2,7 @@ package com.store.model.service;
 
 
 import com.store.model.dao.DaoFactory;
+import com.store.model.dao.DeletedProductDao;
 import com.store.model.dao.ProductDao;
 import com.store.model.entity.Category;
 import com.store.model.entity.Color;
@@ -23,7 +24,30 @@ public class ProductService {
         }
     }
 
-    public List<Product> listProductsPerPage(int number, String sort, String direction) {
+    public void addProduct(Product product) {
+        try (ProductDao dao = daoFactory.createProductDao()) {
+            dao.create(product);
+        }
+    }
+
+    public void updateProduct(Product product) {
+        try (ProductDao dao = daoFactory.createProductDao()) {
+            dao.update(product);
+        }
+    }
+
+    public void addDeletedProduct(Product product) {
+        try (DeletedProductDao dao = daoFactory.createDeletedProductDao()) {
+            dao.create(product);
+        }
+    }
+
+    public void deleteProduct(int productId) {
+        try (ProductDao dao = daoFactory.createProductDao()) {
+            dao.delete(productId);
+        }
+    }
+    public List<Product> listProductsPerPage(int pageNumber, int limit, String sort, String direction) {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -31,7 +55,7 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPage(number, sort, direction);
+            return dao.findPerPage(pageNumber, limit, sort, direction);
         }
     }
 

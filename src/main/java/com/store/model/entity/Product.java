@@ -21,6 +21,32 @@ public class Product extends Entity{
 
     private Timestamp createdAt;
 
+    public Product() {
+    }
+
+    public Product(int id, String name, String description, String imageLink, Integer price, String category,
+                   String size, String color) {
+        super(id);
+        this.name = name;
+        this.description = description;
+        this.imageLink = imageLink;
+        this.price = price;
+        this.category = category;
+        this.size = size;
+        this.color = color;
+    }
+
+    public Product(String name, String description, String imageLink, Integer price, String category,
+                   String size, String color) {
+        this.name = name;
+        this.description = description;
+        this.imageLink = imageLink;
+        this.price = price;
+        this.category = category;
+        this.size = size;
+        this.color = color;
+    }
+
     public String getName() {
         return name;
     }

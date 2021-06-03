@@ -17,7 +17,7 @@ public interface ProductDao extends GenericDao<Product>{
     int countProductsBySize(String size);
 
 
-    List<Product> findPerPage(int count, String sort, String direction);
+    List<Product> findPerPage(int count, int limit, String sort, String direction);
 
     List<Product> findPerPageByCategory(int count, String name, String sort, String direction);
 

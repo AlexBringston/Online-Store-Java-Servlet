@@ -38,16 +38,16 @@ public class JDBCProductDao implements ProductDao {
             preparedStatement = connection.prepareStatement("INSERT INTO products (name, description, image_link, " +
                             "price, category_id, size_id, color_id) VALUES (?,?,?,?," +
                             "(SELECT id FROM categories WHERE name = ?)," +
-                            "(SELECT id FROM size WHERE name = ?)," +
+                            "(SELECT id FROM sizes WHERE name = ?)," +
                             "(SELECT id FROM colors WHERE name = ?) )",
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(1, entity.getDescription());
-            preparedStatement.setString(1, entity.getImageLink());
-            preparedStatement.setInt(1, entity.getPrice());
-            preparedStatement.setString(1, entity.getCategory());
-            preparedStatement.setString(1, entity.getSize());
-            preparedStatement.setString(1, entity.getColor());
+            preparedStatement.setString(2, entity.getDescription());
+            preparedStatement.setString(3, entity.getImageLink());
+            preparedStatement.setInt(4, entity.getPrice());
+            preparedStatement.setString(5, entity.getCategory());
+            preparedStatement.setString(6, entity.getSize());
+            preparedStatement.setString(7, entity.getColor());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -133,9 +133,14 @@ public class JDBCProductDao implements ProductDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
+            System.out.println(entity);
+            System.out.println(entity.getSize());
+            //System.out.println(entity.getColor());
             preparedStatement = connection.prepareStatement("UPDATE products SET name = ?, description = ?," +
                     "image_link = ?, price = ?, category_id = (SELECT id FROM categories WHERE name = ?)," +
-                    " size_id = (SELECT id FROM size WHERE name = ?), color_id = (SELECT id FROM colors WHERE name = ?)");
+                    " size_id = (SELECT id FROM sizes WHERE name = ?), color_id = (SELECT id FROM colors WHERE name =" +
+                    " " +
+                    "?) WHERE id = ?");
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setString(3, entity.getImageLink());
@@ -143,6 +148,7 @@ public class JDBCProductDao implements ProductDao {
             preparedStatement.setString(5, entity.getCategory());
             preparedStatement.setString(6, entity.getSize());
             preparedStatement.setString(7, entity.getColor());
+            preparedStatement.setInt(8, entity.getId());
             preparedStatement.executeUpdate();
             connection.commit();
             preparedStatement.close();
@@ -309,19 +315,19 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findPerPage(int count, String orderBy, String orderDirection) {
+    public List<Product> findPerPage(int count, int limit, String orderBy, String orderDirection) {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
         try {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
-            int offset = (count - 1) * Utils.PRODUCTS_PER_PAGE;
+            int offset = (count - 1) * limit;
             String SQL = "SELECT p.*, c.name as category, co.name as color, s" +
                     ".name as size from products p, categories c, colors co, sizes s where c.id = p.category_id and " +
                     "co.id = p.color_id and s.id = p.size_id ORDER BY %s %s LIMIT %d OFFSET %d";
             statement = connection.createStatement();
-            rs = statement.executeQuery(String.format(SQL, orderBy, orderDirection, Utils.PRODUCTS_PER_PAGE, offset));
+            rs = statement.executeQuery(String.format(SQL, orderBy, orderDirection, limit, offset));
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs));
             }

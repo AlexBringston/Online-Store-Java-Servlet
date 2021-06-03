@@ -1,5 +1,7 @@
-package com.store.controller.commands;
+package com.store.controller.commands.products;
 
+import com.store.controller.commands.Command;
+import com.store.controller.commands.CommandUtils;
 import com.store.model.dao.Utils;
 import com.store.model.entity.Product;
 import com.store.model.service.ProductService;
@@ -9,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class ProductListCommand implements Command{
+public class ProductListCommand implements Command {
 
     private ProductService productService;
 
@@ -23,7 +25,7 @@ public class ProductListCommand implements Command{
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         log.debug("Commands starts");
         int page = 1;
-        if(request.getParameter("page") != null) {
+        if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
         log.trace("page ->>>" + page);
@@ -32,7 +34,7 @@ public class ProductListCommand implements Command{
         String sort = request.getParameter("parameter");
         String direction = null;
         String orderDirection = request.getParameter("sortDirection");
-        if (sort !=null && orderDirection != null) {
+        if (sort != null && orderDirection != null) {
             sort = sort.toLowerCase();
             direction = productService.getSortDirection(orderDirection);
         }
@@ -43,17 +45,17 @@ public class ProductListCommand implements Command{
             direction = "DESC";
         }
         log.trace("sort -> " + sort);
-        log.trace("direction -> "+ direction);
-        request.setAttribute("sortWay",request.getParameter("parameter"));
-        request.setAttribute("sortDirection",request.getParameter("sortDirection"));
+        log.trace("direction -> " + direction);
+        request.setAttribute("sortWay", request.getParameter("parameter"));
+        request.setAttribute("sortDirection", request.getParameter("sortDirection"));
         request.setAttribute("currentPage", page);
         log.trace("Set the request attribute: currentPage --> " + page);
         int totalCount = productService.countAllProducts();
-        request.setAttribute("pageCount",CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
+        request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
 
-        List<Product> products = productService.listProductsPerPage(page, sort, direction);
+        List<Product> products = productService.listProductsPerPage(page, Utils.PRODUCTS_PER_PAGE, sort, direction);
 
-        request.setAttribute("products" , products);
+        request.setAttribute("products", products);
 
         CommandUtils.setAttributes(request, productService);
 
@@ -61,7 +63,6 @@ public class ProductListCommand implements Command{
         log.debug("Commands finished");
         return "/WEB-INF/product-list.jsp";
     }
-
 
 
 }

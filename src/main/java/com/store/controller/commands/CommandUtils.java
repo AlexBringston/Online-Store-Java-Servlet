@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public final class CommandUtils {
@@ -89,5 +90,20 @@ public final class CommandUtils {
             pageCount++;
         }
         return pageCount;
+    }
+
+    static boolean checkUserIsLogged(HttpServletRequest request, String userName){
+        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
+                .getAttribute("loggedUsers");
+        if (loggedUsers == null) {
+            loggedUsers = new HashSet<>();
+        }
+        else if(loggedUsers.stream().anyMatch(userName::equals)){
+            return true;
+        }
+        loggedUsers.add(userName);
+        request.getSession().getServletContext()
+                .setAttribute("loggedUsers", loggedUsers);
+        return false;
     }
 }

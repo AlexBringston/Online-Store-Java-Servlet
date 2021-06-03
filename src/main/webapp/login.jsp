@@ -17,11 +17,11 @@
                 <div class="loginForm">
                     <div class="mt-4">
                         <span>Login</span>
-                        <input type="text" name="login" class="form-control">
+                        <input type="text" name="login" class="form-control" required>
                     </div>
                     <div class="mt-4">
                         <span>Password</span>
-                        <input type="password" name="password" class="form-control">
+                        <input type="password" name="password" class="form-control" required>
                     </div>
                     <div class="mt-4 Submit">
                         <input type="submit" value="Login" class="btn btn-primary">

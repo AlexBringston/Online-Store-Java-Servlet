@@ -21,6 +21,11 @@ public class JDBCDaoFactory extends DaoFactory {
     }
 
     @Override
+    public JDBCDeletedProductDao createDeletedProductDao() {
+        return new JDBCDeletedProductDao(getConnection());
+    }
+
+    @Override
     public JDBCOrderDao createOrderDao() {
         return new JDBCOrderDao(getConnection());
     }

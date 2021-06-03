@@ -15,7 +15,10 @@
             <%= "Hello Admin" %>
         </h1>
         <br/>
-        <a href="${pageContext.request.contextPath}/app/logout">Вийти з акаунту</a>
+        <a href="${pageContext.request.contextPath}/app/manageProducts">Manage products</a>
+        <a href="${pageContext.request.contextPath}/app/manageUsers">Manage users</a>
+        <a href="${pageContext.request.contextPath}/app/manageOrders">Manage orders</a>
+        <a href="${pageContext.request.contextPath}/app/logout">Logout</a>
     </div>
 </section>
 

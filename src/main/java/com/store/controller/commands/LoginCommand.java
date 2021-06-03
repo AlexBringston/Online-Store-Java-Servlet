@@ -1,9 +1,9 @@
 package com.store.controller.commands;
 
-import com.store.model.dao.DaoFactory;
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
 import com.store.model.service.OrderService;
+import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.Cookie;
@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
+
+    private UserService userService;
+
+    public LoginCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
@@ -32,7 +38,7 @@ public class LoginCommand implements Command {
             log.error("errorMessage --> " + errorMessage);
             return forward;
         }
-        User user = DaoFactory.getInstance().createUserDao().findUserByLogin(login);
+        User user = userService.findUserByLogin(login);
         log.trace("Found in DB: user --> " + user);
 
         if (user == null || !password.equals(user.getPassword())) {
@@ -41,6 +47,12 @@ public class LoginCommand implements Command {
             log.error("errorMessage --> " + errorMessage);
             return forward;
         } else {
+            if (CommandUtils.checkUserIsLogged(request,user.getLogin())) {
+                errorMessage = "This user has already logged in";
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                return forward;
+            }
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);
 
@@ -52,7 +64,6 @@ public class LoginCommand implements Command {
                 forward = "redirect:/user";
                 Cookie[] cookies = request.getCookies();
                 Cookie cartCookie = CommandUtils.findCookie(cookies,"cart");
-                log.info("cookie -> " + cartCookie.toString());
                 if (cartCookie != null) {
                     session.setAttribute("cart", CommandUtils.deserializeCart(cartCookie.getValue()));
                 }
