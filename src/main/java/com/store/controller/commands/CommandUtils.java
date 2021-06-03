@@ -82,4 +82,12 @@ public final class CommandUtils {
         }
         return cookie;
     }
+
+    public static int getPageCount(int total, int numberPerPage) {
+        int pageCount = total / numberPerPage;
+        if(pageCount * numberPerPage != total) {
+            pageCount++;
+        }
+        return pageCount;
+    }
 }

@@ -1,5 +1,6 @@
 package com.store.controller.commands;
 
+import com.store.model.dao.Utils;
 import com.store.model.entity.Product;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
@@ -33,7 +34,7 @@ public class ProductsByCategoryCommand implements Command{
         log.trace("Set the request attribute: currentPage --> " + page);
         log.trace("categoryUrl --> " + categoryUrl);
         int totalCount = productService.countProductsByCategory(categoryUrl);
-        request.setAttribute("pageCount",ProductListCommand.getPageCount(totalCount,8));
+        request.setAttribute("pageCount",CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
 
         String sort = request.getParameter("parameter");
         String direction = null;

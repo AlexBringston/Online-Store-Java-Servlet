@@ -30,7 +30,7 @@ public class Controller extends HttpServlet {
         commands.put("logout", new LogoutCommand());
         commands.put("authorization", new AuthorizationCommand());
         commands.put("admin", new AdminCommand());
-        commands.put("user", new UserCommand());
+        commands.put("user", new UserCommand(new OrderService()));
         commands.put("order", new OrderCommand(new OrderService()));
     }
 

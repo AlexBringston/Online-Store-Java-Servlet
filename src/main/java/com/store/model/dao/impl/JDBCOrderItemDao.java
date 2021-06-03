@@ -35,7 +35,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+                entity.setId(resultSet.getInt("id"));
             }
             connection.commit();
             preparedStatement.close();

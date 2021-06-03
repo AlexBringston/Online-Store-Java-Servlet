@@ -1,6 +1,7 @@
 package com.store.model.dao.impl;
 
 import com.store.model.dao.OrderDao;
+import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.entity.Order;
 import com.store.model.service.ProductService;
@@ -32,7 +33,7 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+                entity.setId(resultSet.getInt("id"));
                 entity.setCreatedAt(resultSet.getTimestamp("created_at"));
             }
             connection.commit();
@@ -160,5 +161,68 @@ public class JDBCOrderDao implements OrderDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Order> findOrdersOfUser(int userId, int pageNumber) {
+        List<Order> orderList = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            OrderMapper mapper = new OrderMapper();
+            int offset = (pageNumber - 1) * Utils.ORDERS_PER_PAGE;
+            preparedStatement = connection.prepareStatement("SELECT * FROM orders WHERE user_id = ? LIMIT ? OFFSET ?");
+            preparedStatement.setInt(1,userId);
+            preparedStatement.setInt(2, Utils.ORDERS_PER_PAGE);
+            preparedStatement.setInt(3, offset);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                orderList.add(mapper.extractFromResultSet(rs));
+            }
+            connection.commit();
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return orderList;
+    }
+
+    @Override
+    public int countAllOrdersOfUser(int userId) {
+        int count = 0;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection.setAutoCommit(false);
+            OrderMapper mapper = new OrderMapper();
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM orders WHERE user_id = ?");
+            preparedStatement.setInt(1,userId);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+            connection.commit();
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return count;
     }
 }

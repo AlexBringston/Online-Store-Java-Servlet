@@ -18,7 +18,7 @@ header .row .Icon div{
     width: 35px;
     margin: 0 auto;
 }
-.Admin .container , .User .container{
+.Admin .container , .User .container, .Login{
     height: calc(100vh - 116px);
 }
 footer .row .Text{
@@ -70,12 +70,14 @@ input[type=submit] {
     align-items: center;
 }
 
-.products .container .links {
+.products .container .links, .User .container .links{
     width: 100%;
     display: flex;
     justify-content: center;
 }
-.products .container .links a{
+
+
+.products .container .links a, .User .container .links a{
     display: inline-block;
     width: 20%;
     padding: 10px;
@@ -111,7 +113,7 @@ aside {
     height: calc(100vh - 116px);
 }
 
-.items {
+.cart .items {
     overflow-y: auto;
     height: calc(100vh - 300px);
     overflow-x: hidden;

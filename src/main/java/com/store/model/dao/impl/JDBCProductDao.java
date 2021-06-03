@@ -1,6 +1,7 @@
 package com.store.model.dao.impl;
 
 import com.store.model.dao.ProductDao;
+import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.CategoryMapper;
 import com.store.model.dao.mapper.ColorMapper;
 import com.store.model.dao.mapper.ProductMapper;
@@ -50,7 +51,7 @@ public class JDBCProductDao implements ProductDao {
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+                entity.setId(resultSet.getInt("id"));
                 entity.setCreatedAt(resultSet.getTimestamp("created_at"));
             }
             connection.commit();
@@ -80,7 +81,7 @@ public class JDBCProductDao implements ProductDao {
                     ".name as size from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p" +
                     ".category_id and " +
                     "co.id = p.color_id and s.id = p.size_id";
-            rs = statement.executeQuery(String.format(SQL,id));
+            rs = statement.executeQuery(String.format(SQL, id));
             if (rs.next()) {
                 product = mapper.extractFromResultSet(rs);
             }
@@ -315,12 +316,12 @@ public class JDBCProductDao implements ProductDao {
         try {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
-            int offset = (count - 1) * 8;
+            int offset = (count - 1) * Utils.PRODUCTS_PER_PAGE;
             String SQL = "SELECT p.*, c.name as category, co.name as color, s" +
                     ".name as size from products p, categories c, colors co, sizes s where c.id = p.category_id and " +
-                    "co.id = p.color_id and s.id = p.size_id ORDER BY %s %s LIMIT 8 OFFSET %d";
+                    "co.id = p.color_id and s.id = p.size_id ORDER BY %s %s LIMIT %d OFFSET %d";
             statement = connection.createStatement();
-            rs = statement.executeQuery(String.format(SQL, orderBy, orderDirection, offset));
+            rs = statement.executeQuery(String.format(SQL, orderBy, orderDirection, Utils.PRODUCTS_PER_PAGE, offset));
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs));
             }
@@ -347,7 +348,7 @@ public class JDBCProductDao implements ProductDao {
         try {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
-            int offset = (count - 1) * 8;
+            int offset = (count - 1) * Utils.PRODUCTS_PER_PAGE;
             String SQL = "SELECT p.*, c.name as category, co.name as color, s.name as size\n" +
                     "from products p,\n" +
                     "     categories c,\n" +
@@ -358,9 +359,10 @@ public class JDBCProductDao implements ProductDao {
                     "  and co.id = p.color_id\n" +
                     "  and s.id = p.size_id\n" +
                     "ORDER BY %s %s\n" +
-                    "LIMIT 8 OFFSET %d";
+                    "LIMIT %d OFFSET %d";
             statement = connection.createStatement();
-            rs = statement.executeQuery(String.format(SQL, name, orderBy, orderDirection, offset));
+            rs = statement.executeQuery(String.format(SQL, name, orderBy, orderDirection, Utils.PRODUCTS_PER_PAGE,
+                    offset));
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs));
             }
@@ -387,7 +389,7 @@ public class JDBCProductDao implements ProductDao {
         try {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
-            int offset = (count - 1) * 8;
+            int offset = (count - 1) * Utils.PRODUCTS_PER_PAGE;
             String SQL = "SELECT p.*, c.name as category, co.name as color, s.name as size\n" +
                     "from products p,\n" +
                     "     categories c,\n" +
@@ -398,10 +400,11 @@ public class JDBCProductDao implements ProductDao {
                     "  and co.id = p.color_id\n" +
                     "  and s.id = p.size_id\n" +
                     "ORDER BY %s %s\n" +
-                    "LIMIT 8 OFFSET %d";
+                    "LIMIT %d OFFSET %d";
             statement = connection.createStatement();
             log.trace(name + "---" + orderBy + "---" + orderDirection + "---" + offset);
-            rs = statement.executeQuery(String.format(SQL, name, orderBy, orderDirection, offset));
+            rs = statement.executeQuery(String.format(SQL, name, orderBy, orderDirection, Utils.PRODUCTS_PER_PAGE,
+                    offset));
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs));
             }
@@ -428,7 +431,7 @@ public class JDBCProductDao implements ProductDao {
         try {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
-            int offset = (count - 1) * 8;
+            int offset = (count - 1) * Utils.PRODUCTS_PER_PAGE;
             String SQL = "SELECT p.*, c.name as category, co.name as color, s.name as size\n" +
                     "from products p,\n" +
                     "     categories c,\n" +
@@ -439,9 +442,10 @@ public class JDBCProductDao implements ProductDao {
                     "  and co.id = p.color_id\n" +
                     "  and s.id = p.size_id\n" +
                     "ORDER BY %s %s\n" +
-                    "LIMIT 8 OFFSET %d";
+                    "LIMIT %d OFFSET %d";
             statement = connection.createStatement();
-            rs = statement.executeQuery(String.format(SQL, name, orderBy, orderDirection, offset));
+            rs = statement.executeQuery(String.format(SQL, name, orderBy, orderDirection, Utils.PRODUCTS_PER_PAGE,
+                    offset));
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs));
             }

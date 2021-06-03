@@ -32,7 +32,7 @@ public class ProductsBySizeCommand implements Command{
         log.trace("Set the request attribute: currentPage --> " + page);
         log.trace("sizeUrl --> " + sizeUrl);
         int totalCount = productService.countProductsBySize(sizeUrl);
-        request.setAttribute("pageCount",ProductListCommand.getPageCount(totalCount,8));
+        request.setAttribute("pageCount",CommandUtils.getPageCount(totalCount,8));
 
         String sort = request.getParameter("parameter");
         String direction = null;

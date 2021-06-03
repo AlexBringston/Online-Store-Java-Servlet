@@ -1,5 +1,6 @@
 package com.store.controller.commands;
 
+import com.store.model.dao.Utils;
 import com.store.model.entity.Category;
 import com.store.model.entity.Color;
 import com.store.model.entity.Product;
@@ -36,7 +37,7 @@ public class ProductsByColorCommand implements Command{
         log.trace("Set the request attribute: currentPage --> " + page);
         log.trace("colorUrl --> " + colorUrl);
         int totalCount = productService.countProductsByColor(colorUrl);
-        request.setAttribute("pageCount",ProductListCommand.getPageCount(totalCount,8));
+        request.setAttribute("pageCount",CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
 
         String sort = request.getParameter("parameter");
         String direction = null;

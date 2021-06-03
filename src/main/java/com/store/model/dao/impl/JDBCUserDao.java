@@ -23,16 +23,17 @@ public class JDBCUserDao implements UserDao {
         try {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, first_name, " +
-                            "last_name) VALUES (?, ?, ?, ?)",
+                            "last_name, status) VALUES (?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getLogin());
-            preparedStatement.setString(1, entity.getPassword());
-            preparedStatement.setString(1, entity.getFirstName());
-            preparedStatement.setString(1, entity.getLastName());
+            preparedStatement.setString(2, entity.getPassword());
+            preparedStatement.setString(3, entity.getFirstName());
+            preparedStatement.setString(4, entity.getLastName());
+            preparedStatement.setString(5, entity.getStatus());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+                entity.setId(resultSet.getInt("id"));
                 entity.setCreatedAt(resultSet.getTimestamp("created_at"));
             }
             connection.commit();
@@ -140,11 +141,12 @@ public class JDBCUserDao implements UserDao {
         try {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement("UPDATE users SET login = ?, password = ?," +
-                    "first_name = ?, last_name = ?");
+                    "first_name = ?, last_name = ?, status = ?");
             preparedStatement.setString(1, entity.getLogin());
             preparedStatement.setString(2, entity.getPassword());
             preparedStatement.setString(3, entity.getFirstName());
             preparedStatement.setString(4, entity.getLastName());
+            preparedStatement.setString(4, entity.getStatus());
             preparedStatement.executeUpdate();
             connection.commit();
             preparedStatement.close();

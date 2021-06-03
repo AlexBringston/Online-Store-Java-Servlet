@@ -1,5 +1,6 @@
 package com.store.controller.commands;
 
+import com.store.model.dao.Utils;
 import com.store.model.entity.Product;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
@@ -36,10 +37,10 @@ public class ProductListCommand implements Command{
             direction = productService.getSortDirection(orderDirection);
         }
         if (sort == null || sort.equals("")) {
-            sort = "id";
+            sort = "name";
         }
         if (direction == null || direction.equals("")) {
-            direction = "ASC";
+            direction = "DESC";
         }
         log.trace("sort -> " + sort);
         log.trace("direction -> "+ direction);
@@ -48,7 +49,7 @@ public class ProductListCommand implements Command{
         request.setAttribute("currentPage", page);
         log.trace("Set the request attribute: currentPage --> " + page);
         int totalCount = productService.countAllProducts();
-        request.setAttribute("pageCount",getPageCount(totalCount,8));
+        request.setAttribute("pageCount",CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
 
         List<Product> products = productService.listProductsPerPage(page, sort, direction);
 
@@ -61,12 +62,6 @@ public class ProductListCommand implements Command{
         return "/WEB-INF/product-list.jsp";
     }
 
-    public static int getPageCount(int total, int numberPerPage) {
-        int pageCount = total / numberPerPage;
-        if(pageCount * numberPerPage != total) {
-            pageCount++;
-        }
-        return pageCount;
-    }
+
 
 }

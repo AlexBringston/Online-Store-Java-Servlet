@@ -16,6 +16,7 @@ public class UserMapper implements ObjectMapper<User>{
         user.setLastName(resultSet.getString("last_name"));
         user.setCreatedAt(resultSet.getTimestamp("created_at"));
         user.setRoleId(resultSet.getInt("role_id"));
+        user.setStatus(resultSet.getString("status"));
         return user;
     }
 }
