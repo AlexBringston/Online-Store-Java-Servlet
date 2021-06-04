@@ -29,7 +29,7 @@ public class OrderCommand implements Command{
         HttpSession session = request.getSession();
 
         User user = (User) session.getAttribute("user");
-        Order order = new Order( user.getId());
+        Order order = new Order(user.getId());
         orderService.createOrder(order);
         List<OrderItem> cart = (List<OrderItem>)session.getAttribute("cart");
         String[] quantities = request.getParameterValues("quantity");
@@ -40,6 +40,6 @@ public class OrderCommand implements Command{
             orderService.createOrderItem(cart.get(i));
         }
         session.removeAttribute("cart");
-        return "redirect:/cart";
+        return "redirect:/user";
     }
 }

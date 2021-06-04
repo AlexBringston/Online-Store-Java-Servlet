@@ -64,7 +64,7 @@ public class CartCommand implements Command{
             }
             session.setAttribute("cart", cart);
         }
-        return "redirect:/cart";
+        return "redirect:"+request.getHeader("referer").substring(request.getHeader("referer").indexOf("/products"));
     }
 
 }

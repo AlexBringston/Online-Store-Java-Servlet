@@ -1,30 +1,37 @@
 body {
     font-family: 'Montserrat', sans-serif;
 }
+
 header, footer {
     background-color: #0f5132;
     height: 58px;
 }
-header .row , footer .row{
+
+header .row, footer .row {
     padding: 8px;
 }
-header .row .Name a, footer .row .Name a{
+
+header .row .Name a, footer .row .Name a {
     text-decoration: none;
     font-family: 'Montserrat', sans-serif;
     font-size: 24px;
     color: #f0f0f0;
 }
-header .row .Icon div{
+
+header .row .Icon div {
     width: 35px;
     margin: 0 auto;
 }
-.Admin .container , .User .container, .Login .container, .changeProduct .container{
+
+.Admin .container, .User .container, .Login .container, .changeProduct .container {
     height: calc(100vh - 116px);
 }
-.orderItems .container, .users .container, .Orders .container{
+
+.orderItems .container, .users .container, .Orders .container {
     height: calc(100vh - 166px);
 }
-footer .row .Text{
+
+footer .row .Text {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     color: #f0f0f0;
@@ -58,6 +65,7 @@ input[type=text], input[type=password] {
 .products .thumbnail img {
     width: 100%;
 }
+
 .products .product {
     padding: 15px;
 }
@@ -73,14 +81,15 @@ input[type=text], input[type=password] {
     align-items: center;
 }
 
-.products .container .links, .User .container .links, .orderItems .links, .users .links, .Orders .links{
+.products .container .links, .User .container .links, .orderItems .links, .users .links, .Orders .links, .Admin .links {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
 
-.products .container .links a, .User .container .links a, .orderItems .container .links a, .users .links a, .Orders .links a{
+.products .container .links a, .User .container .links a, .orderItems .container .links a,
+        .users .links a, .Orders .links a, .Admin .links a{
     display: inline-block;
     width: 20%;
     padding: 10px;
@@ -91,18 +100,22 @@ input[type=text], input[type=password] {
     border: solid 2px #000000;
     font-size: 16px;
 }
+
 .products .menu-row {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
+
 .products .menu-bar select {
     display: inline-block;
 }
+
 .products .menu-bar .form-select {
     width: 100%;
 }
-.products .menu-bar button{
+
+.products .menu-bar button {
     display: inline-block;
     align-self: flex-end;
     height: 48px;
@@ -125,9 +138,11 @@ aside {
 .Orders .items {
     height: 400px;
 }
+
 header .Icon img {
     width: 35px;
 }
+
 .names {
     font-size: 24px;
     border: 3px solid #000000;
@@ -140,9 +155,11 @@ header .Icon img {
     font-size: 24px;
     text-align: center;
 }
+
 .User .Total {
     margin-top: 100px;
 }
+
 .Total {
     font-size: 24px;
     display: flex;
@@ -152,6 +169,7 @@ header .Icon img {
 .Total span {
     font-size: 32px;
 }
+
 .Total a {
     align-self: flex-end;
 }
@@ -169,18 +187,18 @@ header .Icon img {
     padding-top: 30px;
 }
 
-.changeProduct .form-group .row{
+.changeProduct .form-group .row {
     margin-right: auto;
     margin-left: auto;
     display: flex;
     justify-content: center;
 }
 
-.changeProduct .form-group .col-sm-5 input{
+.changeProduct .form-group .col-sm-5 input {
     width: 100%;
 }
 
-.changeProduct .form-group .col-sm-5 button{
+.changeProduct .form-group .col-sm-5 button {
     display: inline-block;
 }
 
@@ -190,7 +208,7 @@ header .Icon img {
     margin-right: auto;
 }
 
-.addProductButton a{
+.addProductButton a {
     width: 100%;
 }
 

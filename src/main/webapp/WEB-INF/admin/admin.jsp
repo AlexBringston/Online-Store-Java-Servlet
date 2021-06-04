@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
@@ -6,19 +7,23 @@
     <title>Admin page</title>
 </head>
 <body>
+<fmt:setLocale value="uk_UA"/>
+<fmt:setBundle basename="messages"/>
 <header>
     <jsp:include page="../header.jsp"/>
 </header>
 <section class="Admin">
     <div class="container">
         <h1>
-            <%= "Hello Admin" %>
+            <fmt:message key="label.welcome.admin" />
         </h1>
         <br/>
-        <a href="${pageContext.request.contextPath}/app/manageProducts">Manage products</a>
-        <a href="${pageContext.request.contextPath}/app/manageUsers">Manage users</a>
-        <a href="${pageContext.request.contextPath}/app/manageOrders">Manage orders</a>
-        <a href="${pageContext.request.contextPath}/app/logout">Logout</a>
+        <div class="links">
+            <a href="${pageContext.request.contextPath}/app/manageProducts"><fmt:message key="label.manage.products" /></a>
+            <a href="${pageContext.request.contextPath}/app/manageUsers"><fmt:message key="label.manage.users" /></a>
+            <a href="${pageContext.request.contextPath}/app/manageOrders"><fmt:message key="label.manage.orders" /></a>
+            <a href="${pageContext.request.contextPath}/app/logout"><fmt:message key="label.logout" /></a>
+        </div>
     </div>
 </section>
 

@@ -57,8 +57,7 @@
             </c:forEach>
         </div>
         <div class="links">
-            <a
-                    href="${requestScope['javax.servlet.forward.request_uri']}?page=1">First
+            <a href="${requestScope['javax.servlet.forward.request_uri']}?page=1">First
                 page</a>
             <c:if test="${currentPage gt 1}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage - 1}"

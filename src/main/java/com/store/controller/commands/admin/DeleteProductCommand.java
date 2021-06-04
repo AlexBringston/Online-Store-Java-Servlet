@@ -28,7 +28,7 @@ public class DeleteProductCommand implements Command {
         } catch (NumberFormatException e) {
             String errorMessage = "There is no product with this id";
             request.setAttribute("errorMessage",errorMessage);
-            response.sendRedirect("/WEB-INF/error.jsp");
+            return "/WEB-INF/error.jsp";
         }
 
         Product product = productService.getProductById(productId);
