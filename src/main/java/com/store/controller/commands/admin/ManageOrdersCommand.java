@@ -1,11 +1,15 @@
 package com.store.controller.commands.admin;
 
 import com.store.controller.commands.Command;
+import com.store.controller.commands.CommandUtils;
+import com.store.model.dao.Utils;
+import com.store.model.entity.Order;
 import com.store.model.service.OrderService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class ManageOrdersCommand implements Command {
 
@@ -19,6 +23,28 @@ public class ManageOrdersCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+        String status = request.getParameter("status");
+        String idValue = request.getParameter("id");
+        int id = 0;
+        if (idValue != null) {
+            id = Integer.parseInt(request.getParameter("id"));
+        }
+
+        if (status != null) {
+            Order order = orderService.findOrderById(id);
+            order.setStatus(status);
+            orderService.updateOrder(order);
+        }
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        request.setAttribute("currentPage", page);
+        int totalCount = orderService.countAllOrders();
+        request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.ORDERS_PER_PAGE));
+
+        List<Order> orders = orderService.listOrdersPerPage(page, Utils.ORDERS_PER_PAGE);
+        request.setAttribute("orders", orders);
+        return "/WEB-INF/admin/orders.jsp";
     }
 }

@@ -26,32 +26,32 @@ public class LoginCommand implements Command {
         HttpSession session = request.getSession();
         String login = request.getParameter("login");
         log.trace("Request parameter: login --> " + login);
-
+        request.setAttribute("login",request.getParameter("login"));
         String password = request.getParameter("password");
 
-        String errorMessage;
-        String forward = "redirect:/WEB-INF/error.jsp";
+        String errorMessage = null;
+        String forward = "/WEB-INF/error.jsp";
 
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
             errorMessage = "Login/password cannot be empty";
-            request.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
-            return forward;
         }
         User user = userService.findUserByLogin(login);
         log.trace("Found in DB: user --> " + user);
 
-        if (user == null || !password.equals(user.getPassword())) {
+        if (user == null) {
+            errorMessage = "User was not found";
+        }
+        else if (password != null && !password.equals(user.getPassword())) {
             errorMessage = "Cannot find user with such login/password";
-            request.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
-            return forward;
-        } else {
-            if (CommandUtils.checkUserIsLogged(request,user.getLogin())) {
+
+        }
+        else {
+            if (user.getStatus().equals("BLOCKED")) {
+                errorMessage = "This user was blocked";
+
+            }
+            else if (CommandUtils.checkUserIsLogged(request,user.getLogin())) {
                 errorMessage = "This user has already logged in";
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                return forward;
             }
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);
@@ -76,9 +76,12 @@ public class LoginCommand implements Command {
             log.trace("Set the session attribute: userRole --> " + userRole);
 
             log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
-
         }
-
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
+            log.error("errorMessage --> " + errorMessage);
+            return "/WEB-INF/error.jsp";
+        }
         log.debug("Command finished");
         return forward;
     }

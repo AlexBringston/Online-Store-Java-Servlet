@@ -44,6 +44,7 @@ public class Controller extends HttpServlet {
         commands.put("deleteProduct", new DeleteProductCommand(new ProductService()));
         commands.put("changeProduct", new ChangeProductCommand(new ProductService()));
         commands.put("manageUsers", new ManageUsersCommand(new UserService()));
+        commands.put("changeUserStatus", new ChangeUserStatusCommand(new UserService()));
         commands.put("manageOrders", new ManageOrdersCommand(new OrderService()));
     }
 

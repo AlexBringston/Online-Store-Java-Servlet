@@ -17,6 +17,28 @@ public class UserService {
         try (UserDao dao = daoFactory.createUserDao()) {
             return dao.findUserByLogin(login);
         }
+    }
 
+    public User findUserById(int userId) {
+        try (UserDao dao = daoFactory.createUserDao()) {
+            return dao.findById(userId);
+        }
+    }
+
+    public int countAllUsers() {
+        try (UserDao dao = daoFactory.createUserDao()) {
+            return dao.countAllUsers();
+        }
+    }
+
+    public void updateUser(User user) {
+        try (UserDao dao = daoFactory.createUserDao()) {
+            dao.update(user);
+        }
+    }
+    public List<User> listUsers(int pageNumber, int limit) {
+        try (UserDao dao = daoFactory.createUserDao()) {
+            return dao.listUsersPerPage(pageNumber, limit);
+        }
     }
 }

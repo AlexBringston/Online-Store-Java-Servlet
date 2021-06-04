@@ -15,6 +15,8 @@ public class User extends Entity{
 
     private int roleId;
 
+    private Role role;
+
     private String status;
 
     public String getLogin() {
@@ -65,6 +67,14 @@ public class User extends Entity{
         this.roleId = roleId;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -82,6 +92,7 @@ public class User extends Entity{
                 ", lastName='" + lastName + '\'' +
                 ", createdAt=" + createdAt +
                 ", roleId=" + roleId +
+                ", role=" + role +
                 ", status='" + status + '\'' +
                 '}';
     }

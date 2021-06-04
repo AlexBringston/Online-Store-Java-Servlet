@@ -1,6 +1,7 @@
 package com.store.filter;
 
 import com.store.model.entity.Role;
+import com.store.model.entity.User;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -27,10 +28,9 @@ public class UserFilter implements Filter {
 
         Role userRole = (Role) session.getAttribute("userRole");
         log.trace("User role --> " + userRole);
-        if ((userRole.equals(Role.ADMIN) || userRole.equals(Role.CLIENT)) && req.getRequestURI().contains("logout")) {
-            chain.doFilter(request, response);
-        }
-        else if (userRole.equals(Role.CLIENT)) {
+
+        if ((userRole.equals(Role.ADMIN) || userRole.equals(Role.CLIENT)) && req.getRequestURI().contains("logout")
+                || userRole.equals(Role.CLIENT)) {
             chain.doFilter(request, response);
         } else {
             String errorMessage = "You do not have permission to access the requested resource";

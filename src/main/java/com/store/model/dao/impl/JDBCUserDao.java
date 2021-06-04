@@ -1,7 +1,10 @@
 package com.store.model.dao.impl;
 
 import com.store.model.dao.UserDao;
+import com.store.model.dao.Utils;
+import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.dao.mapper.UserMapper;
+import com.store.model.entity.Order;
 import com.store.model.entity.User;
 
 import java.sql.*;
@@ -58,7 +61,8 @@ public class JDBCUserDao implements UserDao {
         ResultSet resultSet = null;
         try {
             UserMapper mapper = new UserMapper();
-            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id=?");
+            preparedStatement = connection.prepareStatement("SELECT u.*, r.name as role FROM users u, roles r " +
+                    "WHERE u.role_id = r.id and u.id=?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -85,8 +89,10 @@ public class JDBCUserDao implements UserDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
+            connection.setAutoCommit(false);
             UserMapper mapper = new UserMapper();
-            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE login=?");
+            preparedStatement = connection.prepareStatement("SELECT u.*, r.name as role FROM users u, roles r WHERE u" +
+                    ".role_id = r.id and u.login=?");
             preparedStatement.setString(1, login);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -106,6 +112,68 @@ public class JDBCUserDao implements UserDao {
 
         }
         return user;
+    }
+
+    @Override
+    public int countAllUsers() {
+        int count = 0;
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.createStatement();
+            rs = statement.executeQuery("SELECT COUNT(*) FROM users");
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+
+        return count;
+    }
+
+    @Override
+    public List<User> listUsersPerPage(int pageNumber, int limit) {
+        List<User> userList = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            UserMapper mapper = new UserMapper();
+            int offset = (pageNumber - 1) * limit;
+            preparedStatement = connection.prepareStatement("SELECT u.*, r.name as role FROM users u, roles r WHERE " +
+                    "u.role_id = r.id AND role_id = 1 LIMIT ? OFFSET ?");
+            preparedStatement.setInt(1, limit);
+            preparedStatement.setInt(2, offset);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                System.out.println(mapper.extractFromResultSet(rs));
+                userList.add(mapper.extractFromResultSet(rs));
+            }
+            connection.commit();
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return userList;
     }
 
     @Override
@@ -141,13 +209,15 @@ public class JDBCUserDao implements UserDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
+            System.out.println("------------"+entity);
             preparedStatement = connection.prepareStatement("UPDATE users SET login = ?, password = ?," +
-                    "first_name = ?, last_name = ?, status = ?");
+                    "first_name = ?, last_name = ?, status = ? WHERE id = ?");
             preparedStatement.setString(1, entity.getLogin());
             preparedStatement.setString(2, entity.getPassword());
             preparedStatement.setString(3, entity.getFirstName());
             preparedStatement.setString(4, entity.getLastName());
-            preparedStatement.setString(4, entity.getStatus());
+            preparedStatement.setString(5, entity.getStatus());
+            preparedStatement.setInt(6, entity.getId());
             preparedStatement.executeUpdate();
             connection.commit();
             preparedStatement.close();

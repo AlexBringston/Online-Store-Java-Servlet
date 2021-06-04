@@ -21,7 +21,7 @@ header .row .Icon div{
 .Admin .container , .User .container, .Login .container, .changeProduct .container{
     height: calc(100vh - 116px);
 }
-.orderItems .container {
+.orderItems .container, .users .container, .Orders .container{
     height: calc(100vh - 166px);
 }
 footer .row .Text{
@@ -73,14 +73,14 @@ input[type=submit] {
     align-items: center;
 }
 
-.products .container .links, .User .container .links, .orderItems .links{
+.products .container .links, .User .container .links, .orderItems .links, .users .links, .Orders .links{
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
 
-.products .container .links a, .User .container .links a, .orderItems .container .links a{
+.products .container .links a, .User .container .links a, .orderItems .container .links a, .users .links a, .Orders .links a{
     display: inline-block;
     width: 20%;
     padding: 10px;
@@ -121,6 +121,11 @@ aside {
     height: calc(100vh - 300px);
     overflow-x: hidden;
 }
+
+.Orders .items {
+    height: 400px;
+}
+
 .names {
     font-size: 24px;
     border: 3px solid #000000;
@@ -185,4 +190,9 @@ aside {
 
 .addProductButton a{
     width: 100%;
+}
+
+.Orders input[type=submit] {
+    width: 100%;
+
 }

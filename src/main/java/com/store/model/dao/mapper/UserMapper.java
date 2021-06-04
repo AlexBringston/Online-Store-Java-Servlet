@@ -1,5 +1,6 @@
 package com.store.model.dao.mapper;
 
+import com.store.model.entity.Role;
 import com.store.model.entity.User;
 
 import java.sql.ResultSet;
@@ -16,6 +17,7 @@ public class UserMapper implements ObjectMapper<User>{
         user.setLastName(resultSet.getString("last_name"));
         user.setCreatedAt(resultSet.getTimestamp("created_at"));
         user.setRoleId(resultSet.getInt("role_id"));
+        user.setRole(Role.values()[user.getRoleId()]);
         user.setStatus(resultSet.getString("status"));
         return user;
     }

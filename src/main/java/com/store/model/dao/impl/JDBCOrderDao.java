@@ -114,9 +114,10 @@ public class JDBCOrderDao implements OrderDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement("UPDATE orders SET user_id = ?, status = ?");
+            preparedStatement = connection.prepareStatement("UPDATE orders SET user_id = ?, status = ? WHERE id = ?");
             preparedStatement.setLong(1, entity.getUserId());
             preparedStatement.setString(2, entity.getStatus());
+            preparedStatement.setInt(3, entity.getId());
             preparedStatement.executeUpdate();
 
             connection.commit();
@@ -166,17 +167,17 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersOfUser(int userId, int pageNumber) {
+    public List<Order> findOrdersOfUser(int userId, int pageNumber, int limit) {
         List<Order> orderList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
             connection.setAutoCommit(false);
             OrderMapper mapper = new OrderMapper();
-            int offset = (pageNumber - 1) * Utils.ORDERS_PER_PAGE;
+            int offset = (pageNumber - 1) * limit;
             preparedStatement = connection.prepareStatement("SELECT * FROM orders WHERE user_id = ? LIMIT ? OFFSET ?");
             preparedStatement.setInt(1,userId);
-            preparedStatement.setInt(2, Utils.ORDERS_PER_PAGE);
+            preparedStatement.setInt(2, limit);
             preparedStatement.setInt(3, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -226,5 +227,65 @@ public class JDBCOrderDao implements OrderDao {
             close();
         }
         return count;
+    }
+
+    @Override
+    public int countAllOrders() {
+        int count = 0;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT COUNT(*) FROM orders");
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+            connection.commit();
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return count;
+    }
+
+    @Override
+    public List<Order> findOrdersPerPage(int pageNumber, int limit) {
+        List<Order> orderList = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            connection.setAutoCommit(false);
+            OrderMapper mapper = new OrderMapper();
+            int offset = (pageNumber - 1) * limit;
+            preparedStatement = connection.prepareStatement("SELECT * FROM orders ORDER BY id LIMIT ? OFFSET ?");
+            preparedStatement.setInt(1, limit);
+            preparedStatement.setInt(2, offset);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                orderList.add(mapper.extractFromResultSet(rs));
+            }
+            connection.commit();
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            close();
+        }
+        return orderList;
     }
 }

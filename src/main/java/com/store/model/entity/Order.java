@@ -6,6 +6,8 @@ public class Order extends Entity{
 
     private int userId;
 
+    private User user;
+
     private Timestamp createdAt;
 
     private String status;
@@ -23,6 +25,14 @@ public class Order extends Entity{
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Timestamp getCreatedAt() {

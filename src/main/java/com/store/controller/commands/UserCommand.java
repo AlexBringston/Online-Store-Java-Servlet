@@ -33,7 +33,7 @@ public class UserCommand implements Command {
 
         request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.ORDERS_PER_PAGE));
 
-        List<Order> orders = orderService.findOrdersOfUser(user.getId(), page);
+        List<Order> orders = orderService.findOrdersOfUser(user.getId(), page, Utils.ORDERS_PER_PAGE);
 
         request.setAttribute("orders", orders);
 

@@ -3,10 +3,8 @@ package com.store.model.service;
 import com.store.model.dao.DaoFactory;
 import com.store.model.dao.OrderDao;
 import com.store.model.dao.OrderItemDao;
-import com.store.model.dao.ProductDao;
 import com.store.model.entity.Order;
 import com.store.model.entity.OrderItem;
-import com.store.model.entity.Product;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -22,9 +20,27 @@ public class OrderService {
         }
     }
 
-    public List<Order> findOrdersOfUser(int userId, int pageNumber) {
+    public List<Order> listOrdersPerPage(int pageNumber, int limit) {
         try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.findOrdersOfUser(userId, pageNumber);
+            return dao.findOrdersPerPage(pageNumber, limit);
+        }
+    }
+
+    public int countAllOrders() {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            return dao.countAllOrders();
+        }
+    }
+
+    public void updateOrder(Order order) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            dao.update(order);
+        }
+    }
+
+    public List<Order> findOrdersOfUser(int userId, int pageNumber, int limit) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            return dao.findOrdersOfUser(userId, pageNumber, limit);
         }
     }
 

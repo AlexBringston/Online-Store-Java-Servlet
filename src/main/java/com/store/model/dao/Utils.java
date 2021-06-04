@@ -9,4 +9,6 @@ public class Utils {
     public static final int ORDER_ITEMS_PER_PAGE = 3;
 
     public static final int ADMIN_PRODUCTS_PER_PAGE = 3;
+
+    public static final int USERS_PER_PAGE = 6;
 }
