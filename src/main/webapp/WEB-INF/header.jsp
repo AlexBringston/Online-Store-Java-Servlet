@@ -7,9 +7,16 @@
         <div class="col-md-3 mx-auto Name">
             <a href="${pageContext.request.contextPath}/app/products">Green line shop</a>
         </div>
-        <div class="col-md-7 mx-auto">
+        <div class="col-md-5 mx-auto">
         </div>
-        <div class="col-md-2 mx-auto Icon">
+        <div class="col-md-1 Icon">
+            <div>
+                <a href="${pageContext.request.contextPath}/app/cart">
+                    <img src="https://i.imgur.com/pDQKt4y.png" alt="Cart"/>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-1 Icon">
             <div>
                 <a href="${pageContext.request.contextPath}/app/authorization">
                     <img src="https://drive.google.com/uc?export=view&id=1rZT7voIJ3Wgx8OZkmlVWSNfjJYBIV_vS" alt="Account"/>

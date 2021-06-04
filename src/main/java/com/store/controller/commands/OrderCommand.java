@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class OrderCommand implements Command{
@@ -27,12 +29,15 @@ public class OrderCommand implements Command{
         HttpSession session = request.getSession();
 
         User user = (User) session.getAttribute("user");
-        Order order = new Order((int) user.getId());
+        Order order = new Order( user.getId());
         orderService.createOrder(order);
         List<OrderItem> cart = (List<OrderItem>)session.getAttribute("cart");
-        for (OrderItem orderItem: cart) {
-            orderItem.setOrderId(order.getId());
-            orderService.createOrderItem(orderItem);
+        String[] quantities = request.getParameterValues("quantity");
+
+        for (int i = 0; i < cart.size(); i++) {
+            cart.get(i).setOrderId(order.getId());
+            cart.get(i).setQuantity(Integer.parseInt(quantities[i]));
+            orderService.createOrderItem(cart.get(i));
         }
         session.removeAttribute("cart");
         return "redirect:/cart";
