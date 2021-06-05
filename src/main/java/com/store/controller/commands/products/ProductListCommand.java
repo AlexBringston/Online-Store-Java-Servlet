@@ -28,8 +28,6 @@ public class ProductListCommand implements Command {
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        log.trace("page ->>>" + page);
-
 
         String sort = request.getParameter("parameter");
         String direction = null;

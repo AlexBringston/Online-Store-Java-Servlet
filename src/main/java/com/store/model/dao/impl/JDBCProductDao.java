@@ -35,18 +35,19 @@ public class JDBCProductDao implements ProductDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement("INSERT INTO products (name, image_link, " +
-                            "price, category_id, size_id, color_id) VALUES (?,?,?," +
+            preparedStatement = connection.prepareStatement("INSERT INTO products (name, name_uk, image_link, " +
+                            "price, category_id, size_id, color_id) VALUES (?,?,?,?," +
                             "(SELECT id FROM categories WHERE name = ?)," +
                             "(SELECT id FROM sizes WHERE name = ?)," +
                             "(SELECT id FROM colors WHERE name = ?) )",
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getImageLink());
-            preparedStatement.setBigDecimal(3, entity.getPrice());
-            preparedStatement.setString(4, entity.getCategory());
-            preparedStatement.setString(5, entity.getSize());
-            preparedStatement.setString(6, entity.getColor());
+            preparedStatement.setString(2, entity.getNameUK());
+            preparedStatement.setString(3, entity.getImageLink());
+            preparedStatement.setBigDecimal(4, entity.getPrice());
+            preparedStatement.setString(5, entity.getCategory());
+            preparedStatement.setString(6, entity.getSize());
+            preparedStatement.setString(7, entity.getColor());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -81,7 +82,7 @@ public class JDBCProductDao implements ProductDao {
                     " from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p.category_id " +
                     "and co.id = p.color_id and s.id = p.size_id";
             String newSQL = String.format(SQL, locale, locale, locale, locale, id);
-            log.trace("LOCALE"+ locale);
+            log.trace("LOCALE" + locale);
             log.trace("FIND PRODUCT " + newSQL);
             rs = statement.executeQuery(newSQL);
             if (rs.next()) {
@@ -135,18 +136,20 @@ public class JDBCProductDao implements ProductDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement("UPDATE products SET name = ?, image_link = ?, price = ?," +
+            preparedStatement = connection.prepareStatement("UPDATE products SET name = ?, name_uk = ?, image_link = " +
+                    "?, price = ?," +
                     " category_id = (SELECT id FROM categories WHERE name = ?)," +
                     " size_id = (SELECT id FROM sizes WHERE name = ?), color_id = (SELECT id FROM colors WHERE name =" +
                     " " +
                     "?) WHERE id = ?");
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getImageLink());
-            preparedStatement.setBigDecimal(3, entity.getPrice());
-            preparedStatement.setString(4, entity.getCategory());
-            preparedStatement.setString(5, entity.getSize());
-            preparedStatement.setString(6, entity.getColor());
-            preparedStatement.setInt(7, entity.getId());
+            preparedStatement.setString(2, entity.getNameUK());
+            preparedStatement.setString(3, entity.getImageLink());
+            preparedStatement.setBigDecimal(4, entity.getPrice());
+            preparedStatement.setString(5, entity.getCategory());
+            preparedStatement.setString(6, entity.getSize());
+            preparedStatement.setString(7, entity.getColor());
+            preparedStatement.setInt(8, entity.getId());
             preparedStatement.executeUpdate();
             connection.commit();
             preparedStatement.close();
@@ -412,7 +415,7 @@ public class JDBCProductDao implements ProductDao {
                     "  and s.id = p.size_id\n" +
                     "ORDER BY p.%s %s\n" +
                     "LIMIT %d OFFSET %d";
-            String newSQL = String.format(SQL, locale, locale, locale, locale,name, name, orderBy, orderDirection,
+            String newSQL = String.format(SQL, locale, locale, locale, locale, name, name, orderBy, orderDirection,
                     Utils.PRODUCTS_PER_PAGE,
                     offset);
             log.trace("SQL query : " + newSQL);

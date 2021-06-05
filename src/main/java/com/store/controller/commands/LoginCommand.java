@@ -26,32 +26,39 @@ public class LoginCommand implements Command {
         HttpSession session = request.getSession();
         String login = request.getParameter("login");
         log.trace("Request parameter: login --> " + login);
-        request.setAttribute("login",request.getParameter("login"));
+        request.setAttribute("login", request.getParameter("login"));
         String password = request.getParameter("password");
 
-        String errorMessage = null;
+        String errorMessage;
         String forward = "/WEB-INF/error.jsp";
 
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
             errorMessage = "Login/password cannot be empty";
+            request.setAttribute("errorMessage", errorMessage);
+            return "/WEB-INF/error.jsp";
         }
         User user = userService.findUserByLogin(login);
         log.trace("Found in DB: user --> " + user);
 
         if (user == null) {
             errorMessage = "User was not found";
-        }
-        else if (password != null && !password.equals(user.getPassword())) {
+            request.setAttribute("errorMessage", errorMessage);
+            return "/WEB-INF/error.jsp";
+        } else if (!password.equals(user.getPassword())) {
             errorMessage = "Cannot find user with such login/password";
+            request.setAttribute("errorMessage", errorMessage);
+            return "/WEB-INF/error.jsp";
 
-        }
-        else {
+        } else {
             if (user.getStatus().equals("BLOCKED")) {
                 errorMessage = "This user was blocked";
+                request.setAttribute("errorMessage", errorMessage);
+                return "/WEB-INF/error.jsp";
 
-            }
-            else if (CommandUtils.checkUserIsLogged(request,user.getLogin())) {
+            } else if (CommandUtils.checkUserIsLogged(request, user.getLogin())) {
                 errorMessage = "This user has already logged in";
+                request.setAttribute("errorMessage", errorMessage);
+                return "/WEB-INF/error.jsp";
             }
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);
@@ -63,9 +70,9 @@ public class LoginCommand implements Command {
             if (userRole == Role.CLIENT) {
                 forward = "redirect:/user";
                 Cookie[] cookies = request.getCookies();
-                Cookie cartCookie = CommandUtils.findCookie(cookies,"cart");
+                Cookie cartCookie = CommandUtils.findCookie(cookies, "cart");
                 if (cartCookie != null) {
-                    session.setAttribute("cart", CommandUtils.deserializeCart(request,cartCookie.getValue()));
+                    session.setAttribute("cart", CommandUtils.deserializeCart(request, cartCookie.getValue()));
                 }
             }
 
@@ -77,11 +84,7 @@ public class LoginCommand implements Command {
 
             log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
         }
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
-            return "/WEB-INF/error.jsp";
-        }
+
         log.debug("Command finished");
         return forward;
     }

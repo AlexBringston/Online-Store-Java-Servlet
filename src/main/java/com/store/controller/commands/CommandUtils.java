@@ -94,6 +94,7 @@ public final class CommandUtils {
     public static boolean checkUserIsLogged(HttpServletRequest request, String userName){
         HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
                 .getAttribute("loggedUsers");
+        log.trace("Logged users " + loggedUsers);
         if (loggedUsers == null) {
             loggedUsers = new HashSet<>();
         }
@@ -103,6 +104,7 @@ public final class CommandUtils {
         loggedUsers.add(userName);
         request.getSession().getServletContext()
                 .setAttribute("loggedUsers", loggedUsers);
+        log.trace("Logged users " + loggedUsers);
         return false;
     }
 

@@ -72,11 +72,11 @@
                             ${user.status}
                     </div>
                     <div class="col">
-                        <c:if test="${user.status == 'ACTIVATED'}">
+                        <c:if test="${user.status == 'Activated'}">
                             <a href="${pageContext.request.contextPath}/app/changeUserStatus?id=${user.id}"
                                class="btn btn-outline-danger"><fmt:message key="label.block" /></a>
                         </c:if>
-                        <c:if test="${user.status == 'BLOCKED'}">
+                        <c:if test="${user.status == 'Blocked'}">
                             <a href="${pageContext.request.contextPath}/app/changeUserStatus?id=${user.id}"
                                class="btn btn-outline-success"><fmt:message key="label.activate" /></a>
                         </c:if>

@@ -7,6 +7,7 @@ public class Product extends Entity{
     private static final long serialVersionUID = 1035127111646328882L;
 
     private String name;
+    private String nameUK;
 
     private String imageLink;
 
@@ -23,10 +24,11 @@ public class Product extends Entity{
     public Product() {
     }
 
-    public Product(int id, String name, String imageLink, BigDecimal price, String category,
+    public Product(int id, String name,String nameUK, String imageLink, BigDecimal price, String category,
                    String size, String color) {
         super(id);
         this.name = name;
+        this.nameUK = nameUK;
         this.imageLink = imageLink;
         this.price = price;
         this.category = category;
@@ -34,9 +36,10 @@ public class Product extends Entity{
         this.color = color;
     }
 
-    public Product(String name, String imageLink, BigDecimal price, String category,
+    public Product(String name, String nameUK, String imageLink, BigDecimal price, String category,
                    String size, String color) {
         this.name = name;
+        this.nameUK = nameUK;
         this.imageLink = imageLink;
         this.price = price;
         this.category = category;
@@ -50,6 +53,14 @@ public class Product extends Entity{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNameUK() {
+        return nameUK;
+    }
+
+    public void setNameUK(String nameUK) {
+        this.nameUK = nameUK;
     }
 
     public String getImageLink() {
@@ -98,5 +109,18 @@ public class Product extends Entity{
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", imageLink='" + imageLink + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                ", color='" + color + '\'' +
+                ", size='" + size + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

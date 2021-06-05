@@ -38,13 +38,13 @@ public class AddProductCommand implements Command {
 
     private String addProduct(HttpServletRequest request) {
         String name = request.getParameter("name");
-        String description = request.getParameter("description");
+        String nameUK = request.getParameter("nameUK");
         String imageLink = request.getParameter("imageLink");
         BigDecimal price = new BigDecimal(request.getParameter("price"));
-        String category = request.getParameter("category");
-        String size = request.getParameter("size");
-        String color = request.getParameter("color");
-        Product product = new Product(name, imageLink, price, category, size, color);
+        String[] category = request.getParameter("category").split("-");
+        String[] size = request.getParameter("size").split("-");
+        String[] color = request.getParameter("color").split("-");
+        Product product = new Product(name,nameUK, imageLink, price, category[0], size[0], color[0]);
 
         productService.addProduct(product);
         return "redirect:/manageProducts";

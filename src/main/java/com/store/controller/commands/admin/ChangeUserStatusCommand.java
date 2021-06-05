@@ -23,22 +23,18 @@ public class ChangeUserStatusCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
         int userId = Integer.parseInt(request.getParameter("id"));
         String locale = CommandUtils.checkForLocale(request);
         User user = userService.findUserById(userId, locale);
-        System.out.println("USER CURRENT STATE: "+ user);
-        log.info("user status: ->>>>" + user.getStatus());
-        if (user.getStatus().equals("ACTIVATED")) {
-            log.info("WAS ACTIVATED");
-            user.setStatus("BLOCKED");
+
+        if (user.getStatus().equals("Activated")) {
+            user.setStatus("Blocked");
         }
-        else if (user.getStatus().equals("BLOCKED")) {
-            user.setStatus("ACTIVATED");
+        else if (user.getStatus().equals("Blocked")) {
+            user.setStatus("Activated");
         }
-        System.out.println("USER NEW STATE: "+ user);
+
         userService.updateUser(user);
-        session.setAttribute("user",user);
 
         return "redirect:/manageUsers";
     }

@@ -37,7 +37,10 @@ public class AuthFilter implements Filter {
         String locale = CommandUtils.checkForLocale(req);
         if (user != null) {
             user = new UserService().findUserById(user.getId(), locale);
-            if (user.getRole().equals(Role.CLIENT) && user.getStatus().equals("BLOCKED")) {
+
+
+            log.trace(user.getRole().equals(Role.CLIENT) && user.getStatus().equals("Blocked"));
+            if (user.getRole().equals(Role.CLIENT) && user.getStatus().equals("Blocked")) {
                 String errorMessage = "This user is blocked!!";
                 request.setAttribute("errorMessage",errorMessage);
                 req.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);

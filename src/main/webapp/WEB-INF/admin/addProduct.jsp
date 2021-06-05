@@ -31,15 +31,16 @@
                         <label for="name"><fmt:message key="label.product.name" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="name" id="name">
+                        <input type="text" class="form-control form-control-lg mb-3" name="name" id="name" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <label for="description"><fmt:message key="label.product.description" />:</label>
+                        <label for="nameUK"><fmt:message key="label.product.name.uk" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="description" id="description">
+                        <input type="text" class="form-control form-control-lg mb-3" name="nameUK"
+                               id="nameUK" required>
                     </div>
                 </div>
                 <div class="row">
@@ -47,7 +48,7 @@
                         <label for="imageLink"><fmt:message key="label.product.image.link" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="imageLink" id="imageLink">
+                        <input type="text" class="form-control form-control-lg mb-3" name="imageLink" id="imageLink" required>
                     </div>
                 </div>
                 <div class="row">
@@ -55,7 +56,7 @@
                         <label for="price"><fmt:message key="label.price" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="price" id="price">
+                        <input type="text" class="form-control form-control-lg mb-3" name="price" id="price" required>
                     </div>
                 </div>
                 <div class="row">
@@ -63,7 +64,17 @@
                         <label for="category"><fmt:message key="label.category" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="category" id="category">
+                        <select id="category" class="form-select col-3 form-select-lg mb-3" name="category">
+                            <option value="Woman-Жіноча">
+                                <fmt:message key="label.category.woman" />
+                            </option>
+                            <option value="Man-Чоловіча">
+                                <fmt:message key="label.category.man" />
+                            </option>
+                            <option value="Children-Дитяча">
+                                <fmt:message key="label.category.children" />
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -71,7 +82,17 @@
                         <label for="size"><fmt:message key="label.size" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="size" id="size">
+                        <select id="size" class="form-select col-3 form-select-lg mb-3" name="size">
+                            <option value="Small">
+                                <fmt:message key="label.size.small" />
+                            </option>
+                            <option value="Medium">
+                                <fmt:message key="label.size.medium" />
+                            </option>
+                            <option value="Large">
+                                <fmt:message key="label.size.large" />
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -79,7 +100,17 @@
                         <label for="color"><fmt:message key="label.color" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="color" id="color">
+                        <select id="color" class="form-select col-3 form-select-lg mb-3" name="color">
+                            <option value="Red">
+                                <fmt:message key="label.color.red" />
+                            </option>
+                            <option value="Green">
+                                <fmt:message key="label.color.green" />
+                            </option>
+                            <option value="Blue">
+                                <fmt:message key="label.color.blue" />
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">

@@ -24,24 +24,25 @@
     <div class="container">
         <form method="POST" action="${pageContext.request.contextPath }/app/changeProduct?action=change">
             <div class="form-group">
-                <input type="hidden" name="id" value="${product.id}">
+                <input type="hidden" name="id" value="${requestScope.product.id}">
                 <div class="row">
                     <div class="col-sm-3">
                         <label for="name"><fmt:message key="label.product.name" />:</label>
                     </div>
                     <div class="col-sm-5">
                         <input type="text" class="form-control form-control-lg mb-3" name="name" id="name"
-                               value="${product.name }">
+                               value="${requestScope.product.name }">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <label for="description"><fmt:message key="label.product.description" />:</label>
+                        <label for="name"><fmt:message key="label.product.name.uk" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="description" id="description"
-                               value="${product.description }">
+                        <input type="text" class="form-control form-control-lg mb-3" name="nameUK" id="nameUK"
+                               value="${requestScope.product.nameUK }">
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
@@ -49,7 +50,7 @@
                     </div>
                     <div class="col-sm-5">
                         <input type="text" class="form-control form-control-lg mb-3" name="imageLink" id="imageLink"
-                               value="${product.imageLink }">
+                               value="${requestScope.product.imageLink }">
                     </div>
                 </div>
                 <div class="row">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="col-sm-5">
                         <input type="text" class="form-control form-control-lg mb-3" name="price" id="price"
-                               value="${product.price }">
+                               value="${requestScope.product.price }">
                     </div>
                 </div>
                 <div class="row">
@@ -66,8 +67,20 @@
                         <label for="category"><fmt:message key="label.category" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="category" id="category"
-                               value="${product.category }">
+                        <select id="category" class="form-select col-3 form-select-lg mb-3" name="category">
+                            <option value="Woman" <c:if test="${(requestScope.product.category == 'Woman') or
+                            (requestScope.product.category == 'Жіноча')}">selected</c:if> >
+                                <fmt:message key="label.category.woman" />
+                            </option>
+                            <option value="Man" <c:if test="${(requestScope.product.category == 'Man') or
+                            (requestScope.product.category == 'Чоловіча')}">selected</c:if> >
+                                <fmt:message key="label.category.man" />
+                            </option>
+                            <option value="Children" <c:if test="${(requestScope.product.category == 'Children') or
+                            (requestScope.product.category == 'Дитяча')}">selected</c:if>>
+                                <fmt:message key="label.category.children" />
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -75,8 +88,20 @@
                         <label for="size"><fmt:message key="label.size" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="size" id="size"
-                               value="${product.size }">
+                        <select id="size" class="form-select col-3 form-select-lg mb-3" name="size">
+                            <option value="Small" <c:if test="${(requestScope.product.size == 'Small') or
+                            (requestScope.product.size == 'Малий')}">selected</c:if>>
+                                <fmt:message key="label.size.small" />
+                            </option>
+                            <option value="Medium" <c:if test="${(requestScope.product.size == 'Medium') or
+                            (requestScope.product.size == 'Середній')}">selected</c:if>>
+                                <fmt:message key="label.size.medium" />
+                            </option>
+                            <option value="Large" <c:if test="${(requestScope.product.size == 'Large') or
+                            (requestScope.product.size == 'Великий')}">selected</c:if>>
+                                <fmt:message key="label.size.large" />
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -84,8 +109,20 @@
                         <label for="color"><fmt:message key="label.color" />:</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control form-control-lg mb-3" name="color" id="color"
-                               value="${product.color }">
+                        <select id="color" class="form-select col-3 form-select-lg mb-3" name="color">
+                            <option value="Red" <c:if test="${(requestScope.product.color == 'Red') or
+                            (requestScope.product.color == 'Червоний')}">selected</c:if>>
+                                <fmt:message key="label.color.red" />
+                            </option>
+                            <option value="Green" <c:if test="${(requestScope.product.color == 'Green') or
+                            (requestScope.product.color == 'Зелений')}">selected</c:if>>
+                                <fmt:message key="label.color.green" />
+                            </option>
+                            <option value="Blue" <c:if test="${(requestScope.product.color == 'Blue') or
+                            (requestScope.product.color == 'Синій')}">selected</c:if>>
+                                <fmt:message key="label.color.blue" />
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
