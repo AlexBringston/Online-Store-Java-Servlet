@@ -13,7 +13,7 @@ public class ProductMapper implements ObjectMapper<Product>{
         product.setName(resultSet.getString("name"));
         product.setDescription(resultSet.getString("description"));
         product.setImageLink(resultSet.getString("image_link"));
-        product.setPrice(resultSet.getInt("price"));
+        product.setPrice(resultSet.getBigDecimal("price"));
         product.setCategory(resultSet.getString("category"));
         product.setColor(resultSet.getString("color"));
         product.setSize(resultSet.getString("size"));

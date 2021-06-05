@@ -37,7 +37,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setString(3, entity.getImageLink());
-            preparedStatement.setInt(4, entity.getPrice());
+            preparedStatement.setBigDecimal(4, entity.getPrice());
             preparedStatement.setString(5, entity.getCategory());
             preparedStatement.setString(6, entity.getSize());
             preparedStatement.setString(7, entity.getColor());
@@ -67,7 +67,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         Statement statement = null;
         ResultSet rs = null;
         try {
-            connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
             statement = connection.createStatement();
             String SQL = "SELECT p.*, c.name as category, co.name as color, s" +
@@ -82,11 +81,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             ex.printStackTrace();
         } finally {
             close();
@@ -100,7 +94,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         Statement statement = null;
         ResultSet rs = null;
         try {
-            connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT * FROM deleted_products");
@@ -110,11 +103,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             ex.printStackTrace();
         } finally {
             close();
@@ -134,7 +122,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setString(3, entity.getImageLink());
-            preparedStatement.setInt(4, entity.getPrice());
+            preparedStatement.setBigDecimal(4, entity.getPrice());
             preparedStatement.setString(5, entity.getCategory());
             preparedStatement.setString(6, entity.getSize());
             preparedStatement.setString(7, entity.getColor());

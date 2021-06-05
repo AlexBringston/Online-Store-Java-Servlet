@@ -18,10 +18,10 @@ public class AuthorizationCommand implements Command{
         HttpSession session = request.getSession();
         Role userRole = (Role) session.getAttribute("userRole");
         if (userRole.equals(Role.ADMIN)) {
-            return "redirect:/app/admin";
+            return "redirect:/admin";
         }
         else if (userRole.equals(Role.CLIENT)) {
-            return "redirect:/app/user";
+            return "redirect:/user";
         } else {
             return "/login.jsp";
         }

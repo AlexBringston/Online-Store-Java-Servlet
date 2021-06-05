@@ -7,7 +7,6 @@
     <title>Admin page</title>
 </head>
 <body>
-<fmt:setLocale value="uk_UA"/>
 <fmt:setBundle basename="messages"/>
 <header>
     <jsp:include page="../header.jsp"/>

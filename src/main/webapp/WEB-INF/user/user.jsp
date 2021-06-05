@@ -16,8 +16,9 @@
         <h1>
             Hello <c:out value="${sessionScope.user.firstName}"/>
         </h1>
+
         <h1>
-            Current status: <c:out value="${sessionScope.user.status}"/>
+            Current balance: <c:out value="${sessionScope.user.balance}"/>
         </h1>
         <br/>
         <div class="row names">

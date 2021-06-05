@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 public class AddProductCommand implements Command {
 
@@ -39,7 +40,7 @@ public class AddProductCommand implements Command {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String imageLink = request.getParameter("imageLink");
-        Integer price = Integer.parseInt(request.getParameter("price"));
+        BigDecimal price = new BigDecimal(request.getParameter("price"));
         String category = request.getParameter("category");
         String size = request.getParameter("size");
         String color = request.getParameter("color");

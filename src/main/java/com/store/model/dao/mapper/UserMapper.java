@@ -3,6 +3,8 @@ package com.store.model.dao.mapper;
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,6 +21,7 @@ public class UserMapper implements ObjectMapper<User>{
         user.setRoleId(resultSet.getInt("role_id"));
         user.setRole(Role.values()[user.getRoleId()]);
         user.setStatus(resultSet.getString("status"));
+        user.setBalance(new BigDecimal(resultSet.getString("balance")));
         return user;
     }
 }

@@ -7,6 +7,7 @@ import com.store.model.entity.Order;
 import com.store.model.entity.OrderItem;
 import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderService {
@@ -55,7 +56,7 @@ public class OrderService {
             return dao.findAllItemsOfOrder(orderId, pageNumber);
         }
     }
-    public int countTotalCost(int orderId) {
+    public BigDecimal countTotalCost(int orderId) {
         try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
             return dao.countTotalCost(orderId);
         }

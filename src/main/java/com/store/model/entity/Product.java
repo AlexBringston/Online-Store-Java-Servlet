@@ -1,5 +1,6 @@
 package com.store.model.entity;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Product extends Entity{
@@ -11,7 +12,7 @@ public class Product extends Entity{
 
     private String imageLink;
 
-    private Integer price;
+    private BigDecimal price;
 
     private String category;
 
@@ -24,7 +25,7 @@ public class Product extends Entity{
     public Product() {
     }
 
-    public Product(int id, String name, String description, String imageLink, Integer price, String category,
+    public Product(int id, String name, String description, String imageLink, BigDecimal price, String category,
                    String size, String color) {
         super(id);
         this.name = name;
@@ -36,7 +37,7 @@ public class Product extends Entity{
         this.color = color;
     }
 
-    public Product(String name, String description, String imageLink, Integer price, String category,
+    public Product(String name, String description, String imageLink, BigDecimal price, String category,
                    String size, String color) {
         this.name = name;
         this.description = description;
@@ -71,11 +72,11 @@ public class Product extends Entity{
         this.imageLink = imageLink;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

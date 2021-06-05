@@ -1,5 +1,6 @@
 package com.store.model.entity;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class User extends Entity{
@@ -18,6 +19,8 @@ public class User extends Entity{
     private Role role;
 
     private String status;
+
+    private BigDecimal balance;
 
     public String getLogin() {
         return login;
@@ -81,6 +84,14 @@ public class User extends Entity{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     @Override

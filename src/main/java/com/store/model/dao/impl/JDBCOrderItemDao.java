@@ -7,6 +7,7 @@ import com.store.model.entity.OrderItem;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             OrderItemMapper mapper = new OrderItemMapper();
             statement = connection.createStatement();
             String SQL = "SELECT * FROM order_items WHERE id = ?";
-            rs = statement.executeQuery(String.format(SQL,id));
+            rs = statement.executeQuery(String.format(SQL, id));
             if (rs.next()) {
                 orderItem = mapper.extractFromResultSet(rs);
             }
@@ -232,8 +233,8 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public int countTotalCost(int orderId) {
-        int count = 0;
+    public BigDecimal countTotalCost(int orderId) {
+        BigDecimal count = BigDecimal.ZERO;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
@@ -244,7 +245,8 @@ public class JDBCOrderItemDao implements OrderItemDao {
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 OrderItem orderItem = mapper.extractFromResultSet(rs);
-                count += orderItem.getQuantity() * orderItem.getProduct().getPrice();
+                count =
+                        count.add(orderItem.getProduct().getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
             }
             connection.commit();
             rs.close();

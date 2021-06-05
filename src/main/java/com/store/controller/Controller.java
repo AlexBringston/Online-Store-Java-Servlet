@@ -69,17 +69,12 @@ public class Controller extends HttpServlet {
         log.trace("path --> " + path);
         if (path.contains("products/")) {
             String parameter = path.replace("products/", "");
-            log.trace("parameter1 --> " + parameter);
             parameter = parameter.substring(0,parameter.indexOf("/"));
-            log.trace("parameter2 --> " + parameter);
             command = commands.get(parameter);
         } else {
             command = commands.getOrDefault(path, (r,re) -> "/WEB-INF/product-list.jsp");
         }
-        //Command command = commands.getOrDefault(path , (r)->"/WEB-INF/product-list.jsp");
-        log.trace("Forward address --> " + command);
         String page = command.execute(request, response);
-        log.trace("Forward address --> " + path);
         if(page.contains("redirect:")){
             response.sendRedirect(page.replace("redirect:", "/app"));
         }else {

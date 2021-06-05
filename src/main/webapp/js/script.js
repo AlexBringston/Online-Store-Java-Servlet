@@ -20,5 +20,5 @@ document.addEventListener("DOMContentLoaded", () => {
         const element = prices[i].innerText;
         sum += parseInt(element);
     }
-    document.getElementById("totalAmount").innerText = "Total: ".concat(String(sum));;
+    document.getElementById("totalAmount").innerText = "Total: ".concat(String(sum));
 });

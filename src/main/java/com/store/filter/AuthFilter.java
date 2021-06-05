@@ -2,6 +2,8 @@ package com.store.filter;
 
 import com.store.controller.commands.LoginCommand;
 import com.store.model.entity.Role;
+import com.store.model.entity.User;
+import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -22,16 +24,29 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
-        log.trace("AuthFilter started");
         final HttpServletRequest req = (HttpServletRequest) request;
 
         HttpSession session = req.getSession();
 
+        User user = (User) session.getAttribute("user");
+
         if (session.getAttribute("userRole") == null) {
             session.setAttribute("userRole", Role.GUEST);
         }
-        log.trace("AuthFilter finished");
-        filterChain.doFilter(request, response);
+
+        if (user != null) {
+            user = new UserService().findUserById(user.getId());
+            if (user.getRole().equals(Role.CLIENT) && user.getStatus().equals("BLOCKED")) {
+                String errorMessage = "This user is blocked!!";
+                request.setAttribute("errorMessage",errorMessage);
+                req.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);
+            } else {
+                filterChain.doFilter(request, response);
+            }
+        }  else {
+            filterChain.doFilter(request, response);
+        }
+
     }
 
 

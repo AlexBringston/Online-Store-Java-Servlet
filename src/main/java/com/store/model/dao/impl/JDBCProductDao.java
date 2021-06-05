@@ -44,7 +44,7 @@ public class JDBCProductDao implements ProductDao {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setString(3, entity.getImageLink());
-            preparedStatement.setInt(4, entity.getPrice());
+            preparedStatement.setBigDecimal(4, entity.getPrice());
             preparedStatement.setString(5, entity.getCategory());
             preparedStatement.setString(6, entity.getSize());
             preparedStatement.setString(7, entity.getColor());
@@ -144,7 +144,7 @@ public class JDBCProductDao implements ProductDao {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setString(3, entity.getImageLink());
-            preparedStatement.setInt(4, entity.getPrice());
+            preparedStatement.setBigDecimal(4, entity.getPrice());
             preparedStatement.setString(5, entity.getCategory());
             preparedStatement.setString(6, entity.getSize());
             preparedStatement.setString(7, entity.getColor());

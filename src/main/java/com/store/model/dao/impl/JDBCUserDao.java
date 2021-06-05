@@ -7,9 +7,12 @@ import com.store.model.dao.mapper.UserMapper;
 import com.store.model.entity.Order;
 import com.store.model.entity.User;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class JDBCUserDao implements UserDao {
 
@@ -38,6 +41,7 @@ public class JDBCUserDao implements UserDao {
             if (resultSet.next()) {
                 entity.setId(resultSet.getInt("id"));
                 entity.setCreatedAt(resultSet.getTimestamp("created_at"));
+                entity.setBalance(BigDecimal.ZERO);
             }
             connection.commit();
             preparedStatement.close();
@@ -71,12 +75,7 @@ public class JDBCUserDao implements UserDao {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            ex.printStackTrace();
+            throw new NoSuchElementException();
         } finally {
             close();
         }
@@ -89,7 +88,6 @@ public class JDBCUserDao implements UserDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            connection.setAutoCommit(false);
             UserMapper mapper = new UserMapper();
             preparedStatement = connection.prepareStatement("SELECT u.*, r.name as role FROM users u, roles r WHERE u" +
                     ".role_id = r.id and u.login=?");
@@ -101,11 +99,6 @@ public class JDBCUserDao implements UserDao {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             ex.printStackTrace();
         } finally {
             close();
@@ -120,7 +113,6 @@ public class JDBCUserDao implements UserDao {
         Statement statement = null;
         ResultSet rs = null;
         try {
-            connection.setAutoCommit(false);
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT COUNT(*) FROM users");
             if (rs.next()) {
@@ -129,11 +121,7 @@ public class JDBCUserDao implements UserDao {
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+
             ex.printStackTrace();
         } finally {
             close();
@@ -182,12 +170,14 @@ public class JDBCUserDao implements UserDao {
         Statement statement = null;
         ResultSet resultSet = null;
         try {
+            connection.setAutoCommit(false);
             UserMapper mapper = new UserMapper();
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM users");
             while (resultSet.next()) {
                 userList.add(mapper.extractFromResultSet(resultSet));
             }
+            connection.commit();
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
@@ -209,15 +199,16 @@ public class JDBCUserDao implements UserDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-            System.out.println("------------"+entity);
             preparedStatement = connection.prepareStatement("UPDATE users SET login = ?, password = ?," +
-                    "first_name = ?, last_name = ?, status = ? WHERE id = ?");
+                    "first_name = ?, last_name = ?, status = ?, balance = ? WHERE id = ?");
             preparedStatement.setString(1, entity.getLogin());
             preparedStatement.setString(2, entity.getPassword());
             preparedStatement.setString(3, entity.getFirstName());
             preparedStatement.setString(4, entity.getLastName());
             preparedStatement.setString(5, entity.getStatus());
-            preparedStatement.setInt(6, entity.getId());
+
+            preparedStatement.setBigDecimal(6, entity.getBalance());
+            preparedStatement.setInt(7, entity.getId());
             preparedStatement.executeUpdate();
             connection.commit();
             preparedStatement.close();

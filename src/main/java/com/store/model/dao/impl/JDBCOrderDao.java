@@ -57,7 +57,6 @@ public class JDBCOrderDao implements OrderDao {
         Statement statement = null;
         ResultSet rs = null;
         try {
-            connection.setAutoCommit(false);
             OrderMapper mapper = new OrderMapper();
             statement = connection.createStatement();
             String SQL = "SELECT * FROM orders WHERE id = %d";
@@ -68,11 +67,6 @@ public class JDBCOrderDao implements OrderDao {
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             ex.printStackTrace();
         } finally {
             close();
@@ -119,7 +113,6 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement.setString(2, entity.getStatus());
             preparedStatement.setInt(3, entity.getId());
             preparedStatement.executeUpdate();
-
             connection.commit();
             preparedStatement.close();
         } catch (SQLException ex) {
@@ -175,7 +168,9 @@ public class JDBCOrderDao implements OrderDao {
             connection.setAutoCommit(false);
             OrderMapper mapper = new OrderMapper();
             int offset = (pageNumber - 1) * limit;
-            preparedStatement = connection.prepareStatement("SELECT * FROM orders WHERE user_id = ? LIMIT ? OFFSET ?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM orders WHERE user_id = ? ORDER BY " +
+                    "created_at DESC" +
+                    " LIMIT ? OFFSET ?");
             preparedStatement.setInt(1,userId);
             preparedStatement.setInt(2, limit);
             preparedStatement.setInt(3, offset);
@@ -205,7 +200,6 @@ public class JDBCOrderDao implements OrderDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            connection.setAutoCommit(false);
             OrderMapper mapper = new OrderMapper();
             preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM orders WHERE user_id = ?");
             preparedStatement.setInt(1,userId);
@@ -213,15 +207,9 @@ public class JDBCOrderDao implements OrderDao {
             if (resultSet.next()) {
                 count = resultSet.getInt(1);
             }
-            connection.commit();
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             ex.printStackTrace();
         } finally {
             close();
@@ -235,21 +223,14 @@ public class JDBCOrderDao implements OrderDao {
         Statement statement = null;
         ResultSet resultSet = null;
         try {
-            connection.setAutoCommit(false);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT COUNT(*) FROM orders");
             if (resultSet.next()) {
                 count = resultSet.getInt(1);
             }
-            connection.commit();
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             ex.printStackTrace();
         } finally {
             close();

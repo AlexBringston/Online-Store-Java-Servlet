@@ -81,10 +81,6 @@
             </c:if>
             <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${pageCount}">Last page</a>
         </div>
-        <div class="Total">
-            <a href="${pageContext.request.contextPath}/app/cart">Shopping cart</a>
-            <a href="${pageContext.request.contextPath}/app/logout">Logout</a>
-        </div>
     </div>
 </section>
 

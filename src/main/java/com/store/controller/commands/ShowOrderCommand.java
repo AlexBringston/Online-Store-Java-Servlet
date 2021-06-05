@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ShowOrderCommand implements Command{
@@ -43,7 +44,7 @@ public class ShowOrderCommand implements Command{
             }
 
             request.setAttribute("currentPage", page);
-            int totalCostOfOrder = orderService.countTotalCost(orderId);
+            BigDecimal totalCostOfOrder = orderService.countTotalCost(orderId);
             request.setAttribute("totalCost", totalCostOfOrder);
             int totalCount = orderService.countAllItemsOfOrder(orderId);
             request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.ORDER_ITEMS_PER_PAGE));

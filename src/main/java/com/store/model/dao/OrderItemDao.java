@@ -2,6 +2,7 @@ package com.store.model.dao;
 
 import com.store.model.entity.OrderItem;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderItemDao extends GenericDao<OrderItem>{
@@ -10,5 +11,5 @@ public interface OrderItemDao extends GenericDao<OrderItem>{
 
     int countAllItemsInOrder(int orderId);
 
-    int countTotalCost(int orderId);
+    BigDecimal countTotalCost(int orderId);
 }
