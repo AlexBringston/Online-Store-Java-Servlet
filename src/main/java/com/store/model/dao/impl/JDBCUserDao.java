@@ -59,7 +59,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public User findById(int id) {
+    public User findById(int id, String locale) {
         User user = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

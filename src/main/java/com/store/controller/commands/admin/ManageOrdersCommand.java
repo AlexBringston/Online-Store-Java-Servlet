@@ -31,7 +31,8 @@ public class ManageOrdersCommand implements Command {
         }
 
         if (status != null) {
-            Order order = orderService.findOrderById(id);
+            String locale = CommandUtils.checkForLocale(request);
+            Order order = orderService.findOrderById(id, locale);
             order.setStatus(status);
             orderService.updateOrder(order);
         }

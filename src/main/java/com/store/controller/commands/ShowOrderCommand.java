@@ -30,8 +30,8 @@ public class ShowOrderCommand implements Command{
 
         int orderId = Integer.parseInt(request.getParameter("id"));
         request.setAttribute("orderId", request.getParameter("id"));
-
-        Order order = orderService.findOrderById(orderId);
+        String locale = CommandUtils.checkForLocale(request);
+        Order order = orderService.findOrderById(orderId, locale);
         if (order.getUserId() != user.getId()) {
             String errorMessage = "You tried to see orders of different user";
             request.setAttribute("errorMessage", errorMessage);
@@ -48,7 +48,7 @@ public class ShowOrderCommand implements Command{
             request.setAttribute("totalCost", totalCostOfOrder);
             int totalCount = orderService.countAllItemsOfOrder(orderId);
             request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.ORDER_ITEMS_PER_PAGE));
-            List<OrderItem> orderItems = orderService.findItemsOfOrder(orderId, page);
+            List<OrderItem> orderItems = orderService.findItemsOfOrder(orderId, page, locale);
             request.setAttribute("orderItems", orderItems);
             return "/WEB-INF/user/order-content.jsp";
         }

@@ -48,16 +48,18 @@ public class CartCommand implements Command{
 
     protected String doBuyAction(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        String locale = CommandUtils.checkForLocale(request);
         if (session.getAttribute("cart") == null) {
             List<OrderItem> cart = new ArrayList<>();
             int id = Integer.parseInt(request.getParameter("id"));
-            cart.add(new OrderItem(productService.getProductById(id),1));
+            cart.add(new OrderItem(productService.getProductById(id, locale),1));
             session.setAttribute("cart", cart);
         } else {
             List<OrderItem> cart = (List<OrderItem>)session.getAttribute("cart");
             int index = CommandUtils.isExisting(Integer.parseInt(request.getParameter("id")), cart);
             if (index == -1) {
-                cart.add(new OrderItem(productService.getProductById(Integer.parseInt(request.getParameter("id"))),1));
+                cart.add(new OrderItem(productService.getProductById(Integer.parseInt(request.getParameter("id")),
+                        locale),1));
             } else {
                 int quantity = cart.get(index).getQuantity() + 1;
                 cart.get(index).setQuantity(quantity);

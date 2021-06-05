@@ -65,7 +65,7 @@ public class LoginCommand implements Command {
                 Cookie[] cookies = request.getCookies();
                 Cookie cartCookie = CommandUtils.findCookie(cookies,"cart");
                 if (cartCookie != null) {
-                    session.setAttribute("cart", CommandUtils.deserializeCart(cartCookie.getValue()));
+                    session.setAttribute("cart", CommandUtils.deserializeCart(request,cartCookie.getValue()));
                 }
             }
 

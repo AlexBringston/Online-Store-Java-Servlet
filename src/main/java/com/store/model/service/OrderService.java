@@ -51,9 +51,9 @@ public class OrderService {
         }
     }
 
-    public List<OrderItem> findItemsOfOrder(int orderId, int pageNumber) {
+    public List<OrderItem> findItemsOfOrder(int orderId, int pageNumber, String locale) {
         try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
-            return dao.findAllItemsOfOrder(orderId, pageNumber);
+            return dao.findAllItemsOfOrder(orderId, pageNumber, locale);
         }
     }
     public BigDecimal countTotalCost(int orderId) {
@@ -68,9 +68,9 @@ public class OrderService {
         }
     }
 
-    public Order findOrderById(int orderId) {
+    public Order findOrderById(int orderId, String locale) {
         try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.findById(orderId);
+            return dao.findById(orderId, locale);
         }
     }
     public void createOrder(Order order) {

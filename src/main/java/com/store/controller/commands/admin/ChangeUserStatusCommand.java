@@ -1,6 +1,7 @@
 package com.store.controller.commands.admin;
 
 import com.store.controller.commands.Command;
+import com.store.controller.commands.CommandUtils;
 import com.store.model.entity.User;
 import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
@@ -24,7 +25,8 @@ public class ChangeUserStatusCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         int userId = Integer.parseInt(request.getParameter("id"));
-        User user = userService.findUserById(userId);
+        String locale = CommandUtils.checkForLocale(request);
+        User user = userService.findUserById(userId, locale);
         System.out.println("USER CURRENT STATE: "+ user);
         log.info("user status: ->>>>" + user.getStatus());
         if (user.getStatus().equals("ACTIVATED")) {

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderItemDao extends GenericDao<OrderItem>{
 
-    List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber);
+    List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber, String locale);
 
     int countAllItemsInOrder(int orderId);
 

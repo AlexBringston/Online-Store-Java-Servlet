@@ -54,7 +54,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public OrderItem findById(int id) {
+    public OrderItem findById(int id, String locale) {
         OrderItem orderItem = new OrderItem();
         Statement statement = null;
         ResultSet rs = null;
@@ -65,7 +65,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             String SQL = "SELECT * FROM order_items WHERE id = ?";
             rs = statement.executeQuery(String.format(SQL, id));
             if (rs.next()) {
-                orderItem = mapper.extractFromResultSet(rs,"");
+                orderItem = mapper.extractFromResultSet(rs,locale);
             }
             rs.close();
             statement.close();
@@ -170,7 +170,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber) {
+    public List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber, String locale) {
         List<OrderItem> orderItemList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -185,7 +185,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             preparedStatement.setInt(3, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                orderItemList.add(mapper.extractFromResultSet(rs,""));
+                orderItemList.add(mapper.extractFromResultSet(rs,locale));
             }
             connection.commit();
             rs.close();

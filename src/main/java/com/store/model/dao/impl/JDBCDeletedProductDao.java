@@ -61,7 +61,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(int id, String locale) {
         Product product = new Product();
         Statement statement = null;
         ResultSet rs = null;

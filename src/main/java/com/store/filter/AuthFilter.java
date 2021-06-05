@@ -1,5 +1,6 @@
 package com.store.filter;
 
+import com.store.controller.commands.CommandUtils;
 import com.store.controller.commands.LoginCommand;
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
@@ -33,9 +34,9 @@ public class AuthFilter implements Filter {
         if (session.getAttribute("userRole") == null) {
             session.setAttribute("userRole", Role.GUEST);
         }
-
+        String locale = CommandUtils.checkForLocale(req);
         if (user != null) {
-            user = new UserService().findUserById(user.getId());
+            user = new UserService().findUserById(user.getId(), locale);
             if (user.getRole().equals(Role.CLIENT) && user.getStatus().equals("BLOCKED")) {
                 String errorMessage = "This user is blocked!!";
                 request.setAttribute("errorMessage",errorMessage);

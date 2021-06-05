@@ -42,10 +42,10 @@ public final class CommandUtils {
         return sb.deleteCharAt(sb.length()-1).toString();
     }
 
-    public static List<OrderItem> deserializeCart(String string) {
+    public static List<OrderItem> deserializeCart(HttpServletRequest request, String string) {
         List<OrderItem> cart = new ArrayList<>();
         String[] array = string.split("\\|");
-
+        String locale = CommandUtils.checkForLocale(request);
         for (String item : array) {
             try {
                 String[] data = item.split("\\*");
@@ -53,7 +53,7 @@ public final class CommandUtils {
                 log.trace("data[1] "+ data[1]);
                 int idProduct = Integer.parseInt(data[0]);
                 int count = Integer.parseInt(data[1]);
-                cart.add(new OrderItem(new ProductService().getProductById(idProduct),count));
+                cart.add(new OrderItem(new ProductService().getProductById(idProduct, locale),count));
             } catch (RuntimeException e) {
                 log.error("Can't add product to ShoppingCart during deserialization: item=" + item, e);
             }

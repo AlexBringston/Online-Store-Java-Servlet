@@ -19,9 +19,9 @@ public class UserService {
         }
     }
 
-    public User findUserById(int userId) {
+    public User findUserById(int userId, String locale) {
         try (UserDao dao = daoFactory.createUserDao()) {
-            return dao.findById(userId);
+            return dao.findById(userId, locale);
         }
     }
 

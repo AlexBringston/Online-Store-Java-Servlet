@@ -68,7 +68,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(int id, String locale) {
         Product product = new Product();
         Statement statement = null;
         ResultSet rs = null;
@@ -76,13 +76,16 @@ public class JDBCProductDao implements ProductDao {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
             statement = connection.createStatement();
-            String SQL = "SELECT p.*, c.name as category, co.name as color, s" +
-                    ".name as size from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p" +
-                    ".category_id and " +
-                    "co.id = p.color_id and s.id = p.size_id";
-            rs = statement.executeQuery(String.format(SQL, id));
+            String SQL = "SELECT p.id, p.name%s, image_link, price, category_id, size_id, color_id, created_at, " +
+                    " c.name%s as category, co.name%s as color, s.name%s as size " +
+                    " from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p.category_id " +
+                    "and co.id = p.color_id and s.id = p.size_id";
+            String newSQL = String.format(SQL, locale, locale, locale, locale, id);
+            log.trace("LOCALE"+ locale);
+            log.trace("FIND PRODUCT " + newSQL);
+            rs = statement.executeQuery(newSQL);
             if (rs.next()) {
-                product = mapper.extractFromResultSet(rs, "");
+                product = mapper.extractFromResultSet(rs, locale);
             }
             rs.close();
             statement.close();

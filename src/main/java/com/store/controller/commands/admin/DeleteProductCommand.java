@@ -1,6 +1,7 @@
 package com.store.controller.commands.admin;
 
 import com.store.controller.commands.Command;
+import com.store.controller.commands.CommandUtils;
 import com.store.controller.commands.products.ProductListCommand;
 import com.store.model.entity.Product;
 import com.store.model.service.ProductService;
@@ -30,8 +31,8 @@ public class DeleteProductCommand implements Command {
             request.setAttribute("errorMessage",errorMessage);
             return "/WEB-INF/error.jsp";
         }
-
-        Product product = productService.getProductById(productId);
+        String locale = CommandUtils.checkForLocale(request);
+        Product product = productService.getProductById(productId, locale);
 
         productService.addDeletedProduct(product);
         productService.deleteProduct(productId);

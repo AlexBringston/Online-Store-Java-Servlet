@@ -52,7 +52,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public Order findById(int id) {
+    public Order findById(int id, String locale) {
         Order order = new Order();
         Statement statement = null;
         ResultSet rs = null;

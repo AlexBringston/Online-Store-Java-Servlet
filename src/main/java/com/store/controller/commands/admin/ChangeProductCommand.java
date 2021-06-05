@@ -1,6 +1,7 @@
 package com.store.controller.commands.admin;
 
 import com.store.controller.commands.Command;
+import com.store.controller.commands.CommandUtils;
 import com.store.model.entity.Product;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
@@ -45,7 +46,8 @@ public class ChangeProductCommand implements Command {
             request.setAttribute("errorMessage", errorMessage);
             return "/WEB-INF/error.jsp";
         }
-        Product product = productService.getProductById(productId);
+        String locale = CommandUtils.checkForLocale(request);
+        Product product = productService.getProductById(productId, locale);
 
         request.setAttribute("product", product);
         return "/WEB-INF/admin/changeProduct.jsp";
@@ -54,7 +56,6 @@ public class ChangeProductCommand implements Command {
     private String changeProductData(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
-        String description = request.getParameter("description");
         String imageLink = request.getParameter("imageLink");
         BigDecimal price = new BigDecimal(request.getParameter("price"));
         String category = request.getParameter("category");

@@ -145,9 +145,9 @@ public class ProductService {
         }
     }
 
-    public Product getProductById(int id) {
+    public Product getProductById(int id, String locale) {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findById(id);
+            return dao.findById(id, locale);
         }
     }
 }
