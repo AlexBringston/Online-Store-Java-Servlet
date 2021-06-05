@@ -5,7 +5,7 @@
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-    <title><fmt:message key="label.products" /></title>
+    <title>Manage products</title>
 </head>
 <body>
 <header>

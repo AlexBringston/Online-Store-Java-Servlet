@@ -19,32 +19,32 @@
     </c:if>
 </div>
 <fmt:setBundle basename="messages"/>
-    <header>
-        <jsp:include page="WEB-INF/header.jsp"/>
-    </header>
-    <section class="Login">
-        <div class="container">
-            <form method="POST" action="${pageContext.request.contextPath}/app/login">
-                <div class="loginForm">
-                    <div class="mt-4">
-                        <span>Login</span>
-                        <input type="text" name="login" class="form-control" required>
-                    </div>
-                    <div class="mt-4">
-                        <span>Password</span>
-                        <input type="password" name="password" class="form-control" required>
-                    </div>
-                    <div class="mt-4 Submit">
-                        <input type="submit" value="Login" class="btn btn-primary">
-                    </div>
+<header>
+    <jsp:include page="WEB-INF/header.jsp"/>
+</header>
+<section class="Login">
+    <div class="container">
+        <form method="POST" action="${pageContext.request.contextPath}/app/login">
+            <div class="loginForm">
+                <div class="mt-4">
+                    <span><fmt:message key="label.login" /></span>
+                    <input type="text" name="login" class="form-control" required>
                 </div>
-            </form>
+                <div class="mt-4">
+                    <span><fmt:message key="label.password" /></span>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="mt-4 Submit">
+                    <input type="submit" value="Login" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
 
-        </div>
-    </section>
+    </div>
+</section>
 
-    <footer class="footer">
-        <jsp:include page="WEB-INF/footer.jsp" />
-    </footer>
+<footer class="footer">
+    <jsp:include page="WEB-INF/footer.jsp" />
+</footer>
 </body>
 </html>

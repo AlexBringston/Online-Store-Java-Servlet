@@ -5,7 +5,7 @@
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-    <title><fmt:message key="label.users" /></title>
+    <title>Manage users</title>
 </head>
 <body>
 <header>
@@ -13,10 +13,10 @@
 </header>
 <div id="localePlaceHolder">
     <c:if test="${sessionScope.locale == 'english'}">
-        <fmt:setLocale value="en"/>
+        <fmt:setLocale value="en" scope="session"/>
     </c:if>
     <c:if test="${sessionScope.locale == 'ukrainian'}">
-        <fmt:setLocale value="uk-UA"/>
+        <fmt:setLocale value="uk-UA" scope="session"/>
     </c:if>
 </div>
 <fmt:setBundle basename="messages"/>
@@ -60,9 +60,10 @@
                     </div>
                     <div class="col">
                         <fmt:parseDate value="${user.createdAt }" var="dateValue" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        <fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy"/>
+                        <fmt:formatDate value="${dateValue}" type="date"/>
                         <br>
-                        <fmt:formatDate value="${dateValue}" pattern="hh:mm a"/>
+                        <fmt:formatDate value="${dateValue}" timeStyle = "short" type="time"/>
+                        <br>
                     </div>
                     <div class="col">
                             ${user.role }

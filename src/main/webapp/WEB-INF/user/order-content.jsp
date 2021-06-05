@@ -27,22 +27,22 @@
     <div class="container">
         <div class="row names">
             <div class="col">
-                Image
+                <fmt:message key="label.image" />
             </div>
             <div class="col">
-                Product name
+                <fmt:message key="label.product.name" />
             </div>
             <div class="col">
-                Size
+                <fmt:message key="label.size" />
             </div>
             <div class="col">
-                Price
+                <fmt:message key="label.price" />
             </div>
             <div class="col">
-                Quantity
+                <fmt:message key="label.quantity" />
             </div>
             <div class="col">
-                Total
+                <fmt:message key="label.total" />
             </div>
         </div>
         <div class="items">
@@ -71,21 +71,20 @@
             </c:forEach>
         </div>
         <div class="totalAmount">
-            Total: ${totalCost}
+            <fmt:message key="label.total" />: ${totalCost}
         </div>
 
         <div class="links">
-            <a href="${requestScope['javax.servlet.forward.request_uri']}?id=${orderId}&page=1">First
-                page</a>
+            <a href="${requestScope['javax.servlet.forward.request_uri']}?id=${orderId}&page=1"><fmt:message key="label.first.page" /></a>
             <c:if test="${currentPage gt 1}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?id=${orderId}&page=${currentPage - 1}"
-                   id="prevPage">Previous page</a>
+                   id="prevPage"><fmt:message key="label.prev.page" /></a>
             </c:if>
             <c:if test="${currentPage lt pageCount}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?id=${orderId}&page=${currentPage + 1}"
-                   id="nextPage">Next page</a>
+                   id="nextPage"><fmt:message key="label.next.page" /></a>
             </c:if>
-            <a href="${requestScope['javax.servlet.forward.request_uri']}?id=${orderId}&page=${pageCount}">Last page</a>
+            <a href="${requestScope['javax.servlet.forward.request_uri']}?id=${orderId}&page=${pageCount}"><fmt:message key="label.last.page" /></a>
         </div>
     </div>
 </section>

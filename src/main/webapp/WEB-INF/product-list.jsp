@@ -37,39 +37,47 @@
                     <form method="get" onsubmit="">
                         <div class="menu-row">
                             <div class="col-3">
-                                <label for="sortType">Sort by:</label>
+                                <label for="sortType"><fmt:message key="label.sort.by"/>:</label>
                                 <select class="form-select col-3 form-select-lg" name="parameter" id="sortType"
                                         size="1">
                                     <option value="name"
-                                        <c:if test="${sortWay == 'name'}">selected</c:if>  > Name
+                                            <c:if test="${sortWay == 'name'}">selected</c:if>  ><fmt:message
+                                            key="label.sort.name"/>
                                     </option>
                                     <option value="price"
-                                            <c:if test="${sortWay == 'price'}">selected</c:if> > Price
+                                            <c:if test="${sortWay == 'price'}">selected</c:if> ><fmt:message
+                                            key="label.sort.price"/>
                                     </option>
                                     <option value="novelty"
-                                            <c:if test="${sortWay == 'novelty'}">selected</c:if> >Novelty</option>
+                                            <c:if test="${sortWay == 'novelty'}">selected</c:if> ><fmt:message
+                                            key="label.sort.novelty"/></option>
                                     <option value="category"
-                                            <c:if test="${sortWay == 'category'}">selected</c:if> >Category</option>
+                                            <c:if test="${sortWay == 'category'}">selected</c:if> ><fmt:message
+                                            key="label.sort.category"/></option>
                                     <option value="color"
-                                            <c:if test="${sortWay == 'color'}">selected</c:if> >Color</option>
+                                            <c:if test="${sortWay == 'color'}">selected</c:if> ><fmt:message
+                                            key="label.sort.color"/></option>
                                     <option value="size"
-                                            <c:if test="${sortWay == 'size'}">selected</c:if> >Size</option>
+                                            <c:if test="${sortWay == 'size'}">selected</c:if> ><fmt:message
+                                            key="label.sort.size"/></option>
                                 </select>
                             </div>
                             <div class="col-3">
-                                <label for="sortDirection">Sort direction:</label>
+                                <label for="sortDirection"><fmt:message key="label.sort.direction"/>:</label>
                                 <select class="form-select col-3 form-select-lg" name="sortDirection" id="sortDirection"
                                         size="1">
                                     <option value="ascending"
-                                            <c:if test="${sortDirection == 'ascending'}">selected</c:if> >Ascending
+                                            <c:if test="${sortDirection == 'ascending'}">selected</c:if> ><fmt:message
+                                            key="label.sort.ascending"/>
                                     </option>
                                     <option value="descending"
-                                            <c:if test="${sortDirection == 'descending'}">selected</c:if> >Descending
+                                            <c:if test="${sortDirection == 'descending'}">selected</c:if> ><fmt:message
+                                            key="label.sort.descending"/>
                                     </option>
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn col-3 btn-primary">Submit</button>
+                            <button type="submit" class="btn col-3 btn-primary"><fmt:message key="label.sort"/></button>
                         </div>
 
 
@@ -83,32 +91,27 @@
                                 <div class="panel-body">
                                     <div class="thumbnail">
                                         <img src="${p.imageLink}" alt="${p.name }">
-                                            <%--                                <div class="desc">--%>
-                                            <%--                                    <div class="cell">--%>
-                                            <%--                                        <p>--%>
-                                            <%--                                            <span class="title">Details</span> ${p.description }--%>
-                                            <%--                                        </p>--%>
-                                            <%--                                    </div>--%>
-                                            <%--                                </div>--%>
+
                                     </div>
                                     <h4 class="name">${p.name }</h4>
                                     <div class="line">
-                                        <div class="code">Code: ${p.id }</div>
+                                        <div class="code"><fmt:message key="label.code"/>: ${p.id }</div>
                                         <a class="btn btn-primary pull-right buy-btn"
                                            href="${pageContext.request.contextPath }/app/cart?&action=buy&id=${p.id }"
-                                           data-id-product="${p.id }">Buy
+                                           data-id-product="${p.id }"><fmt:message key="label.buy"/>
                                         </a>
                                     </div>
 
-                                    <div class="price">$ ${p.price }</div>
+                                    <div class="price">₴ ${p.price }</div>
 
                                     <div class="list-group">
-                        <span class="list-group-item"><small>Category:</small><span
-                                class="category">${p.category }</span></span>
-                                        <span class="list-group-item"><small>Size:</small><span
+    <span class="list-group-item"><small><fmt:message key="label.category"/>:</small><span
+            class="category">${p.category }</span></span>
+                                        <span class="list-group-item"><small><fmt:message
+                                                key="label.size"/>:</small><span
                                                 class="size">${p.size }</span></span>
                                         <span
-                                                class="list-group-item"><small>Color:</small><span
+                                                class="list-group-item"><small><fmt:message key="label.color"/>:</small><span
                                                 class="size">${p.color }</span></span>
                                     </div>
                                 </div>
@@ -119,19 +122,18 @@
 
                 <div class="links">
                     <a
-                            href="${requestScope['javax.servlet.forward.request_uri']}?page=1&parameter=${sortWay}&sortDirection=${sortDirection}">First
-                        page</a>
+                            href="${requestScope['javax.servlet.forward.request_uri']}?page=1&parameter=${sortWay}&sortDirection=${sortDirection}"><fmt:message
+                            key="label.first.page"/></a>
                     <c:if test="${currentPage gt 1}">
                         <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage - 1}&parameter=${sortWay}&sortDirection=${sortDirection}"
-                           id="prevPage">Previous
-                            page</a>
+                           id="prevPage"><fmt:message key="label.prev.page"/></a>
                     </c:if>
                     <c:if test="${currentPage lt pageCount}">
                         <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage + 1}&parameter=${sortWay}&sortDirection=${sortDirection}"
-                           id="nextPage">Next
-                            page</a>
+                           id="nextPage"><fmt:message key="label.next.page"/></a>
                     </c:if>
-                    <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${pageCount}&parameter=${sortWay}&sortDirection=${sortDirection}">Last page</a>
+                    <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${pageCount}&parameter=${sortWay}&sortDirection=${sortDirection}"><fmt:message
+                            key="label.last.page"/></a>
                 </div>
 
             </div>

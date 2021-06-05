@@ -5,7 +5,7 @@
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-    <title>Title</title>
+    <title>Add product</title>
 </head>
 <body>
 <div id="localePlaceHolder">
