@@ -9,6 +9,16 @@
     <title>Orders</title>
 </head>
 <body>
+<div id="localePlaceHolder">
+    <c:if test="${sessionScope.locale == 'english'}">
+        <fmt:setLocale value="en"/>
+    </c:if>
+    <c:if test="${sessionScope.locale == 'ukrainian'}">
+        <fmt:setLocale value="uk-UA"/>
+    </c:if>
+</div>
+<fmt:setBundle basename="messages"/>
+
 <header>
     <jsp:include page="../header.jsp"/>
 </header>

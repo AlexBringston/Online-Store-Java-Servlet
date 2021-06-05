@@ -66,6 +66,7 @@ public class Controller extends HttpServlet {
         String path = request.getRequestURI();
         path = path.replaceAll(".*/app/" , "");
         Command command;
+
         log.trace("path --> " + path);
         if (path.contains("products/")) {
             String parameter = path.replace("products/", "");

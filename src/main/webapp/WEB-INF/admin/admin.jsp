@@ -1,11 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
     <title>Admin page</title>
 </head>
+<div id="localePlaceHolder">
+    <c:if test="${sessionScope.locale == 'english'}">
+        <fmt:setLocale value="en"/>
+    </c:if>
+    <c:if test="${sessionScope.locale == 'ukrainian'}">
+        <fmt:setLocale value="uk-UA"/>
+    </c:if>
+</div>
+<fmt:setBundle basename="messages"/>
 <body>
 <fmt:setBundle basename="messages"/>
 <header>

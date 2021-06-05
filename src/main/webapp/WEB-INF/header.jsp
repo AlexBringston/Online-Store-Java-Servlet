@@ -4,13 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/script.js"></script>
 <div id="localePlaceHolder">
-    <c:if test="">
+    <c:if test="${sessionScope.locale == 'english'}">
         <fmt:setLocale value="en"/>
     </c:if>
-    <c:if test="">
-        <fmt:setLocale value="en"/>
+    <c:if test="${sessionScope.locale == 'ukrainian'}">
+        <fmt:setLocale value="uk-UA"/>
     </c:if>
 </div>
+<fmt:setBundle basename="messages"/>
 <div class="container">
     <div class="row">
         <div class="col-md-4 mx-auto Name">
@@ -18,16 +19,20 @@
         </div>
         <div class="col-md-3 mx-auto">
         </div>
-<%--        <div class="col-md-1 mx-auto" >--%>
-<%--            <select size="1" class="" id="locale" onchange="document.submit()">--%>
-<%--                <option value="english">--%>
-<%--                    ENG--%>
-<%--                </option>--%>
-<%--                <option value="ukrainian">--%>
-<%--                    UA--%>
-<%--                </option>--%>
-<%--            </select>--%>
-<%--        </div>--%>
+        <div class="col-md-1 mx-auto" >
+            <form method="post">
+                <select size="1" class="" name="locale" id="locale" onchange="form.submit()">
+                    <option value="english"
+                            <c:if test="${sessionScope.locale} == 'english'}">selected</c:if> >
+                        ENG
+                    </option>
+                    <option value="ukrainian"
+                            <c:if test="${sessionScope.locale == 'ukrainian'}">selected</c:if>>
+                        UA
+                    </option>
+                </select>
+            </form>
+        </div>
         <div class="col-md-1 Icon">
             <div>
                 <a href="${pageContext.request.contextPath}/app/cart">

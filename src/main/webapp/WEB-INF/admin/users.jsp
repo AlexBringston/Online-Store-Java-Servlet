@@ -5,36 +5,44 @@
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-    <title>Title</title>
+    <title><fmt:message key="label.users" /></title>
 </head>
 <body>
 <header>
     <jsp:include page="../header.jsp"/>
 </header>
-
+<div id="localePlaceHolder">
+    <c:if test="${sessionScope.locale == 'english'}">
+        <fmt:setLocale value="en"/>
+    </c:if>
+    <c:if test="${sessionScope.locale == 'ukrainian'}">
+        <fmt:setLocale value="uk-UA"/>
+    </c:if>
+</div>
+<fmt:setBundle basename="messages"/>
 <section class="users">
     <div class="container">
         <div class="row names">
             <div class="col">
-                Login
+                <fmt:message key="label.login" />
             </div>
             <div class="col">
-                First name
+                <fmt:message key="label.first.name" />
             </div>
             <div class="col">
-                Last name
+                <fmt:message key="label.last.name" />
             </div>
             <div class="col">
-                When was created
+                <fmt:message key="label.creation.date" />
             </div>
             <div class="col">
-                Role
+                <fmt:message key="label.role" />
             </div>
             <div class="col">
-                Status
+                <fmt:message key="label.status" />
             </div>
             <div class="col">
-                Action
+                <fmt:message key="label.action" />
             </div>
         </div>
         <div class="items">
@@ -65,11 +73,11 @@
                     <div class="col">
                         <c:if test="${user.status == 'ACTIVATED'}">
                             <a href="${pageContext.request.contextPath}/app/changeUserStatus?id=${user.id}"
-                               class="btn btn-outline-danger">Block</a>
+                               class="btn btn-outline-danger"><fmt:message key="label.block" /></a>
                         </c:if>
                         <c:if test="${user.status == 'BLOCKED'}">
                             <a href="${pageContext.request.contextPath}/app/changeUserStatus?id=${user.id}"
-                               class="btn btn-outline-success">Activate</a>
+                               class="btn btn-outline-success"><fmt:message key="label.activate" /></a>
                         </c:if>
                     </div>
                 </div>
@@ -78,17 +86,17 @@
         </div>
 
         <div class="links">
-            <a href="${requestScope['javax.servlet.forward.request_uri']}?page=1">First
-                page</a>
+            <a href="${requestScope['javax.servlet.forward.request_uri']}?page=1"><fmt:message key="label.first.page" /></a>
             <c:if test="${currentPage gt 1}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage - 1}"
-                   id="prevPage">Previous page</a>
+                   id="prevPage"><fmt:message key="label.prev.page" /></a>
             </c:if>
             <c:if test="${currentPage lt pageCount}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage + 1}"
-                   id="nextPage">Next page</a>
+                   id="nextPage"><fmt:message key="label.next.page" /></a>
             </c:if>
-            <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${pageCount}">Last page</a>
+            <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${pageCount}"><fmt:message
+                    key="label.last.page" /></a>
         </div>
     </div>
 </section>

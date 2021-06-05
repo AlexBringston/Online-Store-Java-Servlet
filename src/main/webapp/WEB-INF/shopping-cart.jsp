@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <html>
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
@@ -9,6 +10,16 @@
     <title>Cart Page</title>
 </head>
 <body>
+
+<div id="localePlaceHolder">
+    <c:if test="${sessionScope.locale == 'english'}">
+        <fmt:setLocale value="en"/>
+    </c:if>
+    <c:if test="${sessionScope.locale == 'ukrainian'}">
+        <fmt:setLocale value="uk-UA"/>
+    </c:if>
+</div>
+<fmt:setBundle basename="messages"/>
 <header>
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/header.jsp"/>
 </header>
