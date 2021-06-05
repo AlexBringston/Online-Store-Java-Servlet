@@ -20,12 +20,11 @@ public final class CommandUtils {
     private static final Logger log = Logger.getLogger(CommandUtils.class);
 
     public static void setAttributes(HttpServletRequest request, ProductService productService) {
-        List<Category> categories = productService.listAllCategories();
-        log.trace("categories ->" + categories);
-        List<Color> colors = productService.listAllColors();
-        log.trace("colors ->" + colors);
-        List<Size> sizes = productService.listAllSizes();
-        log.trace("sizes ->" + sizes);
+        String locale = checkForLocale(request);
+        log.info("locale -> " +locale);
+        List<Category> categories = productService.listAllCategories(locale);
+        List<Color> colors = productService.listAllColors(locale);
+        List<Size> sizes = productService.listAllSizes(locale);
         request.setAttribute("categories" , categories);
         request.setAttribute("colors" , colors);
         request.setAttribute("sizes" , sizes);
@@ -92,7 +91,7 @@ public final class CommandUtils {
         return pageCount;
     }
 
-    static boolean checkUserIsLogged(HttpServletRequest request, String userName){
+    public static boolean checkUserIsLogged(HttpServletRequest request, String userName){
         HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
                 .getAttribute("loggedUsers");
         if (loggedUsers == null) {
@@ -106,4 +105,15 @@ public final class CommandUtils {
                 .setAttribute("loggedUsers", loggedUsers);
         return false;
     }
+
+    public static String checkForLocale(HttpServletRequest request) {
+        String locale = (String)request.getSession().getAttribute("locale");
+        if (locale != null && !(locale.equals("")||locale.equals("english"))) {
+            locale = "_" + locale.substring(0,2);
+        } else {
+            locale = "";
+        }
+        return locale;
+    }
+
 }

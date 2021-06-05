@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 public class ProductsByCategoryCommand implements Command {
@@ -26,7 +28,12 @@ public class ProductsByCategoryCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         log.trace("request.getRequestURI() --> " + request.getRequestURI());
-        String categoryUrl = request.getRequestURI().substring(SUBSTRING_INDEX);
+        String categoryUrl = null;
+        try {
+            categoryUrl = URLDecoder.decode(request.getRequestURI().substring(SUBSTRING_INDEX), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         log.debug("Category command starts");
         int page = 1;
         if(request.getParameter("page") != null) {
@@ -35,6 +42,7 @@ public class ProductsByCategoryCommand implements Command {
         request.setAttribute("currentPage", page);
         log.trace("Set the request attribute: currentPage --> " + page);
         log.trace("categoryUrl --> " + categoryUrl);
+        String locale = CommandUtils.checkForLocale(request);
         int totalCount = productService.countProductsByCategory(categoryUrl);
         request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
 
@@ -46,20 +54,19 @@ public class ProductsByCategoryCommand implements Command {
             direction = productService.getSortDirection(orderDirection);
         }
         if (sort == null || sort.equals("")) {
-            sort = "id";
+            sort = "name";
         }
         if (direction == null || direction.equals("")) {
             direction = "ASC";
         }
-        List<Product> products = productService.listProductsPerPageByCategory(page, categoryUrl, sort, direction);
+        List<Product> products = productService.listProductsPerPageByCategory(page, categoryUrl, sort, direction,
+                locale);
         request.setAttribute("products" , products);
         request.setAttribute("sortWay",request.getParameter("parameter"));
         request.setAttribute("sortDirection",request.getParameter("sortDirection"));
         CommandUtils.setAttributes(request, productService);
 
         request.setAttribute("selectedCategoryUrl", categoryUrl);
-        log.trace("Set the request attribute: products --> " + products);
-        log.debug("Category command finished");
         return "/WEB-INF/product-list.jsp";
     }
 }

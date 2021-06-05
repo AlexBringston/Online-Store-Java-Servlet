@@ -47,7 +47,7 @@ public class ProductService {
             dao.delete(productId);
         }
     }
-    public List<Product> listProductsPerPage(int pageNumber, int limit, String sort, String direction) {
+    public List<Product> listProductsPerPage(int pageNumber, int limit, String sort, String direction, String locale) {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -55,11 +55,11 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPage(pageNumber, limit, sort, direction);
+            return dao.findPerPage(pageNumber, limit, sort, direction, locale);
         }
     }
 
-    public List<Product> listProductsPerPageByColor(int number, String name, String sort, String direction) {
+    public List<Product> listProductsPerPageByColor(int number, String name, String sort, String direction, String locale) {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -67,11 +67,11 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPageByColor(number, name, sort, direction);
+            return dao.findPerPageByColor(number, name, sort, direction, locale);
         }
     }
 
-    public List<Product> listProductsPerPageBySize(int number, String name, String sort, String direction) {
+    public List<Product> listProductsPerPageBySize(int number, String name, String sort, String direction, String locale) {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -79,11 +79,12 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPageBySize(number, name, sort, direction);
+            return dao.findPerPageBySize(number, name, sort, direction, locale);
         }
     }
 
-    public List<Product> listProductsPerPageByCategory(int number, String name, String sort, String direction) {
+    public List<Product> listProductsPerPageByCategory(int number, String name, String sort, String direction,
+                                                       String locale) {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -91,7 +92,7 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPageByCategory(number, name, sort, direction);
+            return dao.findPerPageByCategory(number, name, sort, direction, locale);
         }
     }
     public int countAllProducts() {
@@ -118,25 +119,26 @@ public class ProductService {
         }
     }
 
-    public List<Category> listAllCategories() {
+    public List<Category> listAllCategories(String locale) {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.listAllCategories();
+            return dao.listAllCategories(locale);
         }
     }
 
-    public List<Color> listAllColors() {
+    public List<Color> listAllColors(String locale) {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.listAllColors();
+            return dao.listAllColors(locale);
         }
     }
-    public List<Size> listAllSizes() {
+    public List<Size> listAllSizes(String locale) {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.listAllSizes();
+            return dao.listAllSizes(locale);
         }
     }
 
     public String getSortDirection(String direction) {
-        if (direction.equalsIgnoreCase("ascending") || direction.equalsIgnoreCase("По зростанню")) {
+        if (direction.equalsIgnoreCase("ascending") || direction.equalsIgnoreCase("По зростанню") ||
+        direction.equals("")) {
             return "ASC";
         } else {
             return "DESC";

@@ -10,17 +10,17 @@ import java.sql.SQLException;
 
 public class UserMapper implements ObjectMapper<User>{
     @Override
-    public User extractFromResultSet(ResultSet resultSet) throws SQLException {
+    public User extractFromResultSet(ResultSet resultSet, String locale) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setLogin(resultSet.getString("login"));
         user.setPassword(resultSet.getString("password"));
-        user.setFirstName(resultSet.getString("first_name"));
-        user.setLastName(resultSet.getString("last_name"));
+        user.setFirstName(resultSet.getString(String.format("first_name%s",locale)));
+        user.setLastName(resultSet.getString(String.format("last_name%s",locale)));
         user.setCreatedAt(resultSet.getTimestamp("created_at"));
         user.setRoleId(resultSet.getInt("role_id"));
         user.setRole(Role.values()[user.getRoleId()]);
-        user.setStatus(resultSet.getString("status"));
+        user.setStatus(resultSet.getString(String.format("status%s",locale)));
         user.setBalance(new BigDecimal(resultSet.getString("balance")));
         return user;
     }

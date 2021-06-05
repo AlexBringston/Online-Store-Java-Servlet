@@ -70,7 +70,7 @@ public class JDBCUserDao implements UserDao {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                user = mapper.extractFromResultSet(resultSet);
+                user = mapper.extractFromResultSet(resultSet,"");
             }
             resultSet.close();
             preparedStatement.close();
@@ -94,7 +94,7 @@ public class JDBCUserDao implements UserDao {
             preparedStatement.setString(1, login);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                user = mapper.extractFromResultSet(resultSet);
+                user = mapper.extractFromResultSet(resultSet,"");
             }
             resultSet.close();
             preparedStatement.close();
@@ -145,8 +145,8 @@ public class JDBCUserDao implements UserDao {
             preparedStatement.setInt(2, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                System.out.println(mapper.extractFromResultSet(rs));
-                userList.add(mapper.extractFromResultSet(rs));
+                System.out.println(mapper.extractFromResultSet(rs,""));
+                userList.add(mapper.extractFromResultSet(rs,""));
             }
             connection.commit();
             rs.close();
@@ -175,7 +175,7 @@ public class JDBCUserDao implements UserDao {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM users");
             while (resultSet.next()) {
-                userList.add(mapper.extractFromResultSet(resultSet));
+                userList.add(mapper.extractFromResultSet(resultSet,""));
             }
             connection.commit();
             resultSet.close();

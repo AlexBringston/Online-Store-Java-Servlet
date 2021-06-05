@@ -15,7 +15,7 @@
 <div id="productCatalog" class="panel panel-success">
     <div class="panel-heading">Product categories</div>
     <div class="list-group">
-        <c:forEach var="category" items="${categories}">
+        <c:forEach var="category" items="${requestScope.categories}">
             <a
                     href="${pageContext.request.contextPath}/app/products/category/${category.name}"
                class="list-group-item">

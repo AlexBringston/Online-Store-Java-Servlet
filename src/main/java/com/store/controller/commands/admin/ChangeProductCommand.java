@@ -60,7 +60,7 @@ public class ChangeProductCommand implements Command {
         String category = request.getParameter("category");
         String size = request.getParameter("size");
         String color = request.getParameter("color");
-        Product product = new Product(id, name, description, imageLink, price, category, size, color);
+        Product product = new Product(id, name, imageLink, price, category, size, color);
 
         productService.updateProduct(product);
         return "redirect:/manageProducts";

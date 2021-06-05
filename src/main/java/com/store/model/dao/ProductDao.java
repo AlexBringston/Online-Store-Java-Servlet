@@ -17,17 +17,17 @@ public interface ProductDao extends GenericDao<Product>{
     int countProductsBySize(String size);
 
 
-    List<Product> findPerPage(int count, int limit, String sort, String direction);
+    List<Product> findPerPage(int count, int limit, String sort, String direction, String locale);
 
-    List<Product> findPerPageByCategory(int count, String name, String sort, String direction);
+    List<Product> findPerPageByCategory(int count, String name, String sort, String direction, String locale);
 
-    List<Product> findPerPageByColor(int count, String name, String sort, String direction);
+    List<Product> findPerPageByColor(int count, String name, String sort, String direction, String locale);
 
-    List<Product> findPerPageBySize(int count, String name, String sort, String direction);
+    List<Product> findPerPageBySize(int count, String name, String sort, String direction, String locale);
 
-    List<Category> listAllCategories();
+    List<Category> listAllCategories(String locale);
 
-    List<Color> listAllColors();
+    List<Color> listAllColors(String locale);
 
-    List<Size> listAllSizes();
+    List<Size> listAllSizes(String locale);
 }

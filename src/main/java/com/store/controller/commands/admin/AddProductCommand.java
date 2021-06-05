@@ -44,7 +44,7 @@ public class AddProductCommand implements Command {
         String category = request.getParameter("category");
         String size = request.getParameter("size");
         String color = request.getParameter("color");
-        Product product = new Product(name, description, imageLink, price, category, size, color);
+        Product product = new Product(name, imageLink, price, category, size, color);
 
         productService.addProduct(product);
         return "redirect:/manageProducts";

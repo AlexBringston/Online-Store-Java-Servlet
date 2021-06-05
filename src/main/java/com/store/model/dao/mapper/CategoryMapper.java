@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 public class CategoryMapper implements ObjectMapper<Category>{
     @Override
-    public Category extractFromResultSet(ResultSet resultSet) throws SQLException {
+    public Category extractFromResultSet(ResultSet resultSet, String locale) throws SQLException {
         Category category = new Category();
         category.setId(resultSet.getInt("id"));
-        category.setName(resultSet.getString("name"));
+        category.setName(resultSet.getString(String.format("name%s",locale)));
         return category;
     }
 }

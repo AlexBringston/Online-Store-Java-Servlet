@@ -65,7 +65,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             String SQL = "SELECT * FROM order_items WHERE id = ?";
             rs = statement.executeQuery(String.format(SQL, id));
             if (rs.next()) {
-                orderItem = mapper.extractFromResultSet(rs);
+                orderItem = mapper.extractFromResultSet(rs,"");
             }
             rs.close();
             statement.close();
@@ -93,7 +93,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT * FROM order_items");
             while (rs.next()) {
-                orderItemList.add(mapper.extractFromResultSet(rs));
+                orderItemList.add(mapper.extractFromResultSet(rs,""));
             }
             connection.commit();
             rs.close();
@@ -185,7 +185,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             preparedStatement.setInt(3, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                orderItemList.add(mapper.extractFromResultSet(rs));
+                orderItemList.add(mapper.extractFromResultSet(rs,""));
             }
             connection.commit();
             rs.close();
@@ -244,7 +244,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
             preparedStatement.setInt(1, orderId);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                OrderItem orderItem = mapper.extractFromResultSet(rs);
+                OrderItem orderItem = mapper.extractFromResultSet(rs,"");
                 count =
                         count.add(orderItem.getProduct().getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
             }

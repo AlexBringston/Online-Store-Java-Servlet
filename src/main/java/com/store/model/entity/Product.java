@@ -8,8 +8,6 @@ public class Product extends Entity{
 
     private String name;
 
-    private String description;
-
     private String imageLink;
 
     private BigDecimal price;
@@ -25,11 +23,10 @@ public class Product extends Entity{
     public Product() {
     }
 
-    public Product(int id, String name, String description, String imageLink, BigDecimal price, String category,
+    public Product(int id, String name, String imageLink, BigDecimal price, String category,
                    String size, String color) {
         super(id);
         this.name = name;
-        this.description = description;
         this.imageLink = imageLink;
         this.price = price;
         this.category = category;
@@ -37,10 +34,9 @@ public class Product extends Entity{
         this.color = color;
     }
 
-    public Product(String name, String description, String imageLink, BigDecimal price, String category,
+    public Product(String name, String imageLink, BigDecimal price, String category,
                    String size, String color) {
         this.name = name;
-        this.description = description;
         this.imageLink = imageLink;
         this.price = price;
         this.category = category;
@@ -54,14 +50,6 @@ public class Product extends Entity{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getImageLink() {

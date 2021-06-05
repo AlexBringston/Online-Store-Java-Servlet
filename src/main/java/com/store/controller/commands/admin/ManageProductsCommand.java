@@ -31,7 +31,9 @@ public class ManageProductsCommand implements Command {
         int totalCount = productService.countAllProducts();
         request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.ADMIN_PRODUCTS_PER_PAGE));
 
-        List<Product> products = productService.listProductsPerPage(page, Utils.ADMIN_PRODUCTS_PER_PAGE, "id", "ASC");
+        String locale = CommandUtils.checkForLocale(request);
+        List<Product> products = productService.listProductsPerPage(page, Utils.ADMIN_PRODUCTS_PER_PAGE, "id", "ASC",
+                locale);
         request.setAttribute("products", products);
         return "/WEB-INF/admin/products.jsp";
     }

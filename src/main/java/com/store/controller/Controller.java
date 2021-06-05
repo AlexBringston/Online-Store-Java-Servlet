@@ -34,6 +34,7 @@ public class Controller extends HttpServlet {
         commands.put("size", new ProductsBySizeCommand(new ProductService()));
         commands.put("login", new LoginCommand(new UserService()));
         commands.put("logout", new LogoutCommand());
+        commands.put("locale", new LocaleCommand());
         commands.put("authorization", new AuthorizationCommand());
         commands.put("admin", new AdminCommand());
         commands.put("user", new UserCommand(new OrderService()));

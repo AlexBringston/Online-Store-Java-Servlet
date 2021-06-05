@@ -39,10 +39,10 @@ public class ProductListCommand implements Command {
             direction = productService.getSortDirection(orderDirection);
         }
         if (sort == null || sort.equals("")) {
-            sort = "name";
+            sort = "id";
         }
         if (direction == null || direction.equals("")) {
-            direction = "DESC";
+            direction = "ASC";
         }
         log.trace("sort -> " + sort);
         log.trace("direction -> " + direction);
@@ -52,8 +52,9 @@ public class ProductListCommand implements Command {
         log.trace("Set the request attribute: currentPage --> " + page);
         int totalCount = productService.countAllProducts();
         request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
-
-        List<Product> products = productService.listProductsPerPage(page, Utils.PRODUCTS_PER_PAGE, sort, direction);
+        String locale = CommandUtils.checkForLocale(request);
+        List<Product> products = productService.listProductsPerPage(page, Utils.PRODUCTS_PER_PAGE, sort, direction,
+                locale);
 
         request.setAttribute("products", products);
 

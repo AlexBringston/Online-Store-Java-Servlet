@@ -4,5 +4,5 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface ObjectMapper<T> {
-    T extractFromResultSet(ResultSet resultSet) throws SQLException;
+    T extractFromResultSet(ResultSet resultSet, String locale) throws SQLException;
 }

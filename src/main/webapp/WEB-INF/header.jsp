@@ -20,7 +20,7 @@
         <div class="col-md-3 mx-auto">
         </div>
         <div class="col-md-1 mx-auto" >
-            <form>
+            <form action="${pageContext.request.contextPath}/app/locale">
                 <select size="1" class="" name="locale" id="locale" onchange="form.submit()">
                     <option value="english"
                             <c:if test="${sessionScope.locale} == 'english'}">selected</c:if> >

@@ -62,7 +62,7 @@ public class JDBCOrderDao implements OrderDao {
             String SQL = "SELECT * FROM orders WHERE id = %d";
             rs = statement.executeQuery(String.format(SQL,id));
             if (rs.next()) {
-                order = mapper.extractFromResultSet(rs);
+                order = mapper.extractFromResultSet(rs,"");
             }
             rs.close();
             statement.close();
@@ -85,7 +85,7 @@ public class JDBCOrderDao implements OrderDao {
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT * FROM orders");
             while (rs.next()) {
-                orderList.add(mapper.extractFromResultSet(rs));
+                orderList.add(mapper.extractFromResultSet(rs,""));
             }
             connection.commit();
             rs.close();
@@ -176,7 +176,7 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement.setInt(3, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                orderList.add(mapper.extractFromResultSet(rs));
+                orderList.add(mapper.extractFromResultSet(rs,""));
             }
             connection.commit();
             rs.close();
@@ -252,7 +252,7 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement.setInt(2, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                orderList.add(mapper.extractFromResultSet(rs));
+                orderList.add(mapper.extractFromResultSet(rs,""));
             }
             connection.commit();
             rs.close();

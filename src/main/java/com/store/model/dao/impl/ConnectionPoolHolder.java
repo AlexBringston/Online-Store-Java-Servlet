@@ -13,7 +13,7 @@ public class ConnectionPoolHolder {
                 if (dataSource == null) {
                     BasicDataSource ds = new BasicDataSource();
                     ds.setDriverClassName("org.postgresql.Driver");
-                    ds.setUrl("jdbc:postgresql://localhost:5432/online_store");
+                    ds.setUrl("jdbc:postgresql://localhost:5432/online_store?useEncoding=true&amp;characterEncoding=UTF-8");
                     ds.setUsername("postgres");
                     ds.setPassword("1111");
                     ds.setMinIdle(5);

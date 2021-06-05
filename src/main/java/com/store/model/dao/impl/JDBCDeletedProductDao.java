@@ -29,18 +29,17 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement("INSERT INTO deleted_products (name, description, " +
                             "image_link, " +
-                            "price, category_id, size_id, color_id) VALUES (?,?,?,?," +
+                            "price, category_id, size_id, color_id) VALUES (?,?,?," +
                             "(SELECT id FROM categories WHERE name = ?)," +
                             "(SELECT id FROM sizes WHERE name = ?)," +
                             "(SELECT id FROM colors WHERE name = ?) )",
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getDescription());
-            preparedStatement.setString(3, entity.getImageLink());
-            preparedStatement.setBigDecimal(4, entity.getPrice());
-            preparedStatement.setString(5, entity.getCategory());
-            preparedStatement.setString(6, entity.getSize());
-            preparedStatement.setString(7, entity.getColor());
+            preparedStatement.setString(2, entity.getImageLink());
+            preparedStatement.setBigDecimal(3, entity.getPrice());
+            preparedStatement.setString(4, entity.getCategory());
+            preparedStatement.setString(5, entity.getSize());
+            preparedStatement.setString(6, entity.getColor());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -76,7 +75,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
                     "co.id = p.color_id and s.id = p.size_id";
             rs = statement.executeQuery(String.format(SQL, id));
             if (rs.next()) {
-                product = mapper.extractFromResultSet(rs);
+                product = mapper.extractFromResultSet(rs,"");
             }
             rs.close();
             statement.close();
@@ -98,7 +97,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT * FROM deleted_products");
             while (rs.next()) {
-                productList.add(mapper.extractFromResultSet(rs));
+                productList.add(mapper.extractFromResultSet(rs,""));
             }
             rs.close();
             statement.close();
@@ -115,17 +114,16 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement("UPDATE deleted_products SET name = ?, description = ?," +
+            preparedStatement = connection.prepareStatement("UPDATE deleted_products SET name = ?," +
                     "image_link = ?, price = ?, category_id = (SELECT id FROM categories WHERE name = ?)," +
                     " size_id = (SELECT id FROM sizes WHERE name = ?), color_id = (SELECT id FROM colors WHERE name =" +
                     " ?)");
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getDescription());
-            preparedStatement.setString(3, entity.getImageLink());
-            preparedStatement.setBigDecimal(4, entity.getPrice());
-            preparedStatement.setString(5, entity.getCategory());
-            preparedStatement.setString(6, entity.getSize());
-            preparedStatement.setString(7, entity.getColor());
+            preparedStatement.setString(2, entity.getImageLink());
+            preparedStatement.setBigDecimal(3, entity.getPrice());
+            preparedStatement.setString(4, entity.getCategory());
+            preparedStatement.setString(5, entity.getSize());
+            preparedStatement.setString(6, entity.getColor());
             preparedStatement.executeUpdate();
             connection.commit();
             preparedStatement.close();

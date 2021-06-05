@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 public class ProductsByColorCommand implements Command {
@@ -25,7 +27,12 @@ public class ProductsByColorCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String colorUrl = request.getRequestURI().substring(SUBSTRING_INDEX);
+        String colorUrl = null;
+        try {
+            colorUrl = URLDecoder.decode(request.getRequestURI().substring(SUBSTRING_INDEX), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         log.debug("Color command starts");
         int page = 1;
         if(request.getParameter("page") != null) {
@@ -40,6 +47,7 @@ public class ProductsByColorCommand implements Command {
         String sort = request.getParameter("parameter");
         String direction = null;
         String orderDirection = request.getParameter("sortDirection");
+        log.trace(orderDirection);
         if (sort !=null && orderDirection != null) {
             sort = sort.toLowerCase();
             direction = productService.getSortDirection(orderDirection);
@@ -53,15 +61,14 @@ public class ProductsByColorCommand implements Command {
         log.trace("sort ->>>" + sort);
         log.trace("direction ->>>" + direction);
         log.trace("colorUrl ->>>" + colorUrl);
-        List<Product> products = productService.listProductsPerPageByColor(page, colorUrl, sort, direction);
+        String locale = CommandUtils.checkForLocale(request);
+        List<Product> products = productService.listProductsPerPageByColor(page, colorUrl, sort, direction, locale);
         request.setAttribute("sortWay",request.getParameter("parameter"));
         request.setAttribute("sortDirection",request.getParameter("sortDirection"));
         request.setAttribute("products" , products);
         CommandUtils.setAttributes(request, productService);
 
         request.setAttribute("selectedCategoryUrl", colorUrl);
-        log.trace("Set the request attribute: products --> " + products);
-        log.debug("Color command finished");
         return "/WEB-INF/product-list.jsp";
     }
 }

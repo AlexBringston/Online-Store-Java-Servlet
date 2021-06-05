@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class OrderItemMapper implements ObjectMapper<OrderItem> {
     @Override
-    public OrderItem extractFromResultSet(ResultSet resultSet) throws SQLException {
+    public OrderItem extractFromResultSet(ResultSet resultSet, String locale) throws SQLException {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(resultSet.getInt("id"));
         orderItem.setOrderId(resultSet.getInt("order_id"));
