@@ -2,6 +2,7 @@ package com.store.controller.commands;
 
 import com.store.controller.commands.products.ProductListCommand;
 import com.store.model.entity.OrderItem;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class CartCommand implements Command{
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         String action = request.getParameter("action");
         String forward = null;
         if (action == null) {
@@ -46,7 +47,7 @@ public class CartCommand implements Command{
         return "redirect:/cart";
     }
 
-    protected String doBuyAction(HttpServletRequest request) {
+    protected String doBuyAction(HttpServletRequest request) throws DatabaseException {
         HttpSession session = request.getSession();
         String locale = CommandUtils.checkForLocale(request);
         if (session.getAttribute("cart") == null) {

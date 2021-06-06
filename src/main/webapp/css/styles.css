@@ -214,5 +214,37 @@ header .Icon img {
 
 .Orders input[type=submit] {
     width: 100%;
+}
 
+.errorPage, .errorPage .container {
+    height: calc(100vh - 116px);
+    display: flex;
+    flex-direction: column;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+
+    align-items: center;
+    justify-content: center;
+}
+
+section {
+    height: calc(100vh - 116px);
+}
+
+.successPage, .errorPage .successPage {
+    height: calc(100vh - 116px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.depositForm {
+    display: none;
 }

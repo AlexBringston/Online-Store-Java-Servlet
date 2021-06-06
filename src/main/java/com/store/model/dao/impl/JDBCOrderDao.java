@@ -4,6 +4,7 @@ import com.store.model.dao.OrderDao;
 import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.entity.Order;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public void create(Order entity) {
+    public void create(Order entity) throws DatabaseException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -43,16 +44,16 @@ public class JDBCOrderDao implements OrderDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find create order");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to create an order", ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public Order findById(int id, String locale) {
+    public Order findById(int id, String locale) throws DatabaseException {
         Order order = new Order();
         Statement statement = null;
         ResultSet rs = null;
@@ -60,14 +61,15 @@ public class JDBCOrderDao implements OrderDao {
             OrderMapper mapper = new OrderMapper();
             statement = connection.createStatement();
             String SQL = "SELECT * FROM orders WHERE id = %d";
-            rs = statement.executeQuery(String.format(SQL,id));
+            rs = statement.executeQuery(String.format(SQL, id));
             if (rs.next()) {
-                order = mapper.extractFromResultSet(rs,"");
+                order = mapper.extractFromResultSet(rs, "");
             }
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log.trace("Could not find order");
+            throw new DatabaseException("Error with trying to find order by id", ex);
         } finally {
             close();
         }
@@ -75,7 +77,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<Order> findAll() throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -85,7 +87,7 @@ public class JDBCOrderDao implements OrderDao {
             statement = connection.createStatement();
             rs = statement.executeQuery("SELECT * FROM orders");
             while (rs.next()) {
-                orderList.add(mapper.extractFromResultSet(rs,""));
+                orderList.add(mapper.extractFromResultSet(rs, ""));
             }
             connection.commit();
             rs.close();
@@ -94,9 +96,9 @@ public class JDBCOrderDao implements OrderDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find orders");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find orders", ex);
         } finally {
             close();
         }
@@ -104,7 +106,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public void update(Order entity) {
+    public void update(Order entity) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -119,9 +121,9 @@ public class JDBCOrderDao implements OrderDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not update order");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to update order", ex);
         } finally {
             close();
         }
@@ -146,7 +148,7 @@ public class JDBCOrderDao implements OrderDao {
             }
             ex.printStackTrace();
         } finally {
-           close();
+            close();
         }
     }
 
@@ -160,7 +162,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersOfUser(int userId, int pageNumber, int limit) {
+    public List<Order> findOrdersOfUser(int userId, int pageNumber, int limit) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -171,12 +173,12 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement = connection.prepareStatement("SELECT * FROM orders WHERE user_id = ? ORDER BY " +
                     "created_at DESC" +
                     " LIMIT ? OFFSET ?");
-            preparedStatement.setInt(1,userId);
+            preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, limit);
             preparedStatement.setInt(3, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                orderList.add(mapper.extractFromResultSet(rs,""));
+                orderList.add(mapper.extractFromResultSet(rs, ""));
             }
             connection.commit();
             rs.close();
@@ -185,9 +187,9 @@ public class JDBCOrderDao implements OrderDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find orders of user");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find orders of user", ex);
         } finally {
             close();
         }
@@ -195,14 +197,14 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public int countAllOrdersOfUser(int userId) {
+    public int countAllOrdersOfUser(int userId) throws DatabaseException {
         int count = 0;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             OrderMapper mapper = new OrderMapper();
             preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM orders WHERE user_id = ?");
-            preparedStatement.setInt(1,userId);
+            preparedStatement.setInt(1, userId);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 count = resultSet.getInt(1);
@@ -210,7 +212,7 @@ public class JDBCOrderDao implements OrderDao {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count orders of user", ex);
         } finally {
             close();
         }
@@ -218,7 +220,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public int countAllOrders() {
+    public int countAllOrders() throws DatabaseException {
         int count = 0;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -231,7 +233,7 @@ public class JDBCOrderDao implements OrderDao {
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count all orders", ex);
         } finally {
             close();
         }
@@ -239,7 +241,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersPerPage(int pageNumber, int limit) {
+    public List<Order> findOrdersPerPage(int pageNumber, int limit) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -252,7 +254,7 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement.setInt(2, offset);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                orderList.add(mapper.extractFromResultSet(rs,""));
+                orderList.add(mapper.extractFromResultSet(rs, ""));
             }
             connection.commit();
             rs.close();
@@ -261,9 +263,9 @@ public class JDBCOrderDao implements OrderDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find orders per page");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find orders per page", ex);
         } finally {
             close();
         }

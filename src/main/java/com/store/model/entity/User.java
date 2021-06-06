@@ -1,9 +1,16 @@
 package com.store.model.entity;
 
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
-public class User extends Entity{
+public class User extends Entity implements HttpSessionBindingListener {
+    private static Map<User, HttpSession> logins = new HashMap<>();
+
     private String login;
 
     private String password;
@@ -106,5 +113,33 @@ public class User extends Entity{
                 ", role=" + role +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    @Override
+    public void valueBound(HttpSessionBindingEvent event) {
+        HttpSession session = logins.remove(this);
+        if (session != null) {
+            session.invalidate();
+        }
+        logins.put(this, event.getSession());
+    }
+
+    @Override
+    public void valueUnbound(HttpSessionBindingEvent event) {
+        logins.remove(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return (getId() != 0) ? (this.getClass().hashCode() + getId()) : super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if ((obj instanceof User) && (getId() != 0)) {
+            return getId() == ((User) obj).getId();
+        } else {
+            return obj == this;
+        }
     }
 }

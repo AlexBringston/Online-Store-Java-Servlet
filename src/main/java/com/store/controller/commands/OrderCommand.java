@@ -4,6 +4,7 @@ import com.store.controller.commands.products.ProductListCommand;
 import com.store.model.entity.Order;
 import com.store.model.entity.OrderItem;
 import com.store.model.entity.User;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.OrderService;
 import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
@@ -27,7 +28,7 @@ public class OrderCommand implements Command{
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         HttpSession session = request.getSession();
 
         User user = (User) session.getAttribute("user");
@@ -51,12 +52,11 @@ public class OrderCommand implements Command{
             user.setBalance(user.getBalance().subtract(totalSum));
             new UserService().updateUser(user);
             session.removeAttribute("cart");
-            return "redirect:/user";
+            request.setAttribute("successMessage", "Operation was successfully made");
+            return "redirect:/success";
 
         } else {
-            String errorMessage = "You cannot afford this operation, please check your balance";
-            request.setAttribute("errorMessage", errorMessage);
-            return "/WEB-INF/error.jsp";
+            throw new DatabaseException("You cannot afford this operation, pleas check your balance");
         }
 
     }

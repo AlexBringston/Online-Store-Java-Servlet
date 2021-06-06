@@ -4,6 +4,7 @@ import com.store.model.dao.Utils;
 import com.store.model.entity.Order;
 import com.store.model.entity.OrderItem;
 import com.store.model.entity.User;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.OrderService;
 import org.apache.log4j.Logger;
 
@@ -24,7 +25,7 @@ public class ShowOrderCommand implements Command{
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
@@ -33,16 +34,12 @@ public class ShowOrderCommand implements Command{
         String locale = CommandUtils.checkForLocale(request);
         Order order = orderService.findOrderById(orderId, locale);
         if (order.getUserId() != user.getId()) {
-            String errorMessage = "You tried to see orders of different user";
-            request.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
-            return "redirect:/WEB-INF/error.jsp";
+            throw new DatabaseException("You tried to see orders of different user");
         } else {
             int page = 1;
             if (request.getParameter("page") != null) {
                 page = Integer.parseInt(request.getParameter("page"));
             }
-
             request.setAttribute("currentPage", page);
             BigDecimal totalCostOfOrder = orderService.countTotalCost(orderId);
             request.setAttribute("totalCost", totalCostOfOrder);

@@ -4,6 +4,7 @@ import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.model.dao.Utils;
 import com.store.model.entity.Product;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class ProductsByColorCommand implements Command {
     private static final int SUBSTRING_INDEX = "/app/products/color/".length();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         String colorUrl = null;
         try {
             colorUrl = URLDecoder.decode(request.getRequestURI().substring(SUBSTRING_INDEX), "UTF-8");

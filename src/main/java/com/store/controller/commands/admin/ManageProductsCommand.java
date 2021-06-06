@@ -4,6 +4,7 @@ import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.model.dao.Utils;
 import com.store.model.entity.Product;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class ManageProductsCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         int page = 1;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));

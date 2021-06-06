@@ -6,7 +6,7 @@
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-    <title>Error page</title>
+    <title>Success</title>
 </head>
 <body>
 <div id="localePlaceHolder">
@@ -21,13 +21,13 @@
 <header>
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/header.jsp"/>
 </header>
-<section class="errorPage">
+<section class="successPage">
     <div class="container">
         <div>
-            <h2><i>Error has occurred</i></h2>
+            <h2><i>Operation successful</i></h2>
         </div>
         <div>
-            <h3>Error message: ${requestScope.errorMessage}</h3>
+            <h3>${requestScope.successMessage}</h3>
         </div>
     </div>
 </section>

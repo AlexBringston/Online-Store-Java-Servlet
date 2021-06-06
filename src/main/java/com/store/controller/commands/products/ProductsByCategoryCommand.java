@@ -4,6 +4,7 @@ import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.model.dao.Utils;
 import com.store.model.entity.Product;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class ProductsByCategoryCommand implements Command {
     private static final int SUBSTRING_INDEX = "/app/products/category/".length();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         log.trace("request.getRequestURI() --> " + request.getRequestURI());
         String categoryUrl = null;
         try {

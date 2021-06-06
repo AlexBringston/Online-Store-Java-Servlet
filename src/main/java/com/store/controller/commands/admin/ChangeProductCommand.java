@@ -3,6 +3,7 @@ package com.store.controller.commands.admin;
 import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.model.entity.Product;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class ChangeProductCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, DatabaseException {
         log.info("Change product command started");
         String action = request.getParameter("action");
         String forward = null;
@@ -37,7 +38,7 @@ public class ChangeProductCommand implements Command {
         return forward;
     }
 
-    private String setupProductData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private String setupProductData(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         int productId = 0;
         try {
             productId = Integer.parseInt(request.getParameter("id"));
@@ -53,7 +54,7 @@ public class ChangeProductCommand implements Command {
         return "/WEB-INF/admin/changeProduct.jsp";
     }
 
-    private String changeProductData(HttpServletRequest request) {
+    private String changeProductData(HttpServletRequest request) throws DatabaseException {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String nameUK = request.getParameter("nameUK");

@@ -10,6 +10,7 @@ import com.store.model.entity.Category;
 import com.store.model.entity.Color;
 import com.store.model.entity.Product;
 import com.store.model.entity.Size;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class JDBCProductDao implements ProductDao {
 
     private Connection connection;
 
-    private static final Logger log = Logger.getLogger(ProductService.class);
+    private static final Logger log = Logger.getLogger(JDBCProductDao.class);
 
     public JDBCProductDao(Connection connection) {
         this.connection = connection;
@@ -30,7 +31,7 @@ public class JDBCProductDao implements ProductDao {
 
 
     @Override
-    public void create(Product entity) {
+    public void create(Product entity) throws DatabaseException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -60,16 +61,16 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback while trying to create a product");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to create a product",ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public Product findById(int id, String locale) {
+    public Product findById(int id, String locale) throws DatabaseException {
         Product product = new Product();
         Statement statement = null;
         ResultSet rs = null;
@@ -92,9 +93,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback while looking for a product");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find a product",ex);
         } finally {
             close();
         }
@@ -102,7 +103,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll() throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -120,9 +121,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback while looking for all products");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find all products",ex);
         } finally {
             close();
         }
@@ -130,7 +131,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public void update(Product entity) {
+    public void update(Product entity) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -157,14 +158,14 @@ public class JDBCProductDao implements ProductDao {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to update product info",ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -178,9 +179,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Problem with deleting a product");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to delete a product",ex);
         } finally {
             close();
         }
@@ -191,12 +192,12 @@ public class JDBCProductDao implements ProductDao {
         try {
             connection.close();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            log.trace("Could not close connection");
         }
     }
 
     @Override
-    public int countAllProducts() {
+    public int countAllProducts() throws DatabaseException {
         int count = 0;
 
         Statement statement = null;
@@ -214,9 +215,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Problem with rollback");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count products",ex);
         } finally {
             close();
         }
@@ -225,7 +226,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public int countProductsByCategory(String category) {
+    public int countProductsByCategory(String category) throws DatabaseException {
         int count = 0;
 
         PreparedStatement preparedStatement = null;
@@ -245,9 +246,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not count products by category");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count products by category",ex);
         } finally {
             close();
         }
@@ -256,7 +257,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public int countProductsByColor(String category) {
+    public int countProductsByColor(String category) throws DatabaseException {
         int count = 0;
 
         Statement statement = null;
@@ -274,9 +275,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not count products by category");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count products by color",ex);
         } finally {
             close();
         }
@@ -285,7 +286,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public int countProductsBySize(String category) {
+    public int countProductsBySize(String category) throws DatabaseException {
         int count = 0;
 
         Statement statement = null;
@@ -303,9 +304,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not count products by category");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count products by size",ex);
         } finally {
             close();
         }
@@ -314,7 +315,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findPerPage(int count, int limit, String orderBy, String orderDirection, String locale) {
+    public List<Product> findPerPage(int count, int limit, String orderBy, String orderDirection, String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -339,9 +340,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list products per page",ex);
         } finally {
             close();
         }
@@ -350,7 +351,7 @@ public class JDBCProductDao implements ProductDao {
 
     @Override
     public List<Product> findPerPageByCategory(int count, String name, String orderBy, String orderDirection,
-                                               String locale) {
+                                               String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -383,9 +384,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback in find per page by category");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list products per page by category",ex);
         } finally {
             close();
         }
@@ -393,7 +394,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findPerPageByColor(int count, String name, String orderBy, String orderDirection, String locale) {
+    public List<Product> findPerPageByColor(int count, String name, String orderBy, String orderDirection, String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -428,9 +429,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback in find per page by color");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list products per page by color",ex);
         } finally {
             close();
         }
@@ -438,7 +439,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findPerPageBySize(int count, String name, String orderBy, String orderDirection, String locale) {
+    public List<Product> findPerPageBySize(int count, String name, String orderBy, String orderDirection, String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -475,9 +476,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback in find per page by size");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list products per page by size",ex);
         } finally {
             close();
         }
@@ -485,7 +486,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Category> listAllCategories(String locale) {
+    public List<Category> listAllCategories(String locale) throws DatabaseException {
         List<Category> categoryList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -504,9 +505,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback in list all categories");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list all categories",ex);
         } finally {
             close();
         }
@@ -514,7 +515,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Color> listAllColors(String locale) {
+    public List<Color> listAllColors(String locale) throws DatabaseException {
         List<Color> colorList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -533,9 +534,9 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback in list all colors");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list all colors",ex);
         } finally {
             close();
         }
@@ -543,7 +544,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Size> listAllSizes(String locale) {
+    public List<Size> listAllSizes(String locale) throws DatabaseException {
         List<Size> sizeList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -562,14 +563,12 @@ public class JDBCProductDao implements ProductDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not rollback in list all sizes");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list all sizes",ex);
         } finally {
             close();
         }
         return sizeList;
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.store.controller.commands.admin;
 
 import com.store.controller.commands.Command;
 import com.store.model.entity.Product;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -21,7 +22,7 @@ public class AddProductCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, DatabaseException {
         log.info("Change product command started");
         String action = request.getParameter("action");
         String forward = null;
@@ -36,7 +37,7 @@ public class AddProductCommand implements Command {
         return forward;
     }
 
-    private String addProduct(HttpServletRequest request) {
+    private String addProduct(HttpServletRequest request) throws DatabaseException {
         String name = request.getParameter("name");
         String nameUK = request.getParameter("nameUK");
         String imageLink = request.getParameter("imageLink");

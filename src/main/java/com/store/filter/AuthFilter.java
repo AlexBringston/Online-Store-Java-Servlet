@@ -4,6 +4,7 @@ import com.store.controller.commands.CommandUtils;
 import com.store.controller.commands.LoginCommand;
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
 
@@ -36,13 +37,17 @@ public class AuthFilter implements Filter {
         }
         String locale = CommandUtils.checkForLocale(req);
         if (user != null) {
-            user = new UserService().findUserById(user.getId(), locale);
-
+            try {
+                user = new UserService().findUserById(user.getId(), locale);
+            } catch (DatabaseException e) {
+                request.setAttribute("errorMessage",e.getMessage());
+                req.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);
+            }
 
             log.trace(user.getRole().equals(Role.CLIENT) && user.getStatus().equals("Blocked"));
             if (user.getRole().equals(Role.CLIENT) && user.getStatus().equals("Blocked")) {
                 String errorMessage = "This user is blocked!!";
-                request.setAttribute("errorMessage",errorMessage);
+                request.setAttribute("errorMessage", errorMessage);
                 req.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);
             } else {
                 filterChain.doFilter(request, response);

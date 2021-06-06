@@ -4,6 +4,7 @@ import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.controller.commands.products.ProductListCommand;
 import com.store.model.entity.Product;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class DeleteProductCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, DatabaseException {
         int productId = 0;
         try {
             productId = Integer.parseInt(request.getParameter("id"));

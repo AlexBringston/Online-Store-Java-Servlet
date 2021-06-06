@@ -24,11 +24,7 @@ public class LogoutCommand implements Command{
             Cookie cookie = new Cookie("cart", CommandUtils.serializeCart((List<OrderItem>) session.getAttribute("cart")));
             response.addCookie(cookie);
         }
-        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
-                .getAttribute("loggedUsers");
-        if (loggedUsers != null) {
-            loggedUsers.remove(((User) session.getAttribute("user")).getLogin());
-        }
+
         session.invalidate();
         return "redirect:/products";
     }

@@ -2,6 +2,7 @@ package com.store.controller.commands;
 
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.OrderService;
 import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
@@ -22,43 +23,28 @@ public class LoginCommand implements Command {
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         HttpSession session = request.getSession();
         String login = request.getParameter("login");
         log.trace("Request parameter: login --> " + login);
         request.setAttribute("login", request.getParameter("login"));
         String password = request.getParameter("password");
 
-        String errorMessage;
         String forward = "/WEB-INF/error.jsp";
 
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            errorMessage = "Login/password cannot be empty";
-            request.setAttribute("errorMessage", errorMessage);
-            return "/WEB-INF/error.jsp";
+            throw new DatabaseException("Login or password cannot be empty");
         }
         User user = userService.findUserByLogin(login);
         log.trace("Found in DB: user --> " + user);
 
-        if (user == null) {
-            errorMessage = "User was not found";
-            request.setAttribute("errorMessage", errorMessage);
-            return "/WEB-INF/error.jsp";
-        } else if (!password.equals(user.getPassword())) {
-            errorMessage = "Cannot find user with such login/password";
-            request.setAttribute("errorMessage", errorMessage);
-            return "/WEB-INF/error.jsp";
+        if (user == null || !password.equals(user.getPassword())) {
+            throw new DatabaseException("Cannot find user with such login/password");
 
         } else {
             if (user.getStatus().equals("BLOCKED")) {
-                errorMessage = "This user was blocked";
-                request.setAttribute("errorMessage", errorMessage);
-                return "/WEB-INF/error.jsp";
+                throw new DatabaseException("This user was blocked");
 
-            } else if (CommandUtils.checkUserIsLogged(request, user.getLogin())) {
-                errorMessage = "This user has already logged in";
-                request.setAttribute("errorMessage", errorMessage);
-                return "/WEB-INF/error.jsp";
             }
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);

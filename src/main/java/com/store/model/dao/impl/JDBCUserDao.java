@@ -6,6 +6,9 @@ import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.dao.mapper.UserMapper;
 import com.store.model.entity.Order;
 import com.store.model.entity.User;
+import com.store.model.exception.DatabaseException;
+import com.store.model.service.ProductService;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,12 +21,14 @@ public class JDBCUserDao implements UserDao {
 
     private final Connection connection;
 
+    private static final Logger log = Logger.getLogger(JDBCUserDao.class);
+
     public JDBCUserDao(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public void create(User entity) {
+    public void create(User entity) throws DatabaseException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -50,16 +55,16 @@ public class JDBCUserDao implements UserDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not create user");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to create a user", ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public User findById(int id, String locale) {
+    public User findById(int id, String locale) throws DatabaseException {
         User user = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -75,7 +80,7 @@ public class JDBCUserDao implements UserDao {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException ex) {
-            throw new NoSuchElementException();
+            throw new DatabaseException("Error: could not find user by id", ex);
         } finally {
             close();
         }
@@ -83,7 +88,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public User findUserByLogin(String login) {
+    public User findUserByLogin(String login) throws DatabaseException {
         User user = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -99,7 +104,7 @@ public class JDBCUserDao implements UserDao {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DatabaseException("Error: could not find user by login", ex);
         } finally {
             close();
 
@@ -108,7 +113,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public int countAllUsers() {
+    public int countAllUsers() throws DatabaseException {
         int count = 0;
         Statement statement = null;
         ResultSet rs = null;
@@ -121,8 +126,7 @@ public class JDBCUserDao implements UserDao {
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-
-            ex.printStackTrace();
+            throw new DatabaseException("Error: could not count all users", ex);
         } finally {
             close();
         }
@@ -131,7 +135,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public List<User> listUsersPerPage(int pageNumber, int limit) {
+    public List<User> listUsersPerPage(int pageNumber, int limit) throws DatabaseException {
         List<User> userList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -155,9 +159,9 @@ public class JDBCUserDao implements UserDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not list users per page");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list users on page", ex);
         } finally {
             close();
         }
@@ -165,7 +169,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws DatabaseException {
         List<User> userList = new ArrayList<>();
         Statement statement = null;
         ResultSet resultSet = null;
@@ -184,9 +188,9 @@ public class JDBCUserDao implements UserDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find all users");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to list all users", ex);
         } finally {
             close();
 
@@ -195,7 +199,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public void update(User entity) {
+    public void update(User entity) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -216,16 +220,16 @@ public class JDBCUserDao implements UserDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not update user");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to update a user", ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -239,9 +243,9 @@ public class JDBCUserDao implements UserDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not delete user");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to delete a user", ex);
         } finally {
             close();
         }
@@ -252,7 +256,7 @@ public class JDBCUserDao implements UserDao {
         try {
             connection.close();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            log.trace("Could not close connection");
         }
     }
 }

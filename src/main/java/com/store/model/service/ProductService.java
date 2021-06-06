@@ -8,6 +8,7 @@ import com.store.model.entity.Category;
 import com.store.model.entity.Color;
 import com.store.model.entity.Product;
 import com.store.model.entity.Size;
+import com.store.model.exception.DatabaseException;
 import org.apache.log4j.Logger;
 
 
@@ -18,36 +19,36 @@ public class ProductService {
 
     DaoFactory daoFactory = DaoFactory.getInstance();
 
-    public List<Product> listAllProducts() {
+    public List<Product> listAllProducts() throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.findAll();
         }
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             dao.create(product);
         }
     }
 
-    public void updateProduct(Product product) {
+    public void updateProduct(Product product) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             dao.update(product);
         }
     }
 
-    public void addDeletedProduct(Product product) {
+    public void addDeletedProduct(Product product) throws DatabaseException {
         try (DeletedProductDao dao = daoFactory.createDeletedProductDao()) {
             dao.create(product);
         }
     }
 
-    public void deleteProduct(int productId) {
+    public void deleteProduct(int productId) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             dao.delete(productId);
         }
     }
-    public List<Product> listProductsPerPage(int pageNumber, int limit, String sort, String direction, String locale) {
+    public List<Product> listProductsPerPage(int pageNumber, int limit, String sort, String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -59,7 +60,7 @@ public class ProductService {
         }
     }
 
-    public List<Product> listProductsPerPageByColor(int number, String name, String sort, String direction, String locale) {
+    public List<Product> listProductsPerPageByColor(int number, String name, String sort, String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -71,7 +72,7 @@ public class ProductService {
         }
     }
 
-    public List<Product> listProductsPerPageBySize(int number, String name, String sort, String direction, String locale) {
+    public List<Product> listProductsPerPageBySize(int number, String name, String sort, String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -84,7 +85,7 @@ public class ProductService {
     }
 
     public List<Product> listProductsPerPageByCategory(int number, String name, String sort, String direction,
-                                                       String locale) {
+                                                       String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -95,42 +96,42 @@ public class ProductService {
             return dao.findPerPageByCategory(number, name, sort, direction, locale);
         }
     }
-    public int countAllProducts() {
+    public int countAllProducts() throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.countAllProducts();
         }
     }
 
-    public int countProductsByCategory(String category) {
+    public int countProductsByCategory(String category) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.countProductsByCategory(category);
         }
     }
 
-    public int countProductsByColor(String color) {
+    public int countProductsByColor(String color) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.countProductsByColor(color);
         }
     }
 
-    public int countProductsBySize(String size) {
+    public int countProductsBySize(String size) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.countProductsBySize(size);
         }
     }
 
-    public List<Category> listAllCategories(String locale) {
+    public List<Category> listAllCategories(String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.listAllCategories(locale);
         }
     }
 
-    public List<Color> listAllColors(String locale) {
+    public List<Color> listAllColors(String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.listAllColors(locale);
         }
     }
-    public List<Size> listAllSizes(String locale) {
+    public List<Size> listAllSizes(String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.listAllSizes(locale);
         }
@@ -145,7 +146,7 @@ public class ProductService {
         }
     }
 
-    public Product getProductById(int id, String locale) {
+    public Product getProductById(int id, String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.findById(id, locale);
         }

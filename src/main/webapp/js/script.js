@@ -1,3 +1,9 @@
+$(function () {
+    $('#depositButton').click(function () {
+        $('#depositForm').toggleClass('depositForm')
+    })
+});
+
 function countTotal(array) {
     let price = array[0];
     let id = array[1];

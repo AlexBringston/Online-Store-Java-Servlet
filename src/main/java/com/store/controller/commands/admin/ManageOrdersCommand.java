@@ -4,6 +4,7 @@ import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.model.dao.Utils;
 import com.store.model.entity.Order;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.OrderService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class ManageOrdersCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         String status = request.getParameter("status");
         String idValue = request.getParameter("id");
         int id = 0;

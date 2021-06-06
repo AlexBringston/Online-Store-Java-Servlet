@@ -4,6 +4,7 @@ import com.store.model.dao.OrderItemDao;
 import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.OrderItemMapper;
 import com.store.model.entity.OrderItem;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -23,7 +24,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public void create(OrderItem entity) {
+    public void create(OrderItem entity) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -45,16 +46,16 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not create order item");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to create order item", ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public OrderItem findById(int id, String locale) {
+    public OrderItem findById(int id, String locale) throws DatabaseException {
         OrderItem orderItem = new OrderItem();
         Statement statement = null;
         ResultSet rs = null;
@@ -73,9 +74,9 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find order item by id");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find order item by id", ex);
         } finally {
             close();
         }
@@ -83,7 +84,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public List<OrderItem> findAll() {
+    public List<OrderItem> findAll() throws DatabaseException {
         List<OrderItem> orderItemList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -102,9 +103,9 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find all order items");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find all order items", ex);
         } finally {
             close();
         }
@@ -112,7 +113,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public void update(OrderItem entity) {
+    public void update(OrderItem entity) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -129,16 +130,16 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not update order item");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to update order item", ex);
         } finally {
             close();
         }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws DatabaseException {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
@@ -152,9 +153,9 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find delete order item");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to delete order item", ex);
         } finally {
             close();
         }
@@ -165,12 +166,12 @@ public class JDBCOrderItemDao implements OrderItemDao {
         try {
             connection.close();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            log.trace("Could not close connection");
         }
     }
 
     @Override
-    public List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber, String locale) {
+    public List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException {
         List<OrderItem> orderItemList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -194,9 +195,9 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find items of order");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to find items of order", ex);
         } finally {
             close();
         }
@@ -204,7 +205,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public int countAllItemsInOrder(int orderId) {
+    public int countAllItemsInOrder(int orderId) throws DatabaseException {
         int count = 0;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -223,9 +224,9 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find orders of user");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count items in order", ex);
         } finally {
             close();
         }
@@ -233,7 +234,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public BigDecimal countTotalCost(int orderId) {
+    public BigDecimal countTotalCost(int orderId) throws DatabaseException {
         BigDecimal count = BigDecimal.ZERO;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -255,9 +256,9 @@ public class JDBCOrderItemDao implements OrderItemDao {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.trace("Could not find count total cost");
             }
-            ex.printStackTrace();
+            throw new DatabaseException("Error with trying to count total cost of order", ex);
         } finally {
             close();
         }

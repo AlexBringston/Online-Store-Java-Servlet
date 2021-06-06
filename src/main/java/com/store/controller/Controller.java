@@ -6,6 +6,7 @@ import com.store.controller.commands.products.ProductListCommand;
 import com.store.controller.commands.products.ProductsByCategoryCommand;
 import com.store.controller.commands.products.ProductsByColorCommand;
 import com.store.controller.commands.products.ProductsBySizeCommand;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.OrderService;
 import com.store.model.service.ProductService;
 import com.store.model.service.UserService;
@@ -37,7 +38,7 @@ public class Controller extends HttpServlet {
         commands.put("locale", new LocaleCommand());
         commands.put("authorization", new AuthorizationCommand());
         commands.put("admin", new AdminCommand());
-        commands.put("user", new UserCommand(new OrderService()));
+        commands.put("user", new UserCommand(new UserService(), new OrderService()));
         commands.put("order", new OrderCommand(new OrderService()));
         commands.put("showOrder", new ShowOrderCommand(new OrderService()));
         commands.put("manageProducts", new ManageProductsCommand(new ProductService()));
@@ -47,6 +48,8 @@ public class Controller extends HttpServlet {
         commands.put("manageUsers", new ManageUsersCommand(new UserService()));
         commands.put("changeUserStatus", new ChangeUserStatusCommand(new UserService()));
         commands.put("manageOrders", new ManageOrdersCommand(new OrderService()));
+        commands.put("success", new SuccessCommand());
+        commands.put("makeDeposit", new MakeDepositCommand(new UserService()));
     }
 
     public void doGet(HttpServletRequest request,
@@ -76,11 +79,18 @@ public class Controller extends HttpServlet {
         } else {
             command = commands.getOrDefault(path, (r,re) -> "/WEB-INF/product-list.jsp");
         }
-        String page = command.execute(request, response);
-        if(page.contains("redirect:")){
-            response.sendRedirect(page.replace("redirect:", "/app"));
-        }else {
-            request.getRequestDispatcher(page).forward(request, response);
+        String page = null;
+        try {
+            page = command.execute(request, response);
+            log.trace("page = " + page);
+            if(page.contains("redirect:")){
+                response.sendRedirect(page.replace("redirect:", "/app"));
+            }else {
+                request.getRequestDispatcher(page).forward(request, response);
+            }
+        } catch (DatabaseException e) {
+            request.setAttribute("errorMessage",e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);
         }
     }
 

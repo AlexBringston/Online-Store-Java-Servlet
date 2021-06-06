@@ -1,6 +1,7 @@
 package com.store.model.dao.mapper;
 
 import com.store.model.entity.Order;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.UserService;
 
 import java.sql.ResultSet;
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 
 public class OrderMapper implements ObjectMapper<Order>{
     @Override
-    public Order extractFromResultSet(ResultSet resultSet, String locale) throws SQLException {
+    public Order extractFromResultSet(ResultSet resultSet, String locale) throws SQLException, DatabaseException {
         Order order = new Order();
         order.setId(resultSet.getInt("id"));
         order.setUserId(resultSet.getInt("user_id"));

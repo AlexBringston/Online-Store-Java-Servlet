@@ -5,6 +5,7 @@ import com.store.model.entity.Category;
 import com.store.model.entity.Color;
 import com.store.model.entity.OrderItem;
 import com.store.model.entity.Size;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
@@ -19,7 +20,7 @@ public final class CommandUtils {
 
     private static final Logger log = Logger.getLogger(CommandUtils.class);
 
-    public static void setAttributes(HttpServletRequest request, ProductService productService) {
+    public static void setAttributes(HttpServletRequest request, ProductService productService) throws DatabaseException {
         String locale = checkForLocale(request);
         log.info("locale -> " +locale);
         List<Category> categories = productService.listAllCategories(locale);
@@ -42,7 +43,7 @@ public final class CommandUtils {
         return sb.deleteCharAt(sb.length()-1).toString();
     }
 
-    public static List<OrderItem> deserializeCart(HttpServletRequest request, String string) {
+    public static List<OrderItem> deserializeCart(HttpServletRequest request, String string) throws DatabaseException {
         List<OrderItem> cart = new ArrayList<>();
         String[] array = string.split("\\|");
         String locale = CommandUtils.checkForLocale(request);
@@ -89,23 +90,6 @@ public final class CommandUtils {
             pageCount++;
         }
         return pageCount;
-    }
-
-    public static boolean checkUserIsLogged(HttpServletRequest request, String userName){
-        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
-                .getAttribute("loggedUsers");
-        log.trace("Logged users " + loggedUsers);
-        if (loggedUsers == null) {
-            loggedUsers = new HashSet<>();
-        }
-        else if(loggedUsers.stream().anyMatch(userName::equals)){
-            return true;
-        }
-        loggedUsers.add(userName);
-        request.getSession().getServletContext()
-                .setAttribute("loggedUsers", loggedUsers);
-        log.trace("Logged users " + loggedUsers);
-        return false;
     }
 
     public static String checkForLocale(HttpServletRequest request) {

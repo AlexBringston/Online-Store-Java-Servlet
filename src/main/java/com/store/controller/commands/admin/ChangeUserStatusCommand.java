@@ -3,6 +3,7 @@ package com.store.controller.commands.admin;
 import com.store.controller.commands.Command;
 import com.store.controller.commands.CommandUtils;
 import com.store.model.entity.User;
+import com.store.model.exception.DatabaseException;
 import com.store.model.service.UserService;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class ChangeUserStatusCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, DatabaseException {
         int userId = Integer.parseInt(request.getParameter("id"));
         String locale = CommandUtils.checkForLocale(request);
         User user = userService.findUserById(userId, locale);
