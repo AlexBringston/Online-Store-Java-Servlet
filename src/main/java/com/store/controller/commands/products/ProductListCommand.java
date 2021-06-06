@@ -42,12 +42,10 @@ public class ProductListCommand implements Command {
         if (direction == null || direction.equals("")) {
             direction = "ASC";
         }
-        log.trace("sort -> " + sort);
-        log.trace("direction -> " + direction);
+
         request.setAttribute("sortWay", request.getParameter("parameter"));
         request.setAttribute("sortDirection", request.getParameter("sortDirection"));
         request.setAttribute("currentPage", page);
-        log.trace("Set the request attribute: currentPage --> " + page);
         int totalCount = productService.countAllProducts();
         request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
         String locale = CommandUtils.checkForLocale(request);
@@ -58,7 +56,6 @@ public class ProductListCommand implements Command {
 
         CommandUtils.setAttributes(request, productService);
 
-        log.trace("Set the request attribute: products --> " + products);
         log.debug("Commands finished");
         return "/WEB-INF/product-list.jsp";
     }

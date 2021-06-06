@@ -82,8 +82,6 @@ public class JDBCProductDao implements ProductDao {
                     " from products p, categories c, colors co, sizes s WHERE p.id = %d and c.id = p.category_id " +
                     "and co.id = p.color_id and s.id = p.size_id";
             String newSQL = String.format(SQL, locale, locale, locale, locale, id);
-            log.trace("LOCALE" + locale);
-            log.trace("FIND PRODUCT " + newSQL);
             rs = statement.executeQuery(newSQL);
             if (rs.next()) {
                 product = mapper.extractFromResultSet(rs, locale);

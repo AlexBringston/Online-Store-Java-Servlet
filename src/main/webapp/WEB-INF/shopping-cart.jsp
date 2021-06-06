@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1" isELIgnored="false" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <html>
@@ -27,25 +26,25 @@
     <div class="container">
         <div class="row names">
             <div class="col">
-                Image
+                <fmt:message key="label.image"/>
             </div>
             <div class="col">
-                Product name
+                <fmt:message key="label.product.name"/>
             </div>
             <div class="col">
-                Size
+                <fmt:message key="label.size"/>
             </div>
             <div class="col">
-                Price
+                <fmt:message key="label.price"/>
             </div>
             <div class="col">
-                Quantity
+                <fmt:message key="label.quantity"/>
             </div>
             <div class="col">
-                Total
+                <fmt:message key="label.total"/>
             </div>
             <div class="col">
-                Action
+                <fmt:message key="label.action"/>
             </div>
         </div>
         <c:set var="total" value="0"/>
@@ -78,7 +77,7 @@
                         </div>
                         <div class="col">
                             <a href="${pageContext.request.contextPath }/app/cart?action=remove&id=${item.product.id }"
-                               onclick="return confirm('Are you sure?')">Remove</a>
+                               onclick="return confirm('Are you sure?')"><fmt:message key="label.remove"/></a>
                         </div>
                     </div>
 
@@ -86,10 +85,10 @@
             </div>
 
             <div class="Total">
-                <a href="${pageContext.request.contextPath }/app/products">Continue Shopping</a>
-                <span id="totalAmount">Total: ${total}</span>
+                <a href="${pageContext.request.contextPath }/app/products"><fmt:message key="label.continue"/></a>
+                <span id="totalAmount">><fmt:message key="label.total"/>: ${total}</span>
                 <c:if test="${sessionScope.userRole == 'CLIENT'}">
-                    <input type="submit" class="btn btn-outline-success" value="Make order">
+                    <input type="submit" class="btn btn-outline-success" value="<fmt:message key="label.make.order"/>">
                 </c:if>
             </div>
         </form>

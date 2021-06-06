@@ -41,7 +41,7 @@
         </div>
         <div class="items">
             <jsp:useBean id="dateValue" class="java.util.Date"/>
-            <c:forEach var="order" items="${orders}">
+            <c:forEach var="order" items="${requestScope.orders}">
             <form method="POST" action="${pageContext.request.contextPath}/app/manageOrders">
                 <input type="hidden" value="${order.id}" name="id"/>
                 <div class="row item">
@@ -52,8 +52,9 @@
                             ${order.user.login}
                     </div>
                     <div class="col">
-                        <fmt:parseDate value="${order.createdAt}" var="dateValue" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        <fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy hh:mm a"/>
+                        <fmt:parseDate value="${order.createdAt }" var="dateValue" pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <fmt:formatDate value="${dateValue}" type="date"/>
+                        <fmt:formatDate value="${dateValue}" timeStyle = "short" type="time"/>
                     </div>
 
                     <div class="col">

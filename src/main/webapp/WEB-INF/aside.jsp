@@ -13,7 +13,7 @@
 <fmt:setBundle basename="messages"/>
 
 <div id="productCatalog" class="panel panel-success">
-    <div class="panel-heading">Product categories</div>
+    <div class="panel-heading"><fmt:message key="label.product.categories"/></div>
     <div class="list-group">
         <c:forEach var="category" items="${requestScope.categories}">
             <a
@@ -24,9 +24,9 @@
         </c:forEach>
     </div>
     <br>
-    <div class="panel-heading">Product colors</div>
+    <div class="panel-heading"><fmt:message key="label.product.colors"/></div>
     <div class="list-group">
-        <c:forEach var="color" items="${colors}">
+        <c:forEach var="color" items="${requestScope.colors}">
             <a
                     href="${pageContext.request.contextPath}/app/products/color/${color.name}" class="list-group-item">
                 <span>${color.name}</span>
@@ -34,9 +34,9 @@
         </c:forEach>
     </div>
     <br>
-    <div class="panel-heading">Product sizes</div>
+    <div class="panel-heading"><fmt:message key="label.product.sizes"/></div>
     <div class="list-group">
-        <c:forEach var="size" items="${sizes}">
+        <c:forEach var="size" items="${requestScope.sizes}">
             <a
                     href="${pageContext.request.contextPath}/app/products/size/${size.name}" class="list-group-item">
                 <span>${size.name}</span>
