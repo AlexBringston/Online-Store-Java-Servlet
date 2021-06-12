@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 public class JDBCDeletedProductDao implements DeletedProductDao {
@@ -62,7 +63,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
     }
 
     @Override
-    public Product findById(int id, String locale) throws DatabaseException {
+    public Optional<Product> findById(int id, String locale) throws DatabaseException {
         Product product = new Product();
         Statement statement = null;
         ResultSet rs = null;
@@ -86,11 +87,11 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         } finally {
             close();
         }
-        return product;
+        return Optional.ofNullable(product);
     }
 
     @Override
-    public List<Product> findAll() throws DatabaseException {
+    public Optional<List<Product>> findAll() throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -109,7 +110,7 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         } finally {
             close();
         }
-        return productList;
+        return Optional.ofNullable(productList);
     }
 
     @Override

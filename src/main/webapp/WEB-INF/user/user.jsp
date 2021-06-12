@@ -78,7 +78,7 @@
             <a href="${requestScope['javax.servlet.forward.request_uri']}?page=1"><fmt:message key="label.first.page" /></a>
             <c:if test="${requestScope.currentPage gt 1}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${requestScope.currentPage - 1}"
-                   id="prevPage">"><fmt:message key="label.prev.page" /></</a>
+                   id="prevPage"><fmt:message key="label.prev.page" /></</a>
             </c:if>
             <c:if test="${requestScope.currentPage lt requestScope.pageCount}">
                 <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${requestScope.currentPage + 1}"

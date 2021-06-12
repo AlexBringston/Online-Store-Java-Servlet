@@ -17,72 +17,95 @@ public class OrderService {
     DaoFactory daoFactory = DaoFactory.getInstance();
 
     public List<Order> listAllOrders() throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.findAll();
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        return orderDao.findAll().orElseThrow(() -> new DatabaseException("Could not list orders"));
+
     }
 
     public List<Order> listOrdersPerPage(int pageNumber, int limit) throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.findOrdersPerPage(pageNumber, limit);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        return orderDao.findOrdersPerPage(pageNumber, limit).orElseThrow(
+                () -> new DatabaseException("Could not list orders on current page"));
     }
 
     public int countAllOrders() throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.countAllOrders();
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        return orderDao.countAllOrders();
+
     }
 
     public void updateOrder(Order order) throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            dao.update(order);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        orderDao.update(order);
+
     }
 
     public List<Order> findOrdersOfUser(int userId, int pageNumber, int limit) throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.findOrdersOfUser(userId, pageNumber, limit);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        return orderDao.findOrdersOfUser(userId, pageNumber, limit).orElseThrow(
+                () -> new DatabaseException("Could not find orders of user"));
+
     }
 
     public int countAllOrdersOfUser(int userId) throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.countAllOrdersOfUser(userId);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        return orderDao.countAllOrdersOfUser(userId);
     }
 
     public List<OrderItem> findItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException {
-        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
-            return dao.findAllItemsOfOrder(orderId, pageNumber, locale);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderItemDao orderItemDao = daoFactory.createOrderItemDao();
+        return orderItemDao.findAllItemsOfOrder(orderId, pageNumber, locale).orElseThrow(
+                () -> new DatabaseException("Could not find content of given order"));
+
     }
+
     public BigDecimal countTotalCost(int orderId) throws DatabaseException {
-        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
-            return dao.countTotalCost(orderId);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderItemDao orderItemDao = daoFactory.createOrderItemDao();
+        return orderItemDao.countTotalCost(orderId);
+
     }
 
     public int countAllItemsOfOrder(int orderId) throws DatabaseException {
-        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
-            return dao.countAllItemsInOrder(orderId);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderItemDao orderItemDao = daoFactory.createOrderItemDao();
+        return orderItemDao.countAllItemsInOrder(orderId);
+
     }
 
     public Order findOrderById(int orderId, String locale) throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.findById(orderId, locale);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        return orderDao.findById(orderId, locale).orElseThrow(() -> new DatabaseException("Error with order"));
     }
+
     public void createOrder(Order order) throws DatabaseException {
-        try (OrderDao dao = daoFactory.createOrderDao()) {
-            dao.create(order);
-        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderDao orderDao = daoFactory.createOrderDao();
+        orderDao.create(order);
     }
 
     public void createOrderItem(OrderItem orderItem) throws DatabaseException {
-        try (OrderItemDao dao = daoFactory.createOrderItemDao()) {
-            dao.create(orderItem);
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        OrderItemDao orderItemDao = daoFactory.createOrderItemDao();
+        orderItemDao.create(orderItem);
+    }
+
+    public void createAndFillOrder(Order order, List<OrderItem> orderItemList) throws DatabaseException {
+        OrderDao orderDao = daoFactory.createOrderDao();
+        OrderItemDao orderItemDao = daoFactory.createOrderItemDao();
+
+        orderDao.create(order);
+        for (OrderItem orderItem : orderItemList) {
+            orderItem.setOrderId(order.getId());
+            orderItemDao.create(orderItem);
         }
     }
 }

@@ -16,6 +16,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class JDBCUserDao implements UserDao {
 
@@ -64,7 +65,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public User findById(int id, String locale) throws DatabaseException {
+    public Optional<User> findById(int id, String locale) throws DatabaseException {
         User user = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -84,11 +85,11 @@ public class JDBCUserDao implements UserDao {
         } finally {
             close();
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public User findUserByLogin(String login) throws DatabaseException {
+    public Optional<User> findUserByLogin(String login) throws DatabaseException {
         User user = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -109,7 +110,7 @@ public class JDBCUserDao implements UserDao {
             close();
 
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -135,7 +136,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public List<User> listUsersPerPage(int pageNumber, int limit) throws DatabaseException {
+    public Optional<List<User>> listUsersPerPage(int pageNumber, int limit) throws DatabaseException {
         List<User> userList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -165,11 +166,11 @@ public class JDBCUserDao implements UserDao {
         } finally {
             close();
         }
-        return userList;
+        return Optional.of(userList);
     }
 
     @Override
-    public List<User> findAll() throws DatabaseException {
+    public Optional<List<User>> findAll() throws DatabaseException {
         List<User> userList = new ArrayList<>();
         Statement statement = null;
         ResultSet resultSet = null;
@@ -195,7 +196,7 @@ public class JDBCUserDao implements UserDao {
             close();
 
         }
-        return userList;
+        return Optional.ofNullable(userList);
     }
 
     @Override

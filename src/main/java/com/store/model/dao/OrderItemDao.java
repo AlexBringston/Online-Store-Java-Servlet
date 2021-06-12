@@ -5,10 +5,11 @@ import com.store.model.exception.DatabaseException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderItemDao extends GenericDao<OrderItem>{
 
-    List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException;
+    Optional<List<OrderItem>> findAllItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException;
 
     int countAllItemsInOrder(int orderId) throws DatabaseException;
 

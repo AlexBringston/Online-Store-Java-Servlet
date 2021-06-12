@@ -16,13 +16,13 @@ public class UserService {
 
     public User findUserByLogin(String login) throws DatabaseException {
         try (UserDao dao = daoFactory.createUserDao()) {
-            return dao.findUserByLogin(login);
+            return dao.findUserByLogin(login).orElseThrow(() -> new DatabaseException("Could not find user by login"));
         }
     }
 
     public User findUserById(int userId, String locale) throws DatabaseException {
         try (UserDao dao = daoFactory.createUserDao()) {
-            return dao.findById(userId, locale);
+            return dao.findById(userId, locale).orElseThrow(() -> new DatabaseException("Could not find user"));
         }
     }
 
@@ -39,7 +39,8 @@ public class UserService {
     }
     public List<User> listUsers(int pageNumber, int limit) throws DatabaseException {
         try (UserDao dao = daoFactory.createUserDao()) {
-            return dao.listUsersPerPage(pageNumber, limit);
+            return dao.listUsersPerPage(pageNumber, limit).orElseThrow(() -> new DatabaseException("Could not list " +
+                    "users"));
         }
     }
 }

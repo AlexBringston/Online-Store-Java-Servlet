@@ -19,9 +19,10 @@ public class ProductService {
 
     DaoFactory daoFactory = DaoFactory.getInstance();
 
+
     public List<Product> listAllProducts() throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findAll();
+            return dao.findAll().orElseThrow(() -> new DatabaseException("Could not list products"));
         }
     }
 
@@ -48,6 +49,7 @@ public class ProductService {
             dao.delete(productId);
         }
     }
+
     public List<Product> listProductsPerPage(int pageNumber, int limit, String sort, String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
@@ -56,11 +58,13 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPage(pageNumber, limit, sort, direction, locale);
+            return dao.findPerPage(pageNumber, limit, sort, direction, locale).orElseThrow(
+                    () -> new DatabaseException("Could not list products of page"));
         }
     }
 
-    public List<Product> listProductsPerPageByColor(int number, String name, String sort, String direction, String locale) throws DatabaseException {
+    public List<Product> listProductsPerPageByColor(int number, String name, String sort,
+                                                    String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -68,11 +72,13 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPageByColor(number, name, sort, direction, locale);
+            return dao.findPerPageByColor(number, name, sort, direction, locale).orElseThrow(
+                    () -> new DatabaseException("Could not list products of page by color"));
         }
     }
 
-    public List<Product> listProductsPerPageBySize(int number, String name, String sort, String direction, String locale) throws DatabaseException {
+    public List<Product> listProductsPerPageBySize(int number, String name, String sort,
+                                                   String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -80,12 +86,13 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPageBySize(number, name, sort, direction, locale);
+            return dao.findPerPageBySize(number, name, sort, direction, locale).orElseThrow(
+                    () -> new DatabaseException("Could not list products of page by size"));
         }
     }
 
-    public List<Product> listProductsPerPageByCategory(int number, String name, String sort, String direction,
-                                                       String locale) throws DatabaseException {
+    public List<Product> listProductsPerPageByCategory(int number, String name, String sort,
+                                                       String direction, String locale) throws DatabaseException {
         if (sort.equals("size")) {
             sort = "size_id";
         }
@@ -93,9 +100,11 @@ public class ProductService {
             sort = "created_at";
         }
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findPerPageByCategory(number, name, sort, direction, locale);
+            return dao.findPerPageByCategory(number, name, sort, direction, locale).orElseThrow(
+                    () -> new DatabaseException("Could not list products of page by category"));
         }
     }
+
     public int countAllProducts() throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
             return dao.countAllProducts();
@@ -122,24 +131,28 @@ public class ProductService {
 
     public List<Category> listAllCategories(String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.listAllCategories(locale);
+            return dao.listAllCategories(locale).orElseThrow(
+                    () -> new DatabaseException("Could not list categories"));
         }
     }
 
     public List<Color> listAllColors(String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.listAllColors(locale);
+            return dao.listAllColors(locale).orElseThrow(
+                    () -> new DatabaseException("Could not list colors"));
         }
     }
+
     public List<Size> listAllSizes(String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.listAllSizes(locale);
+            return dao.listAllSizes(locale).orElseThrow(
+                    () -> new DatabaseException("Could not list sizes"));
         }
     }
 
     public String getSortDirection(String direction) {
         if (direction.equalsIgnoreCase("ascending") || direction.equalsIgnoreCase("По зростанню") ||
-        direction.equals("")) {
+                direction.equals("")) {
             return "ASC";
         } else {
             return "DESC";
@@ -148,7 +161,7 @@ public class ProductService {
 
     public Product getProductById(int id, String locale) throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
-            return dao.findById(id, locale);
+            return dao.findById(id, locale).orElseThrow(() -> new DatabaseException("Could not get product"));
         }
     }
 }

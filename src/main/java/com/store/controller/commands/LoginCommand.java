@@ -38,7 +38,7 @@ public class LoginCommand implements Command {
         User user = userService.findUserByLogin(login);
         log.trace("Found in DB: user --> " + user);
 
-        if (user == null || !password.equals(user.getPassword())) {
+        if (!password.equals(user.getPassword())) {
             throw new DatabaseException("Cannot find user with such login/password");
 
         } else {

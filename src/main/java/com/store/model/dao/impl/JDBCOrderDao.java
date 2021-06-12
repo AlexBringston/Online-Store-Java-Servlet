@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@SuppressWarnings("ALL")
 public class JDBCOrderDao implements OrderDao {
 
     private Connection connection;
@@ -53,7 +55,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public Order findById(int id, String locale) throws DatabaseException {
+    public Optional<Order> findById(int id, String locale) throws DatabaseException {
         Order order = new Order();
         Statement statement = null;
         ResultSet rs = null;
@@ -73,11 +75,11 @@ public class JDBCOrderDao implements OrderDao {
         } finally {
             close();
         }
-        return order;
+        return Optional.ofNullable(order);
     }
 
     @Override
-    public List<Order> findAll() throws DatabaseException {
+    public Optional<List<Order>> findAll() throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -102,7 +104,7 @@ public class JDBCOrderDao implements OrderDao {
         } finally {
             close();
         }
-        return orderList;
+        return Optional.ofNullable(orderList);
     }
 
     @Override
@@ -162,7 +164,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersOfUser(int userId, int pageNumber, int limit) throws DatabaseException {
+    public Optional<List<Order>> findOrdersOfUser(int userId, int pageNumber, int limit) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -193,7 +195,7 @@ public class JDBCOrderDao implements OrderDao {
         } finally {
             close();
         }
-        return orderList;
+        return Optional.of(orderList);
     }
 
     @Override
@@ -241,7 +243,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersPerPage(int pageNumber, int limit) throws DatabaseException {
+    public Optional<List<Order>> findOrdersPerPage(int pageNumber, int limit) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -269,6 +271,6 @@ public class JDBCOrderDao implements OrderDao {
         } finally {
             close();
         }
-        return orderList;
+        return Optional.of(orderList);
     }
 }

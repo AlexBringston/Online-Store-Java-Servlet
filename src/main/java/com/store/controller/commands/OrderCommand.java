@@ -44,11 +44,7 @@ public class OrderCommand implements Command{
         }
 
         if (user.getBalance().subtract(totalSum).compareTo(BigDecimal.ZERO) >= 0) {
-            orderService.createOrder(order);
-            for (OrderItem orderItem : cart) {
-                orderItem.setOrderId(order.getId());
-                orderService.createOrderItem(orderItem);
-            }
+            orderService.createAndFillOrder(order, cart);
             user.setBalance(user.getBalance().subtract(totalSum));
             new UserService().updateUser(user);
             session.removeAttribute("cart");

@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 public class JDBCProductDao implements ProductDao {
@@ -70,7 +71,7 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public Product findById(int id, String locale) throws DatabaseException {
+    public Optional<Product> findById(int id, String locale) throws DatabaseException {
         Product product = new Product();
         Statement statement = null;
         ResultSet rs = null;
@@ -99,11 +100,11 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return product;
+        return Optional.ofNullable(product);
     }
 
     @Override
-    public List<Product> findAll() throws DatabaseException {
+    public Optional<List<Product>> findAll() throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -127,7 +128,7 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return productList;
+        return Optional.ofNullable(productList);
     }
 
     @Override
@@ -315,7 +316,8 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findPerPage(int count, int limit, String orderBy, String orderDirection, String locale) throws DatabaseException {
+    public Optional<List<Product>> findPerPage(int count, int limit, String orderBy, String orderDirection,
+                                               String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -346,11 +348,11 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return productList;
+        return Optional.of(productList);
     }
 
     @Override
-    public List<Product> findPerPageByCategory(int count, String name, String orderBy, String orderDirection,
+    public Optional<List<Product>> findPerPageByCategory(int count, String name, String orderBy, String orderDirection,
                                                String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
@@ -390,11 +392,12 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return productList;
+        return Optional.of(productList);
     }
 
     @Override
-    public List<Product> findPerPageByColor(int count, String name, String orderBy, String orderDirection, String locale) throws DatabaseException {
+    public Optional<List<Product>> findPerPageByColor(int count, String name, String orderBy, String orderDirection,
+                                                      String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -435,11 +438,12 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return productList;
+        return Optional.of(productList);
     }
 
     @Override
-    public List<Product> findPerPageBySize(int count, String name, String orderBy, String orderDirection, String locale) throws DatabaseException {
+    public Optional<List<Product>> findPerPageBySize(int count, String name, String orderBy, String orderDirection,
+                                                     String locale) throws DatabaseException {
         List<Product> productList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -482,11 +486,11 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return productList;
+        return Optional.of(productList);
     }
 
     @Override
-    public List<Category> listAllCategories(String locale) throws DatabaseException {
+    public Optional<List<Category>> listAllCategories(String locale) throws DatabaseException {
         List<Category> categoryList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -511,11 +515,11 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return categoryList;
+        return Optional.of(categoryList);
     }
 
     @Override
-    public List<Color> listAllColors(String locale) throws DatabaseException {
+    public Optional<List<Color>> listAllColors(String locale) throws DatabaseException {
         List<Color> colorList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -540,11 +544,11 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return colorList;
+        return Optional.of(colorList);
     }
 
     @Override
-    public List<Size> listAllSizes(String locale) throws DatabaseException {
+    public Optional<List<Size>> listAllSizes(String locale) throws DatabaseException {
         List<Size> sizeList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -569,6 +573,6 @@ public class JDBCProductDao implements ProductDao {
         } finally {
             close();
         }
-        return sizeList;
+        return Optional.of(sizeList);
     }
 }

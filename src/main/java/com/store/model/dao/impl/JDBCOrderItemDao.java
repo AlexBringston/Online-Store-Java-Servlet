@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class JDBCOrderItemDao implements OrderItemDao {
 
@@ -55,7 +56,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public OrderItem findById(int id, String locale) throws DatabaseException {
+    public Optional<OrderItem> findById(int id, String locale) throws DatabaseException {
         OrderItem orderItem = new OrderItem();
         Statement statement = null;
         ResultSet rs = null;
@@ -80,11 +81,11 @@ public class JDBCOrderItemDao implements OrderItemDao {
         } finally {
             close();
         }
-        return orderItem;
+        return Optional.ofNullable(orderItem);
     }
 
     @Override
-    public List<OrderItem> findAll() throws DatabaseException {
+    public Optional<List<OrderItem>> findAll() throws DatabaseException {
         List<OrderItem> orderItemList = new ArrayList<>();
         Statement statement = null;
         ResultSet rs = null;
@@ -109,7 +110,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
         } finally {
             close();
         }
-        return orderItemList;
+        return Optional.ofNullable(orderItemList);
     }
 
     @Override
@@ -171,7 +172,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public List<OrderItem> findAllItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException {
+    public Optional<List<OrderItem>> findAllItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException {
         List<OrderItem> orderItemList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -201,7 +202,7 @@ public class JDBCOrderItemDao implements OrderItemDao {
         } finally {
             close();
         }
-        return orderItemList;
+        return Optional.of(orderItemList);
     }
 
     @Override

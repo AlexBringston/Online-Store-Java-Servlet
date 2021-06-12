@@ -4,12 +4,13 @@ import com.store.model.entity.User;
 import com.store.model.exception.DatabaseException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao extends GenericDao<User>{
 
-    User findUserByLogin(String login) throws DatabaseException;
+    Optional<User> findUserByLogin(String login) throws DatabaseException;
 
     int countAllUsers() throws DatabaseException;
 
-    List<User> listUsersPerPage(int pageNumber, int limit) throws DatabaseException;
+    Optional<List<User>> listUsersPerPage(int pageNumber, int limit) throws DatabaseException;
 }
