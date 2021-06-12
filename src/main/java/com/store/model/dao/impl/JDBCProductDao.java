@@ -112,7 +112,10 @@ public class JDBCProductDao implements ProductDao {
             connection.setAutoCommit(false);
             ProductMapper mapper = new ProductMapper();
             statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT * FROM products");
+            String sql = "SELECT p.id, p.name, image_link, price, category_id, size_id, color_id, created_at, " +
+                    " c.name as category, co.name as color, s.name as size" +
+                    " from products p, categories c, colors co, sizes s";
+            rs = statement.executeQuery(sql);
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs, ""));
             }
@@ -258,25 +261,27 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public int countProductsByColor(String category) throws DatabaseException {
+    public int countProductsByColor(String color) throws DatabaseException {
         int count = 0;
 
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
             connection.setAutoCommit(false);
-            statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT COUNT(*) FROM products");
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM products where color_id = " +
+                            "(SELECT id FROM colors where name = ?)");
+            preparedStatement.setString(1, color);
+            rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
             }
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                log.trace("Could not count products by category");
+                log.trace("Could not count products by color");
             }
             throw new DatabaseException("Error with trying to count products by color",ex);
         } finally {
@@ -287,25 +292,27 @@ public class JDBCProductDao implements ProductDao {
     }
 
     @Override
-    public int countProductsBySize(String category) throws DatabaseException {
+    public int countProductsBySize(String size) throws DatabaseException {
         int count = 0;
 
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         try {
             connection.setAutoCommit(false);
-            statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT COUNT(*) FROM products");
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM products where size_id = " +
+                    "(SELECT id FROM sizes where name = ?)");
+            preparedStatement.setString(1, size);
+            rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
             }
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
-                log.trace("Could not count products by category");
+                log.trace("Could not count products by size");
             }
             throw new DatabaseException("Error with trying to count products by size",ex);
         } finally {
@@ -373,10 +380,8 @@ public class JDBCProductDao implements ProductDao {
             String newSQL = String.format(SQL, locale, locale, locale, locale, name, name, orderBy, orderDirection,
                     Utils.PRODUCTS_PER_PAGE,
                     offset);
-            log.trace("SQL query : " + newSQL);
             statement = connection.createStatement();
             rs = statement.executeQuery(newSQL);
-            log.trace("resultset " + rs);
             while (rs.next()) {
                 productList.add(mapper.extractFromResultSet(rs, locale));
             }
@@ -420,7 +425,6 @@ public class JDBCProductDao implements ProductDao {
             String newSQL = String.format(SQL, locale, locale, locale, locale, name, name, orderBy, orderDirection,
                     Utils.PRODUCTS_PER_PAGE,
                     offset);
-            log.trace("SQL query : " + newSQL);
             statement = connection.createStatement();
             rs = statement.executeQuery(newSQL);
             while (rs.next()) {
@@ -468,7 +472,6 @@ public class JDBCProductDao implements ProductDao {
                     orderDirection,
                     Utils.PRODUCTS_PER_PAGE,
                     offset);
-            log.trace("SQL query : " + newSQL);
             statement = connection.createStatement();
             rs = statement.executeQuery(newSQL);
             while (rs.next()) {
