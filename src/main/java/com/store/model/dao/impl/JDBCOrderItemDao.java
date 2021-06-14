@@ -44,11 +44,13 @@ public class JDBCOrderItemDao implements OrderItemDao {
             connection.commit();
             preparedStatement.close();
         } catch (SQLException ex) {
+            log.trace(ex.getMessage());
             try {
                 connection.rollback();
             } catch (SQLException throwables) {
                 log.trace("Could not create order item");
             }
+
             throw new DatabaseException("Error with trying to create order item", ex);
         } finally {
             close();

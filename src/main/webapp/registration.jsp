@@ -7,24 +7,24 @@
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-    <title>Login page</title>
+    <title>Registration page</title>
 </head>
 <body>
-<div id="localePlaceHolder">
     <c:if test="${sessionScope.locale == 'english'}">
         <fmt:setLocale value="en"/>
     </c:if>
     <c:if test="${sessionScope.locale == 'ukrainian'}">
         <fmt:setLocale value="uk-UA"/>
     </c:if>
-</div>
+
+
 <fmt:setBundle basename="messages"/>
 <header>
     <jsp:include page="WEB-INF/header.jsp"/>
 </header>
 <section class="Login">
     <div class="container">
-        <form method="POST" action="${pageContext.request.contextPath}/app/login">
+        <form method="POST" action="${pageContext.request.contextPath}/app/register?action=perform">
             <div class="loginForm">
                 <div class="mt-4">
                     <span><fmt:message key="label.login" /></span>
@@ -34,13 +34,21 @@
                     <span><fmt:message key="label.password" /></span>
                     <input type="password" name="password" class="form-control" required>
                 </div>
+                <div class="mt-4">
+                    <span><fmt:message key="label.first.name" /></span>
+                    <input type="text" name="firstName" class="form-control" pattern="[a-zA-Z\u0400-\u04ff]+" required>
+                </div>
+                <div class="mt-4">
+                    <span><fmt:message key="label.last.name" /></span>
+                    <input type="text" name="lastName" class="form-control" pattern="[a-zA-Z\u0400-\u04ff]+" required>
+                </div>
                 <div class="mt-4 Submit">
                     <input type="submit" value="Login" class="btn btn-primary">
                 </div>
             </div>
         </form>
 
-        <a href="${pageContext.request.contextPath}/app/register">Register</a>
+        <a href="${pageContext.request.contextPath}/app/login">Login</a>
 
     </div>
 </section>

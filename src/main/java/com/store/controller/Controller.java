@@ -20,13 +20,33 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Main controller
+ * This controller initializes all commands which are user to navigate through site and implements methods of get or
+ * post methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class Controller extends HttpServlet {
-
+    /**
+     * Variable to keep class serializable
+     */
     private static final long serialVersionUID = 2423353715955164816L;
 
+    /**
+     * Logger to control proper work of program
+     */
     private static final Logger log = Logger.getLogger(Controller.class);
 
-    Map<String, Command> commands = new HashMap<>();
+    /**
+     * Hashmap which stores all commands names and corresponding classes
+     */
+    private final Map<String, Command> commands = new HashMap<>();
+
+    /**
+     * Method to initialize every command used in program
+     */
     public void init(){
         commands.put("products", new ProductListCommand(new ProductService()));
         commands.put("cart", new CartCommand(new ProductService()));
@@ -34,6 +54,7 @@ public class Controller extends HttpServlet {
         commands.put("color", new ProductsByColorCommand(new ProductService()));
         commands.put("size", new ProductsBySizeCommand(new ProductService()));
         commands.put("login", new LoginCommand(new UserService()));
+        commands.put("register", new RegistrationCommand(new UserService()));
         commands.put("logout", new LogoutCommand());
         commands.put("locale", new LocaleCommand());
         commands.put("authorization", new AuthorizationCommand());
@@ -52,17 +73,40 @@ public class Controller extends HttpServlet {
         commands.put("makeDeposit", new MakeDepositCommand(new UserService()));
     }
 
+    /**
+     * Method to implement get query
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @throws IOException if there was a problem to read data
+     * @throws ServletException if there was an error with servlet
+     */
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
             throws IOException, ServletException {
         process(request, response);
     }
 
+    /**
+     * Method to implement post query
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @throws IOException if there was a problem to read data
+     * @throws ServletException if there was an error with servlet
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         process(request, response);
     }
 
+    /**
+     * Main method of program which controls all ways to navigate through website. It checks path, changes it to get
+     * a last variable, checks commands for corresponding way and makes a redirect or forward depending on what
+     * command returns.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @throws IOException if there was a problem to read data
+     * @throws ServletException if there was an error with servlet
+     */
     private void process(HttpServletRequest request,
                          HttpServletResponse response) throws IOException, ServletException {
         log.debug("Controller starts");

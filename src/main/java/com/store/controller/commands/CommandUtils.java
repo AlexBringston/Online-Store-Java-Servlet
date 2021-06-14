@@ -1,6 +1,5 @@
 package com.store.controller.commands;
 
-import com.oracle.wls.shaded.org.apache.xpath.operations.Or;
 import com.store.model.entity.Category;
 import com.store.model.entity.Color;
 import com.store.model.entity.OrderItem;
@@ -12,14 +11,27 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Utils class with methods which are used in different commands.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public final class CommandUtils {
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(CommandUtils.class);
 
+    /**
+     * Method to set multiple attributes for product page to avoid code duplication.
+     * @param request HttpServletRequest instance
+     * @param productService - product service instance
+     * @throws DatabaseException if service methods get errors
+     */
     public static void setAttributes(HttpServletRequest request, ProductService productService) throws DatabaseException {
         String locale = checkForLocale(request);
         log.info("locale -> " +locale);
@@ -31,6 +43,11 @@ public final class CommandUtils {
         request.setAttribute("sizes" , sizes);
     }
 
+    /**
+     * Method to serialize cart items in string in order to cache them and not lose them after user logout.
+     * @param cart List of OrderItem objects
+     * @return string which contains serialized cart items
+     */
     public static String serializeCart(List<OrderItem> cart) {
 
         StringBuilder sb = new StringBuilder();
@@ -43,6 +60,12 @@ public final class CommandUtils {
         return sb.deleteCharAt(sb.length()-1).toString();
     }
 
+    /**
+     * Method to deserialize cart items from given string.
+     * @param request HttpServletRequest instance
+     * @param string String which contains serialized cart items
+     * @return list of deserialized cart OrderItem items
+     */
     public static List<OrderItem> deserializeCart(HttpServletRequest request, String string) throws DatabaseException {
         List<OrderItem> cart = new ArrayList<>();
         String[] array = string.split("\\|");
@@ -62,6 +85,12 @@ public final class CommandUtils {
         return cart;
     }
 
+    /**
+     * Method to check if product with given id is present in the cart
+     * @param id product id
+     * @param cart list of cart items
+     * @return index of product in cart if found, otherwise return -1
+     */
     public static int isExisting(int id, List<OrderItem> cart) {
         for (int i = 0; i < cart.size(); i++) {
             if (cart.get(i).getProduct().getId() == id) {
@@ -71,6 +100,12 @@ public final class CommandUtils {
         return -1;
     }
 
+    /**
+     * Method to find a cookie with given name
+     * @param cookies all present cookies
+     * @param cookieName name of searched cookie
+     * @return cookie
+     */
     public static Cookie findCookie(Cookie[] cookies, String cookieName) {
         Cookie cookie = null;
         if(cookies !=null) {
@@ -84,6 +119,12 @@ public final class CommandUtils {
         return cookie;
     }
 
+    /**
+     * Method to get total pages number
+     * @param total number of items in total
+     * @param numberPerPage number of items per page
+     * @return page count
+     */
     public static int getPageCount(int total, int numberPerPage) {
         int pageCount = total / numberPerPage;
         if(pageCount * numberPerPage != total) {
@@ -92,6 +133,11 @@ public final class CommandUtils {
         return pageCount;
     }
 
+    /**
+     * Method to check for the locale in session
+     * @param request HttpServletRequest instance
+     * @return locale name
+     */
     public static String checkForLocale(HttpServletRequest request) {
         String locale = (String)request.getSession().getAttribute("locale");
         if (locale != null && !(locale.equals("")||locale.equals("english"))) {

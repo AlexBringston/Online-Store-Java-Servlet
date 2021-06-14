@@ -5,6 +5,7 @@ import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.dao.mapper.UserMapper;
 import com.store.model.entity.Order;
+import com.store.model.entity.Role;
 import com.store.model.entity.User;
 import com.store.model.exception.DatabaseException;
 import com.store.model.service.ProductService;
@@ -34,21 +35,26 @@ public class JDBCUserDao implements UserDao {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
+            log.trace(entity);
             preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, first_name, " +
-                            "last_name, status) VALUES (?, ?, ?, ?, ?)",
+                            "last_name) VALUES (?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getLogin());
             preparedStatement.setString(2, entity.getPassword());
             preparedStatement.setString(3, entity.getFirstName());
             preparedStatement.setString(4, entity.getLastName());
-            preparedStatement.setString(5, entity.getStatus());
             preparedStatement.executeUpdate();
+            log.trace(entity);
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 entity.setId(resultSet.getInt("id"));
+                entity.setRoleId(resultSet.getInt("role_id"));
+                entity.setRole(Role.values()[resultSet.getInt("role_id")]);
                 entity.setCreatedAt(resultSet.getTimestamp("created_at"));
+                entity.setStatus(resultSet.getString("status"));
                 entity.setBalance(BigDecimal.ZERO);
             }
+            log.trace(entity);
             connection.commit();
             preparedStatement.close();
             resultSet.close();
@@ -58,6 +64,7 @@ public class JDBCUserDao implements UserDao {
             } catch (SQLException throwables) {
                 log.trace("Could not create user");
             }
+            log.trace(ex.getMessage());
             throw new DatabaseException("Error with trying to create a user", ex);
         } finally {
             close();
@@ -196,7 +203,7 @@ public class JDBCUserDao implements UserDao {
             close();
 
         }
-        return Optional.ofNullable(userList);
+        return Optional.of(userList);
     }
 
     @Override

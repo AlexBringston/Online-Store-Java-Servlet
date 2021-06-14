@@ -1,14 +1,18 @@
 package com.store.controller.commands;
 
-import com.store.model.exception.DatabaseException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+/**
+ * Success command
+ * This command returns path to the success page.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class SuccessCommand implements Command{
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, DatabaseException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         return "/WEB-INF/success.jsp";
     }
 }

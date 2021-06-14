@@ -14,18 +14,47 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 
+/**
+ * Product list command
+ * This command implements functionality of showing list of products by color.
+ * It retrieves all products by color per page and sends them to jsp to show them on page.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ProductsByColorCommand implements Command {
 
-    private ProductService productService;
+    /**
+     * Local variable to use product service in command
+     */
+    private final ProductService productService;
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(ProductListCommand.class);
 
+    /**
+     * Constant variable to leave only color name and use it later in service.
+     */
+    private static final int SUBSTRING_INDEX = "/app/products/color/".length();
+
+    /**
+     * Constructor, which initializes productService variable
+     * @param productService - product service instance
+     */
     public ProductsByColorCommand(ProductService productService) {
         this.productService = productService;
     }
 
-    private static final int SUBSTRING_INDEX = "/app/products/color/".length();
-
+    /**
+     * Implementation of execute command of Command interface. It collects some parameters and uses service method to
+     * list products of chosen color sorted by some parameter and sends the list to jsp.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         String colorUrl = null;

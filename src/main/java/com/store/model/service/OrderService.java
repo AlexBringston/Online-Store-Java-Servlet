@@ -99,13 +99,13 @@ public class OrderService {
     }
 
     public void createAndFillOrder(Order order, List<OrderItem> orderItemList) throws DatabaseException {
-        OrderDao orderDao = daoFactory.createOrderDao();
-        OrderItemDao orderItemDao = daoFactory.createOrderItemDao();
-
-        orderDao.create(order);
-        for (OrderItem orderItem : orderItemList) {
-            orderItem.setOrderId(order.getId());
-            orderItemDao.create(orderItem);
+        try (OrderDao orderDao = daoFactory.createOrderDao();
+             OrderItemDao orderItemDao = daoFactory.createOrderItemDao()) {
+            orderDao.create(order);
+            for (OrderItem orderItem : orderItemList) {
+                orderItem.setOrderId(order.getId());
+                orderItemDao.create(orderItem);
+            }
         }
     }
 }

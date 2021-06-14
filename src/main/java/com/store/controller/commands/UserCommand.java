@@ -12,16 +12,45 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * User command
+ * This command implements functionality of displaying user page and their orders.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class UserCommand implements Command {
 
-    private OrderService orderService;
-    private UserService userService;
+    /**
+     * Local variable to use order service in command
+     */
+    private final OrderService orderService;
 
+    /**
+     * Local variable to use user service in command
+     */
+    private final UserService userService;
+
+    /**
+     * Constructor, which initializes orderService variable
+     * @param userService user service instance
+     * @param orderService - order service instance
+     */
     public UserCommand(UserService userService, OrderService orderService) {
         this.userService = userService;
         this.orderService = orderService;
     }
 
+    /**
+     * Implementation of execute command of Command interface. It gets current session and user from this session,
+     * locale. It performs a request to the database in order to keep actual user info and block them if their status
+     * was changed they they are online and to check their balance without need to login again or changing balance.
+     * Simple pagination is also implemented.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         HttpSession session = request.getSession();

@@ -12,16 +12,42 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Change user status command
+ * This command implements functionality of changing a status of some existing user.
+ * It performs some simple actions of changing user status and updating it in database.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ChangeUserStatusCommand implements Command {
 
-    private UserService userService;
+    /**
+     * Local variable to use user service in command
+     */
+    private final UserService userService;
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(ChangeUserStatusCommand.class);
 
+    /**
+     * Constructor, which initializes userService variable
+     * @param userService - user service instance
+     */
     public ChangeUserStatusCommand(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Implementation of execute command of Command interface. Changes user status to the opposite and returns
+     * redirect to manage users page
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, DatabaseException {
         int userId = Integer.parseInt(request.getParameter("id"));

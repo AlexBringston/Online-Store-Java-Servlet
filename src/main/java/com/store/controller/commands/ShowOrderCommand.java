@@ -14,16 +14,43 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Show order command
+ * This command implements functionality of showing chosen order.
+ * It shows the page with info about every order item and total price for this order.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ShowOrderCommand implements Command{
 
-    private OrderService orderService;
+    /**
+     * Local variable to use order service in command
+     */
+    private final OrderService orderService;
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(ShowOrderCommand.class);
 
+    /**
+     * Constructor, which initializes orderService variable
+     * @param orderService - order service instance
+     */
     public ShowOrderCommand(OrderService orderService) {
         this.orderService = orderService;
     }
 
+    /**
+     * Implementation of execute command of Command interface. It gets current session and user from this session,
+     * order id from request. Looks for order with order service and displays it's items corresponding to limit of
+     * items per page.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         HttpSession session = request.getSession();

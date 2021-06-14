@@ -12,16 +12,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * Manage orders command
+ * This command implements functionality of showing all orders.
+ * Also there is part to give admin an opportunity to change order status.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ManageOrdersCommand implements Command {
 
-    private OrderService orderService;
+    /**
+     * Local variable to use order service in command
+     */
+    private final OrderService orderService;
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(ManageOrdersCommand.class);
 
+    /**
+     * Constructor, which initializes orderService variable
+     * @param orderService - order service instance
+     */
     public ManageOrdersCommand(OrderService orderService) {
         this.orderService = orderService;
     }
 
+    /**
+     * Implementation of execute command of Command interface. Searches for the order id and status, and if they
+     * exist, looks for the corresponding order in database and updates it's status. Otherwise gets the page number
+     * and displays all orders for current page.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         String status = request.getParameter("status");

@@ -13,20 +13,47 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Order command
+ * This command implements functionality of making order.
+ * It gets all given data, counts if user can afford this purchase, if true, creates new order, creates every order
+ * item with order's id and updates user balance.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class OrderCommand implements Command{
 
-    private OrderService orderService;
+    /**
+     * Local variable to use order service in command
+     */
+    private final OrderService orderService;
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(ProductListCommand.class);
 
-    public OrderCommand(OrderService productService) {
-        this.orderService = productService;
+    /**
+     * Constructor, which initializes productService variable
+     * @param orderService - product service instance
+     */
+    public OrderCommand(OrderService orderService) {
+        this.orderService = orderService;
     }
 
+    /**
+     * Implementation of execute command of Command interface. It gets user from session, creates new order object,
+     * gets cart from session, count total cost of purchases, checks if user can afford it, and if yes, performs a
+     * transaction where creates an order and corresponding order items from given data. After that it sets the
+     * success message if operation is performed, or error message if user cannot afford the purchase.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the success page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         HttpSession session = request.getSession();
@@ -52,7 +79,7 @@ public class OrderCommand implements Command{
             return "redirect:/success";
 
         } else {
-            throw new DatabaseException("You cannot afford this operation, pleas check your balance");
+            throw new DatabaseException("You cannot afford this operation, please check your balance");
         }
 
     }

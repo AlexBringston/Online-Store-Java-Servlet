@@ -37,10 +37,17 @@ public class UserService {
             dao.update(user);
         }
     }
+
+    public void createUser(User user) throws DatabaseException {
+        try (UserDao dao = daoFactory.createUserDao()) {
+            dao.create(user);
+        }
+    }
+
     public List<User> listUsers(int pageNumber, int limit) throws DatabaseException {
         try (UserDao dao = daoFactory.createUserDao()) {
-            return dao.listUsersPerPage(pageNumber, limit).orElseThrow(() -> new DatabaseException("Could not list " +
-                    "users"));
+            return dao.listUsersPerPage(pageNumber, limit).orElseThrow(() -> new DatabaseException("Could not list" +
+                    " users"));
         }
     }
 }

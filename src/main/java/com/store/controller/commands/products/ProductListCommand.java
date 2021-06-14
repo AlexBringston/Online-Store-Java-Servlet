@@ -12,16 +12,42 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * Product list command
+ * This command implements functionality of showing list of all products.
+ * It retrieves all products per page and sends them to jsp to show them on page.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ProductListCommand implements Command {
 
-    private ProductService productService;
+    /**
+     * Local variable to use product service in command
+     */
+    private final ProductService productService;
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(ProductListCommand.class);
 
+    /**
+     * Constructor, which initializes productService variable
+     * @param productService - product service instance
+     */
     public ProductListCommand(ProductService productService) {
         this.productService = productService;
     }
 
+    /**
+     * Implementation of execute command of Command interface. It collects some parameters and uses service method to
+     * list products sorted by some parameter and sends the list to jsp.
+     * @param request HttpServletRequest instance
+     * @param response HttpServletResponse instance
+     * @return path to the page
+     * @throws DatabaseException if service methods get errors
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DatabaseException {
         log.debug("Commands starts");
