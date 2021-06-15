@@ -1,0 +1,11 @@
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>MyTags</short-name>
+    <uri>/WEB-INF/MyTags.tld</uri>
+    <tag>
+        <name>Hello</name>
+        <tag-class>com.store.controller.tags.GreetingTag</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+</taglib>

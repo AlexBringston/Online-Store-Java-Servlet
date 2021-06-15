@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix = "ex" uri ="/WEB-INF/MyTags.tld"%>
 <html>
 <head>
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
@@ -22,10 +23,9 @@
 </header>
 <section class="User">
     <div class="container">
-<%--        <h1>--%>
-<%--            <fmt:message key="label.hello" /> <c:out value="${sessionScope.user.firstName}"/>--%>
-<%--        </h1>--%>
-
+        <ex:Hello>
+            <h1><fmt:message key="label.hello" /> <c:out value="${sessionScope.user.firstName}"/></h1>
+        </ex:Hello>
         <h1>
             <fmt:message key="label.current.balance" />: <c:out value="${sessionScope.user.balance}"/>
         </h1>
