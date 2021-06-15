@@ -1,5 +1,11 @@
 package com.store.model.entity;
 
+/**
+ * OrderItem entity. Is used to store data from corresponding table about exact item from order.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class OrderItem extends Entity{
 
     private Product product;

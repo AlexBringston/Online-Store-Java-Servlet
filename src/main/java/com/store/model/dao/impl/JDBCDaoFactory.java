@@ -6,9 +6,18 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Implemented DAO Factory to create certain Dao objects and pass connection to them.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class JDBCDaoFactory extends DaoFactory {
 
-    private DataSource dataSource = ConnectionPoolHolder.getDataSource();
+    /**
+     * DataSource instance which was set in Connection Pool Holder.
+     */
+    private final DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
     @Override
     public JDBCUserDao createUserDao() {
@@ -35,6 +44,10 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCOrderItemDao(getConnection());
     }
 
+    /**
+     * Method to get connection instance from data source which was set before.
+     * @return Connection instance
+     */
     private Connection getConnection(){
         try {
             return dataSource.getConnection();

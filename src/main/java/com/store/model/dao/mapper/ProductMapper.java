@@ -5,6 +5,12 @@ import com.store.model.entity.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Product mapper. Is used to get data from database and assign it to instance.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ProductMapper implements ObjectMapper<Product>{
     @Override
     public Product extractFromResultSet(ResultSet resultSet, String locale) throws SQLException {

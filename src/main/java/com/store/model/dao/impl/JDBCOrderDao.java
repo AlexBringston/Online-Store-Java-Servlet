@@ -1,7 +1,6 @@
 package com.store.model.dao.impl;
 
 import com.store.model.dao.OrderDao;
-import com.store.model.dao.Utils;
 import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.entity.Order;
 import com.store.model.exception.DatabaseException;
@@ -13,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of Order Dao
+ * It has implementation of all generic Dao methods and some custom methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 @SuppressWarnings("ALL")
 public class JDBCOrderDao implements OrderDao {
 
@@ -49,8 +55,6 @@ public class JDBCOrderDao implements OrderDao {
                 log.trace("Could not find create order");
             }
             throw new DatabaseException("Error with trying to create an order", ex);
-        } finally {
-            close();
         }
     }
 
@@ -72,8 +76,6 @@ public class JDBCOrderDao implements OrderDao {
         } catch (SQLException ex) {
             log.trace("Could not find order");
             throw new DatabaseException("Error with trying to find order by id", ex);
-        } finally {
-            close();
         }
         return Optional.ofNullable(order);
     }
@@ -101,8 +103,6 @@ public class JDBCOrderDao implements OrderDao {
                 log.trace("Could not find orders");
             }
             throw new DatabaseException("Error with trying to find orders", ex);
-        } finally {
-            close();
         }
         return Optional.ofNullable(orderList);
     }
@@ -126,8 +126,6 @@ public class JDBCOrderDao implements OrderDao {
                 log.trace("Could not update order");
             }
             throw new DatabaseException("Error with trying to update order", ex);
-        } finally {
-            close();
         }
     }
 
@@ -149,8 +147,6 @@ public class JDBCOrderDao implements OrderDao {
                 throwables.printStackTrace();
             }
             ex.printStackTrace();
-        } finally {
-            close();
         }
     }
 
@@ -163,6 +159,14 @@ public class JDBCOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Method, which seeks all orders where id is equal to user id
+     * @param userId id of current user
+     * @param pageNumber number of current page
+     * @param limit limit of orders per page
+     * @return optional with list of orders inside
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Order>> findOrdersOfUser(int userId, int pageNumber, int limit) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
@@ -192,12 +196,16 @@ public class JDBCOrderDao implements OrderDao {
                 log.trace("Could not find orders of user");
             }
             throw new DatabaseException("Error with trying to find orders of user", ex);
-        } finally {
-            close();
         }
         return Optional.of(orderList);
     }
 
+    /**
+     * Method to count a number of orders of current user
+     * @param userId id of current user
+     * @return number of orders
+     * @throws DatabaseException if error with sql query happened
+     */
     @Override
     public int countAllOrdersOfUser(int userId) throws DatabaseException {
         int count = 0;
@@ -215,12 +223,15 @@ public class JDBCOrderDao implements OrderDao {
             preparedStatement.close();
         } catch (SQLException ex) {
             throw new DatabaseException("Error with trying to count orders of user", ex);
-        } finally {
-            close();
         }
         return count;
     }
 
+    /**
+     * Method to count a total number of orders in system
+     * @return number of orders
+     * @throws DatabaseException if error with sql query happened
+     */
     @Override
     public int countAllOrders() throws DatabaseException {
         int count = 0;
@@ -236,12 +247,17 @@ public class JDBCOrderDao implements OrderDao {
             statement.close();
         } catch (SQLException ex) {
             throw new DatabaseException("Error with trying to count all orders", ex);
-        } finally {
-            close();
         }
         return count;
     }
 
+    /**
+     * Method to get a list of orders to show it on given page
+     * @param pageNumber number of page
+     * @param limit limit of orders per page
+     * @return
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Order>> findOrdersPerPage(int pageNumber, int limit) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
@@ -268,8 +284,6 @@ public class JDBCOrderDao implements OrderDao {
                 log.trace("Could not find orders per page");
             }
             throw new DatabaseException("Error with trying to find orders per page", ex);
-        } finally {
-            close();
         }
         return Optional.of(orderList);
     }

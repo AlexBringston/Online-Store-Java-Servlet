@@ -1,5 +1,11 @@
 package com.store.model.entity;
 
+/**
+ * Size entity. Is used to store data from corresponding table about certain size.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class Size extends Entity{
     private static final long serialVersionUID = 2852383536875534610L;
 

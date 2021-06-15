@@ -1,5 +1,11 @@
 package com.store.model.dao;
 
+/**
+ * Class with some constants to avoid a bit of hardcoding.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class Utils {
 
     public static final int ORDERS_PER_PAGE = 5;

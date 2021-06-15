@@ -2,6 +2,12 @@ package com.store.model.entity;
 
 import java.sql.Timestamp;
 
+/**
+ * Order entity. Is used to store data from corresponding table about certain order.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class Order extends Entity{
 
     private int userId;

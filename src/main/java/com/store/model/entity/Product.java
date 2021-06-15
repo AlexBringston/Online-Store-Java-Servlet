@@ -3,6 +3,12 @@ package com.store.model.entity;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+/**
+ * Product entity. Is used to store data from corresponding table about certain product to be able to display it.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class Product extends Entity{
     private static final long serialVersionUID = 1035127111646328882L;
 

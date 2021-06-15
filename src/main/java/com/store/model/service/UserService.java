@@ -8,6 +8,12 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * User service which contains methods that create dao instances and use their methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class UserService {
 
     private static final Logger log = Logger.getLogger(UserService.class);

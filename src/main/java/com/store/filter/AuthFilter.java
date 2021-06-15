@@ -1,7 +1,6 @@
 package com.store.filter;
 
 import com.store.controller.commands.CommandUtils;
-import com.store.controller.commands.LoginCommand;
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
 import com.store.model.exception.DatabaseException;
@@ -10,26 +9,39 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Auth filter
+ * This filter is responsible for setting default user status and, for logged user, checking if user is blocked to
+ * restrict access to the website.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class AuthFilter implements Filter {
+
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(AuthFilter.class);
 
+    /**
+     * Filter method which checks user role and either gives them access and goes by chain, or redirects to error
+     * page if user role is not admin
+     * @param request ServletRequest instance
+     * @param response ServletResponse instance
+     * @param chain filter chain
+     * @throws IOException if cannot go further by filter chain
+     * @throws ServletException if chain cannot work as programmed
+     */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-    }
-
-    @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain filterChain) throws IOException, ServletException {
         final HttpServletRequest req = (HttpServletRequest) request;
-
         HttpSession session = req.getSession();
-
         User user = (User) session.getAttribute("user");
 
         if (session.getAttribute("userRole") == null) {
@@ -50,17 +62,10 @@ public class AuthFilter implements Filter {
                 request.setAttribute("errorMessage", errorMessage);
                 req.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);
             } else {
-                filterChain.doFilter(request, response);
+                chain.doFilter(request, response);
             }
         }  else {
-            filterChain.doFilter(request, response);
+            chain.doFilter(request, response);
         }
-
-    }
-
-
-    @Override
-    public void destroy() {
-
     }
 }

@@ -1,29 +1,40 @@
 package com.store.filter;
 
-import com.store.controller.commands.LoginCommand;
 import com.store.model.entity.Role;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Admin filter
+ * This filter is responsible for providing access to admin pages only to user with admin role.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class AdminFilter implements Filter {
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(AdminFilter.class);
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
-
+    /**
+     * Filter method which checks user role and either gives them access and goes by chain, or redirects to error
+     * page if user role is not admin
+     * @param request ServletRequest instance
+     * @param response ServletResponse instance
+     * @param chain filter chain
+     * @throws IOException if cannot go further by filter chain
+     * @throws ServletException if chain cannot work as programmed
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.trace("AdminFilter started");
         final HttpServletRequest req = (HttpServletRequest) request;
-        final HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
 
         Role userRole = (Role) session.getAttribute("userRole");
@@ -39,10 +50,5 @@ public class AdminFilter implements Filter {
             request.getRequestDispatcher("/WEB-INF/error.jsp")
                     .forward(request, response);
         }
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }

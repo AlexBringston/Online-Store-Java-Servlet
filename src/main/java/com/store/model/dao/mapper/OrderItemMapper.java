@@ -7,6 +7,12 @@ import com.store.model.service.ProductService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * OrderItem mapper. Is used to get data from database and assign it to instance.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class OrderItemMapper implements ObjectMapper<OrderItem> {
     @Override
     public OrderItem extractFromResultSet(ResultSet resultSet, String locale) throws SQLException, DatabaseException {

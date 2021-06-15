@@ -11,7 +11,6 @@ import com.store.model.entity.Color;
 import com.store.model.entity.Product;
 import com.store.model.entity.Size;
 import com.store.model.exception.DatabaseException;
-import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -19,6 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of Product Dao
+ * It has implementation of all generic Dao methods and some custom methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 @SuppressWarnings("ALL")
 public class JDBCProductDao implements ProductDao {
 
@@ -200,6 +206,11 @@ public class JDBCProductDao implements ProductDao {
         }
     }
 
+    /**
+     * Method to count a number of products in system
+     * @return number of products
+     * @throws DatabaseException if error has occured while performing sql query or while mapping data
+     */
     @Override
     public int countAllProducts() throws DatabaseException {
         int count = 0;
@@ -229,6 +240,12 @@ public class JDBCProductDao implements ProductDao {
         return count;
     }
 
+    /**
+     * Method to count products of certain category
+     * @param category name of category
+     * @return number of products of given category
+     * @throws DatabaseException
+     */
     @Override
     public int countProductsByCategory(String category) throws DatabaseException {
         int count = 0;
@@ -260,6 +277,12 @@ public class JDBCProductDao implements ProductDao {
         return count;
     }
 
+    /**
+     * Method to count products of certain color
+     * @param color name of category
+     * @return number of products of given color
+     * @throws DatabaseException
+     */
     @Override
     public int countProductsByColor(String color) throws DatabaseException {
         int count = 0;
@@ -291,6 +314,12 @@ public class JDBCProductDao implements ProductDao {
         return count;
     }
 
+    /**
+     * Method to count products of certain size
+     * @param size name of category
+     * @return number of products of given size
+     * @throws DatabaseException
+     */
     @Override
     public int countProductsBySize(String size) throws DatabaseException {
         int count = 0;
@@ -322,6 +351,16 @@ public class JDBCProductDao implements ProductDao {
         return count;
     }
 
+    /**
+     * Method to get a list of products for current page
+     * @param count page number
+     * @param limit limit of products per page
+     * @param orderBy parameter for sorting
+     * @param orderDirection order direction
+     * @param locale locale name
+     * @return optional of list of products
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Product>> findPerPage(int count, int limit, String orderBy, String orderDirection,
                                                String locale) throws DatabaseException {
@@ -358,6 +397,16 @@ public class JDBCProductDao implements ProductDao {
         return Optional.of(productList);
     }
 
+    /**
+     * Method to get a list of products for current page
+     * @param count page number
+     * @param limit limit of products per page
+     * @param orderBy parameter for sorting
+     * @param orderDirection order direction
+     * @param locale locale name
+     * @return optional of list of products
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Product>> findPerPageByCategory(int count, String name, String orderBy, String orderDirection,
                                                String locale) throws DatabaseException {
@@ -400,6 +449,16 @@ public class JDBCProductDao implements ProductDao {
         return Optional.of(productList);
     }
 
+    /**
+     * Method to get a list of products of certain color for current page
+     * @param count page number
+     * @param name color name
+     * @param orderBy parameter for sorting
+     * @param orderDirection order direction
+     * @param locale locale name
+     * @return optional of list of products
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Product>> findPerPageByColor(int count, String name, String orderBy, String orderDirection,
                                                       String locale) throws DatabaseException {
@@ -445,6 +504,16 @@ public class JDBCProductDao implements ProductDao {
         return Optional.of(productList);
     }
 
+    /**
+     * Method to get a list of products of certain size for current page
+     * @param count page number
+     * @param name size name
+     * @param orderBy parameter for sorting
+     * @param orderDirection order direction
+     * @param locale locale name
+     * @return optional of list of products
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Product>> findPerPageBySize(int count, String name, String orderBy, String orderDirection,
                                                      String locale) throws DatabaseException {
@@ -492,6 +561,12 @@ public class JDBCProductDao implements ProductDao {
         return Optional.of(productList);
     }
 
+    /**
+     * Method to get a list of all categories
+     * @param locale
+     * @return
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Category>> listAllCategories(String locale) throws DatabaseException {
         List<Category> categoryList = new ArrayList<>();
@@ -521,6 +596,12 @@ public class JDBCProductDao implements ProductDao {
         return Optional.of(categoryList);
     }
 
+    /**
+     * Method to get a list of all colors
+     * @param locale
+     * @return
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Color>> listAllColors(String locale) throws DatabaseException {
         List<Color> colorList = new ArrayList<>();
@@ -550,6 +631,12 @@ public class JDBCProductDao implements ProductDao {
         return Optional.of(colorList);
     }
 
+    /**
+     * Method to get a list of all sizes
+     * @param locale
+     * @return
+     * @throws DatabaseException
+     */
     @Override
     public Optional<List<Size>> listAllSizes(String locale) throws DatabaseException {
         List<Size> sizeList = new ArrayList<>();

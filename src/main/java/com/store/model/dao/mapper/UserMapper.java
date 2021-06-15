@@ -4,10 +4,15 @@ import com.store.model.entity.Role;
 import com.store.model.entity.User;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * User mapper. Is used to get data from database and assign it to instance.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class UserMapper implements ObjectMapper<User>{
     @Override
     public User extractFromResultSet(ResultSet resultSet, String locale) throws SQLException {

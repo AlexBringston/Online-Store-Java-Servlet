@@ -7,6 +7,12 @@ import com.store.model.service.UserService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Order mapper. Is used to get data from database and assign it to instance.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class OrderMapper implements ObjectMapper<Order>{
     @Override
     public Order extractFromResultSet(ResultSet resultSet, String locale) throws SQLException, DatabaseException {

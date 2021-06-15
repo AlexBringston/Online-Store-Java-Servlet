@@ -1,28 +1,40 @@
 package com.store.filter;
 
 import com.store.model.entity.Role;
-import com.store.model.entity.User;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * User filter
+ * This filter is responsible for providing access to user pages only to logged users with other than client role.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class UserFilter implements Filter {
 
+    /**
+     * Logger instance to control proper work
+     */
     private static final Logger log = Logger.getLogger(UserFilter.class);
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
 
-    }
-
+    /**
+     * Filter method which checks role of user and either goes further by chain or restricts access and shows the
+     * error page.
+     * @param request ServletRequest instance
+     * @param response ServletResponse instance
+     * @param chain filter chain
+     * @throws IOException if cannot go further by filter chain
+     * @throws ServletException if chain cannot work as programmed
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.trace("UserFilter started");
         final HttpServletRequest req = (HttpServletRequest) request;
-        final HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
 
 
@@ -42,8 +54,4 @@ public class UserFilter implements Filter {
         log.trace("UserFilter finished");
     }
 
-    @Override
-    public void destroy() {
-
-    }
 }

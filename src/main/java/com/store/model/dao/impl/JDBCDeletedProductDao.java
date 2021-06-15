@@ -11,6 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of Deleted product Dao
+ * It has implementation of all generic Dao methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 @SuppressWarnings("ALL")
 public class JDBCDeletedProductDao implements DeletedProductDao {
 
@@ -57,8 +64,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
                 log.trace("Error with trying to rollback connection");
             }
             throw new DatabaseException("Could not add a deleted product", ex);
-        } finally {
-            close();
         }
     }
 
@@ -84,8 +89,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         } catch (SQLException ex) {
             log.trace("Could not find deleted product");
             throw new DatabaseException("Error with trying to find a deleted product", ex);
-        } finally {
-            close();
         }
         return Optional.ofNullable(product);
     }
@@ -107,8 +110,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
         } catch (SQLException ex) {
             log.trace("Could not list deleted products");
             throw new DatabaseException("Error with trying to find all deleted products", ex);
-        } finally {
-            close();
         }
         return Optional.ofNullable(productList);
     }
@@ -138,8 +139,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
                 log.trace("Could not update deleted product");
             }
             throw new DatabaseException("Error with trying to update a deleted product info", ex);
-        } finally {
-            close();
         }
     }
 
@@ -161,8 +160,6 @@ public class JDBCDeletedProductDao implements DeletedProductDao {
                 log.trace("Could not remove deleted product");
             }
             throw new DatabaseException("Error with trying to remove a deleted product", ex);
-        } finally {
-            close();
         }
     }
 

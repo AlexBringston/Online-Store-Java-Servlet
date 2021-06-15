@@ -4,8 +4,23 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.sql.DataSource;
 
+/**
+ * Connection pool holder.
+ * It is responsible for establishing data source to be able to connect to database with set parameters.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ConnectionPoolHolder {
+    /**
+     * DataSource instance to setup connection
+     */
     private static volatile DataSource dataSource;
+
+    /**
+     * Method to setup connection if it wasn't before.
+     * @return set dataSource instance
+     */
     public static DataSource getDataSource(){
 
         if (dataSource == null){

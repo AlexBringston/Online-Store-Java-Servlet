@@ -1,24 +1,26 @@
 package com.store.model.dao.impl;
 
 import com.store.model.dao.UserDao;
-import com.store.model.dao.Utils;
-import com.store.model.dao.mapper.OrderMapper;
 import com.store.model.dao.mapper.UserMapper;
-import com.store.model.entity.Order;
 import com.store.model.entity.Role;
 import com.store.model.entity.User;
 import com.store.model.exception.DatabaseException;
-import com.store.model.service.ProductService;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * Implementation of User Dao
+ * It has implementation of all generic Dao methods and some custom methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
+@SuppressWarnings("ALL")
 public class JDBCUserDao implements UserDao {
 
     private final Connection connection;
@@ -95,6 +97,12 @@ public class JDBCUserDao implements UserDao {
         return Optional.ofNullable(user);
     }
 
+    /**
+     * Method to find a user in database by given login
+     * @param login login of supposed user
+     * @return optional of User instance
+     * @throws DatabaseException if error with sql has happened
+     */
     @Override
     public Optional<User> findUserByLogin(String login) throws DatabaseException {
         User user = null;
@@ -120,6 +128,11 @@ public class JDBCUserDao implements UserDao {
         return Optional.ofNullable(user);
     }
 
+    /**
+     * Method to count all users in system
+     * @return number of all user
+     * @throws DatabaseException if error with sql has happened
+     */
     @Override
     public int countAllUsers() throws DatabaseException {
         int count = 0;
@@ -142,6 +155,13 @@ public class JDBCUserDao implements UserDao {
         return count;
     }
 
+    /**
+     * Method to list a limited number of users per page
+     * @param pageNumber number of page
+     * @param limit limit of users per page
+     * @return optional of list of users
+     * @throws DatabaseException if error while receiving data happened
+     */
     @Override
     public Optional<List<User>> listUsersPerPage(int pageNumber, int limit) throws DatabaseException {
         List<User> userList = new ArrayList<>();

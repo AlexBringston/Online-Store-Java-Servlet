@@ -14,6 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of Order Item Dao
+ * It has implementation of all generic Dao methods and some custom methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
+@SuppressWarnings("ALL")
 public class JDBCOrderItemDao implements OrderItemDao {
 
     private Connection connection;
@@ -52,8 +60,6 @@ public class JDBCOrderItemDao implements OrderItemDao {
             }
 
             throw new DatabaseException("Error with trying to create order item", ex);
-        } finally {
-            close();
         }
     }
 
@@ -80,8 +86,6 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not find order item by id");
             }
             throw new DatabaseException("Error with trying to find order item by id", ex);
-        } finally {
-            close();
         }
         return Optional.ofNullable(orderItem);
     }
@@ -109,8 +113,6 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not find all order items");
             }
             throw new DatabaseException("Error with trying to find all order items", ex);
-        } finally {
-            close();
         }
         return Optional.ofNullable(orderItemList);
     }
@@ -136,8 +138,6 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not update order item");
             }
             throw new DatabaseException("Error with trying to update order item", ex);
-        } finally {
-            close();
         }
     }
 
@@ -159,8 +159,6 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not find delete order item");
             }
             throw new DatabaseException("Error with trying to delete order item", ex);
-        } finally {
-            close();
         }
     }
 
@@ -173,6 +171,14 @@ public class JDBCOrderItemDao implements OrderItemDao {
         }
     }
 
+    /**
+     * Method to get a list of order items of chosen order and show it on page
+     * @param orderId current order id
+     * @param pageNumber number of current page
+     * @param locale locale name
+     * @return optional of list of order items
+     * @throws DatabaseException if error in database is occured
+     */
     @Override
     public Optional<List<OrderItem>> findAllItemsOfOrder(int orderId, int pageNumber, String locale) throws DatabaseException {
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -201,12 +207,16 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not find items of order");
             }
             throw new DatabaseException("Error with trying to find items of order", ex);
-        } finally {
-            close();
         }
         return Optional.of(orderItemList);
     }
 
+    /**
+     * Method to count a number of order items in given order
+     * @param orderId id of given order
+     * @return amount of items in order
+     * @throws DatabaseException
+     */
     @Override
     public int countAllItemsInOrder(int orderId) throws DatabaseException {
         int count = 0;
@@ -230,12 +240,16 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not find orders of user");
             }
             throw new DatabaseException("Error with trying to count items in order", ex);
-        } finally {
-            close();
         }
         return count;
     }
 
+    /**
+     * Method to count total cost of given order
+     * @param orderId id of given order
+     * @return BigDecimal number which stores a total cost of order
+     * @throws DatabaseException if error has occured in SQL
+     */
     @Override
     public BigDecimal countTotalCost(int orderId) throws DatabaseException {
         BigDecimal count = BigDecimal.ZERO;
@@ -262,8 +276,6 @@ public class JDBCOrderItemDao implements OrderItemDao {
                 log.trace("Could not find count total cost");
             }
             throw new DatabaseException("Error with trying to count total cost of order", ex);
-        } finally {
-            close();
         }
         return count;
     }

@@ -30,8 +30,8 @@
         <aside class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
             <jsp:include page="${pageContext.request.contextPath}/WEB-INF/aside.jsp"/>
         </aside>
-        <main class="col-xs-12 col-sm-8 col-md-9 col-lg-10 products" id="products" data-page-count="${pageCount}"
-              data-page-number="${currentPage}">
+        <main class="col-xs-12 col-sm-8 col-md-9 col-lg-10 products" id="products" data-page-count="${requestScope.pageCount}"
+              data-page-number="${requestScope.currentPage}">
             <div class="container">
                 <div class="menu-bar">
                     <form method="get" onsubmit="">
@@ -41,24 +41,25 @@
                                 <select class="form-select col-3 form-select-lg" name="parameter" id="sortType"
                                         size="1">
                                     <option value="name"
-                                            <c:if test="${sortWay == 'name'}">selected</c:if>  ><fmt:message
+                                            <c:if test="${requestScope.sortWay == 'name'}">selected</c:if>  ><fmt:message
                                             key="label.sort.name"/>
                                     </option>
                                     <option value="price"
-                                            <c:if test="${sortWay == 'price'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortWay == 'price'}">selected</c:if> ><fmt:message
                                             key="label.sort.price"/>
                                     </option>
                                     <option value="novelty"
-                                            <c:if test="${sortWay == 'novelty'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortWay == 'novelty'}">selected</c:if> ><fmt:message
                                             key="label.sort.novelty"/></option>
                                     <option value="category"
-                                            <c:if test="${sortWay == 'category'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortWay == 'category'}">selected</c:if> ><fmt:message
                                             key="label.sort.category"/></option>
                                     <option value="color"
-                                            <c:if test="${sortWay == 'color'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortWay == 'color'}">selected</c:if>
+                                    ><fmt:message
                                             key="label.sort.color"/></option>
                                     <option value="size"
-                                            <c:if test="${sortWay == 'size'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortWay == 'size'}">selected</c:if> ><fmt:message
                                             key="label.sort.size"/></option>
                                 </select>
                             </div>
@@ -67,11 +68,11 @@
                                 <select class="form-select col-3 form-select-lg" name="sortDirection" id="sortDirection"
                                         size="1">
                                     <option value="ascending"
-                                            <c:if test="${sortDirection == 'ascending'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortDirection == 'ascending'}">selected</c:if> ><fmt:message
                                             key="label.sort.ascending"/>
                                     </option>
                                     <option value="descending"
-                                            <c:if test="${sortDirection == 'descending'}">selected</c:if> ><fmt:message
+                                            <c:if test="${requestScope.sortDirection == 'descending'}">selected</c:if> ><fmt:message
                                             key="label.sort.descending"/>
                                     </option>
                                 </select>
@@ -85,7 +86,7 @@
 
                 </div>
                 <div class="row">
-                    <c:forEach var="p" items="${products }">
+                    <c:forEach var="p" items="${requestScope.products }">
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xlg-2">
                             <div id="product${p.id }" class="panel panel-default product">
                                 <div class="panel-body">
@@ -121,18 +122,17 @@
                 </div>
 
                 <div class="links">
-                    <a
-                            href="${requestScope['javax.servlet.forward.request_uri']}?page=1&parameter=${sortWay}&sortDirection=${sortDirection}"><fmt:message
+                    <a href="${requestScope['javax.servlet.forward.request_uri']}?page=1&parameter=${requestScope.sortWay}&sortDirection=${requestScope.sortDirection}"><fmt:message
                             key="label.first.page"/></a>
-                    <c:if test="${currentPage gt 1}">
-                        <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage - 1}&parameter=${sortWay}&sortDirection=${sortDirection}"
+                    <c:if test="${requestScope.currentPage gt 1}">
+                        <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${requestScope.currentPage - 1}&parameter=${requestScope.sortWay}&sortDirection=${requestScope.sortDirection}"
                            id="prevPage"><fmt:message key="label.prev.page"/></a>
                     </c:if>
-                    <c:if test="${currentPage lt pageCount}">
-                        <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${currentPage + 1}&parameter=${sortWay}&sortDirection=${sortDirection}"
+                    <c:if test="${requestScope.currentPage lt requestScope.pageCount}">
+                        <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${requestScope.currentPage + 1}&parameter=${requestScope.sortWay}&sortDirection=${requestScope.sortDirection}"
                            id="nextPage"><fmt:message key="label.next.page"/></a>
                     </c:if>
-                    <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${pageCount}&parameter=${sortWay}&sortDirection=${sortDirection}"><fmt:message
+                    <a href="${requestScope['javax.servlet.forward.request_uri']}?page=${requestScope.pageCount}&parameter=${requestScope.sortWay}&sortDirection=${requestScope.sortDirection}"><fmt:message
                             key="label.last.page"/></a>
                 </div>
 

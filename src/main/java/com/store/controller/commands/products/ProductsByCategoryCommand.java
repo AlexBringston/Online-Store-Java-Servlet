@@ -74,6 +74,7 @@ public class ProductsByCategoryCommand implements Command {
         log.trace("categoryUrl --> " + categoryUrl);
         String locale = CommandUtils.checkForLocale(request);
         int totalCount = productService.countProductsByCategory(categoryUrl);
+
         request.setAttribute("pageCount", CommandUtils.getPageCount(totalCount, Utils.PRODUCTS_PER_PAGE));
 
         String sort = request.getParameter("parameter");

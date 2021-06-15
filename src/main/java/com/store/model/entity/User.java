@@ -8,8 +8,15 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * User entity. Is used to store data from corresponding table about certain user. Also it implements
+ * HttpSessionBindingListener to check when user is trying to log in from new place and thus log out previous session.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class User extends Entity implements HttpSessionBindingListener {
-    private static Map<User, HttpSession> logins = new HashMap<>();
+    private static final Map<User, HttpSession> logins = new HashMap<>();
 
     private String login;
 

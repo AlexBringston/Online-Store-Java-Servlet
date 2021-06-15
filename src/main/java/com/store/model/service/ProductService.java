@@ -14,11 +14,16 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Product service which contains methods that create product dao instances and use their methods.
+ *
+ * @author Alexander Mulyk
+ * @since 2021-06-14
+ */
 public class ProductService {
     private static final Logger log = Logger.getLogger(ProductService.class);
 
     DaoFactory daoFactory = DaoFactory.getInstance();
-
 
     public List<Product> listAllProducts() throws DatabaseException {
         try (ProductDao dao = daoFactory.createProductDao()) {
